@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "TinTuc";
+}
+
+<main style="min-height: calc(100vh - 160px);">
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3">Tin Tức</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="@Url.Action("Index", "Home")">Trang Chủ</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Tin Tức</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <!-- Blog Detail Start -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Blog Detail Start -->
+            <div class="col-lg-8">
+                <div class="mb-5">
+                    <img class="img-fluid w-100 mb-4 rounded shadow-sm" src="~/Content/img/blog-1.jpg" alt="Cảng Tiên Sa đón tàu container lớn">
+                    <h1 class="font-weight-bold mb-3">Cảng Tiên Sa Đón Tàu Container Lớn Nhất Từ Trước Đến Nay</h1>
+                    <div class="d-flex mb-4">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle" style="width: 40px; height: 40px;" src="~/Content/img/user.jpg" alt="Nguyễn Văn Hùng">
+                            <span class="text-muted ml-2">Nguyễn Văn Hùng</span>
+                        </div>
+                        <div class="d-flex align-items-center ml-4">
+                            <i class="far fa-bookmark text-primary"></i>
+                            <span class="text-muted ml-2">Hoạt Động Cảng</span>
+                        </div>
+                        <div class="d-flex align-items-center ml-4">
+                            <i class="far fa-calendar-alt text-primary"></i>
+                            <span class="text-muted ml-2">15/04/2025</span>
+                        </div>
+                        <div class="d-flex align-items-center ml-4">
+                            <i class="far fa-eye text-primary"></i>
+                            <span class="text-muted ml-2">1,234 Lượt Xem</span>
+                        </div>
+                    </div>
+                    <p class="lead text-muted mb-4">Vào ngày 15/04/2025, cảng Tiên Sa, Đà Nẵng đã đón tàu container có sức chở 10,000 TEU – con tàu lớn nhất từng cập cảng từ trước đến nay, đánh dấu một cột mốc quan trọng trong sự phát triển của cảng.</p>
+                    <p>Tàu container này thuộc tuyến vận tải quốc tế, chở hàng hóa từ Trung Quốc đến Việt Nam. Việc đón tàu thành công không chỉ khẳng định khả năng vận hành của cảng mà còn mở ra cơ hội hợp tác với các hãng tàu lớn trên thế giới. Cảng Tiên Sa hiện đang tiếp tục đầu tư vào cơ sở hạ tầng để đáp ứng nhu cầu ngày càng tăng của thị trường logistics.</p>
+                    <blockquote class="border-left border-primary pl-4 mb-4">
+                        <p class="font-italic text-muted">"Chúng tôi rất tự hào khi cảng Tiên Sa có thể đón những con tàu lớn như thế này. Đây là bước tiến quan trọng để đưa cảng Tiên Sa trở thành một trong những cảng biển hàng đầu khu vực."</p>
+                        <footer class="blockquote-footer">Ông Nguyễn Văn An, <cite title="Quản lý cảng">Quản lý cảng Tiên Sa</cite></footer>
+                    </blockquote>
+                    <p>Để đảm bảo khả năng tiếp nhận các tàu lớn, cảng đã nâng cấp hệ thống cầu cảng, tăng chiều sâu luồng tàu lên 14 mét, và triển khai các thiết bị xếp dỡ hiện đại. Ngoài ra, cảng cũng áp dụng công nghệ quản lý thông minh để tối ưu hóa quy trình vận hành, giảm thời gian chờ đợi cho các tàu hàng.</p>
+                    <p>Việc đón tàu 10,000 TEU là minh chứng cho tiềm năng phát triển của cảng Tiên Sa, góp phần nâng cao vị thế của Đà Nẵng trong ngành logistics khu vực Đông Nam Á. Trong tương lai, cảng dự kiến sẽ tiếp tục mở rộng các tuyến vận tải quốc tế và tăng cường hợp tác với các đối tác lớn.</p>
+                    <div class="mt-5">
+                        <h5 class="font-weight-bold mb-3">Chia Sẻ Bài Viết</h5>
+                        <div class="d-flex">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://tiensa-port.com/tin-tuc/chi-tiet" class="btn btn-primary mr-2"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="https://twitter.com/intent/tweet?url=https://tiensa-port.com/tin-tuc/chi-tiet&text=Cảng Tiên Sa Đón Tàu Container Lớn Nhất" class="btn btn-info mr-2"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="mailto:?subject=Cảng Tiên Sa Đón Tàu Container Lớn Nhất&body=Xem bài viết tại: https://tiensa-port.com/tin-tuc/chi-tiet" class="btn btn-secondary"><i class="fa fa-envelope"></i> Email</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments Section Start -->
+                <div class="mb-5">
+                    <h3 class="font-weight-bold mb-4">Bình Luận</h3>
+                    <div class="media mb-4">
+                        <img src="~/Content/img/testimonial-3.jpg" alt="Trần Văn Nam" class="rounded-circle mr-3" style="width: 50px; height: 50px;">
+                        <div class="media-body">
+                            <h5 class="mt-0">Trần Văn Nam <small class="text-muted"> - 16/04/2025</small></h5>
+                            <p>Thật ấn tượng! Việc đón tàu lớn như thế này sẽ giúp Đà Nẵng thu hút thêm nhiều doanh nghiệp xuất nhập khẩu. Hy vọng cảng sẽ tiếp tục phát triển mạnh mẽ hơn nữa.</p>
+                        </div>
+                    </div>
+                    <div class="media mb-4">
+                        <img src="~/Content/img/testimonial-2.jpg" alt="Phạm Tiến Minh" class="rounded-circle mr-3" style="width: 50px; height: 50px;">
+                        <div class="media-body">
+                            <h5 class="mt-0">Phạm Tiến Minh <small class="text-muted"> - 16/04/2025</small></h5>
+                            <p>Tôi rất vui khi thấy cảng Tiên Sa ngày càng hiện đại. Điều này sẽ giúp giảm chi phí logistics cho các doanh nghiệp trong khu vực.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments Section End -->
+                <!-- Related Posts Start -->
+                <div class="mb-5">
+                    <h3 class="font-weight-bold mb-4">Tin Tức Liên Quan</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <img class="img-fluid rounded" src="~/Content/img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="Nâng cấp kho bãi tại cảng Tiên Sa">
+                                <div class="ml-3">
+                                    <h5 class="font-weight-bold mb-1">Cảng Tiên Sa Nâng Cấp Hệ Thống Kho Bãi Hiện Đại</h5>
+                                    <p class="text-muted mb-0"><i class="far fa-calendar-alt mr-2"></i>10/04/2025</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <img class="img-fluid rounded" src="~/Content/img/feature.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="Hợp tác quốc tế tại cảng Tiên Sa">
+                                <div class="ml-3">
+                                    <h5 class="font-weight-bold mb-1">Cảng Tiên Sa Ký Kết Hợp Tác Với Cảng Singapore</h5>
+                                    <p class="text-muted mb-0"><i class="far fa-calendar-alt mr-2"></i>05/04/2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Related Posts End -->
+            </div>
+            <!-- Blog Detail End -->
+            <!-- Sidebar Start -->
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <!-- About Author Start -->
+                <div class="mb-5 bg-secondary p-4 rounded shadow-sm">
+                    <h3 class="font-weight-bold mb-4">Về Tác Giả</h3>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="rounded-circle" style="width: 60px; height: 60px;" src="~/Content/img/user.jpg" alt="Nguyễn Văn Hùng">
+                        <div class="ml-3">
+                            <h5 class="font-weight-bold mb-1">Nguyễn Văn Hùng</h5>
+                            <p class="text-muted mb-0">Phóng viên chuyên mục Logistics, có hơn 5 năm kinh nghiệm đưa tin về ngành xuất nhập khẩu và cảng biển tại Việt Nam.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- About Author End -->
+                <!-- Categories Start -->
+                <div class="mb-5 bg-secondary p-4 rounded shadow-sm">
+                    <h3 class="font-weight-bold mb-4">Danh Mục Tin Tức</h3>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2 d-flex justify-content-between align-items-center">
+                            <a class="text-dark text-decoration-none" href="#"><i class="fa fa-angle-right text-primary mr-2"></i>Hoạt Động Cảng</a>
+                            <span class="badge badge-primary badge-pill">45</span>
+                        </li>
+                        <li class="mb-2 d-flex justify-content-between align-items-center">
+                            <a class="text-dark text-decoration-none" href="#"><i class="fa fa-angle-right text-primary mr-2"></i>Cải Tiến Cơ Sở Hạ Tầng</a>
+                            <span class="badge badge-primary badge-pill">30</span>
+                        </li>
+                        <li class="mb-2 d-flex justify-content-between align-items-center">
+                            <a class="text-dark text-decoration-none" href="#"><i class="fa fa-angle-right text-primary mr-2"></i>Hợp Tác Quốc Tế</a>
+                            <span class="badge badge-primary badge-pill">20</span>
+                        </li>
+                        <li class="mb-2 d-flex justify-content-between align-items-center">
+                            <a class="text-dark text-decoration-none" href="#"><i class="fa fa-angle-right text-primary mr-2"></i>Chính Sách Logistics</a>
+                            <span class="badge badge-primary badge-pill">15</span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <a class="text-dark text-decoration-none" href="#"><i class="fa fa-angle-right text-primary mr-2"></i>Tin Tức Khác</a>
+                            <span class="badge badge-primary badge-pill">10</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Categories End -->
+                <!-- Tags Start -->
+                <div class="mb-5 bg-secondary p-4 rounded shadow-sm">
+                    <h3 class="font-weight-bold mb-4">Thẻ Tags</h3>
+                    <div class="d-flex flex-wrap m-n1">
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Cảng Tiên Sa</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Logistics</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Xuất Nhập Khẩu</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Vận Tải Biển</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Kho Bãi</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm m-1">Hải Quan</a>
+                    </div>
+                </div>
+                <!-- Tags End -->
+                <!-- Newsletter Start -->
+                <div class="mb-5 bg-secondary p-4 rounded shadow-sm">
+                    <h3 class="font-weight-bold mb-4">Đăng Ký Nhận Tin</h3>
+                    <p class="text-muted mb-3">Nhận thông tin mới nhất về hoạt động của cảng Tiên Sa và ngành logistics.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control border-0 p-3" placeholder="Email của bạn">
+                        <div class="input-group-append">
+                            <a href="mailto:newsletter@tiensa-port.com?subject=Đăng Ký Nhận Tin" class="btn btn-primary px-4">Đăng Ký</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Newsletter End -->
+            </div>
+            <!-- Sidebar End -->
+        </div>
+    </div>
+    <!-- Blog Detail End -->
+</main>

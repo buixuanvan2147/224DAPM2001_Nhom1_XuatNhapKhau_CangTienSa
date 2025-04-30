@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "DichVu";
+}
+
+<main style="min-height: calc(100vh - 160px);">
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3">Dịch Vụ</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="@Url.Action("Index", "Home")">Trang Chủ</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Dịch Vụ</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <!-- Services Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Dịch Vụ Của Chúng Tôi</h6>
+                <h1 class="mb-4">Giải Pháp Logistics Hàng Đầu Tại Cảng Tiên Sa</h1>
+            </div>
+            <div class="row pb-3">
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-ship text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Vận Tải Biển</h6>
+                    </div>
+                    <p>Cung cấp dịch vụ vận tải hàng hóa đường biển an toàn, nhanh chóng từ cảng Tiên Sa đến các cảng quốc tế.</p>
+                    <a class="border-bottom text-decoration-none" href="@Url.Action("DichVu_TimHieuThem", "Home")">Tìm Hiểu Thêm</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-warehouse text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Lưu Kho Hàng Hóa</h6>
+                    </div>
+                    <p>Hệ thống kho bãi hiện đại tại cảng Tiên Sa đảm bảo hàng hóa được bảo quản an toàn và hiệu quả.</p>
+                    <a class="border-bottom text-decoration-none" href="@Url.Action("DichVu_TimHieuThem", "Home")">Tìm Hiểu Thêm</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-truck text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Vận Chuyển Đường Bộ</h6>
+                    </div>
+                    <p>Vận chuyển hàng hóa từ cảng Tiên Sa đến các địa điểm nội địa với đội xe chuyên nghiệp.</p>
+                    <a class="border-bottom text-decoration-none" href="@Url.Action("DichVu_TimHieuThem", "Home")">Tìm Hiểu Thêm</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-file-alt text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Thủ Tục Hải Quan</h6>
+                    </div>
+                    <p>Hỗ trợ hoàn tất thủ tục hải quan nhanh chóng, minh bạch tại cảng Tiên Sa.</p>
+                    <a class="border-bottom text-decoration-none" href="@Url.Action("DichVu_TimHieuThem", "Home")">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+    <!-- Quote Request Start -->
+    <div class="container-fluid bg-secondary my-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 py-5 py-lg-0">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Nhận Báo Giá</h6>
+                    <h1 class="mb-4">Yêu Cầu Báo Giá Miễn Phí</h1>
+                    <p class="mb-4">Chúng tôi cung cấp dịch vụ logistics chuyên nghiệp tại cảng Tiên Sa, Đà Nẵng, giúp bạn tối ưu hóa quy trình xuất nhập khẩu. Liên hệ ngay để nhận báo giá chi tiết và giải pháp phù hợp nhất.</p>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h1 class="text-primary mb-2" data-toggle="counter-up">150</h1>
+                            <h6 class="font-weight-bold mb-4">Chuyên Gia Logistics</h6>
+                        </div>
+                        <div class="col-sm-4">
+                            <h1 class="text-primary mb-2" data-toggle="counter-up">800</h1>
+                            <h6 class="font-weight-bold mb-4">Khách Hàng Hài Lòng</h6>
+                        </div>
+                        <div class="col-sm-4">
+                            <h1 class="text-primary mb-2" data-toggle="counter-up">2000</h1>
+                            <h6 class="font-weight-bold mb-4">Lô Hàng Đã Xử Lý</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="bg-primary py-5 px-4 px-sm-5">
+                        <div class="py-5">
+                            <div class="form-group">
+                                <input type="text" class="form-control border-0 p-4" placeholder="Họ và Tên" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control border-0 p-4" placeholder="Email Của Bạn" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select border-0 px-4" style="height: 47px;">
+                                    <option selected>Chọn Dịch Vụ</option>
+                                    <option value="1">Vận Tải Biển</option>
+                                    <option value="2">Lưu Kho Hàng Hóa</option>
+                                    <option value="3">Vận Chuyển Đường Bộ</option>
+                                    <option value="4">Thủ Tục Hải Quan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <a href="@Url.Action("DichVu_YeuCauBaoGia", "Home")" class="btn btn-dark btn-block border-0 py-3">Gửi Yêu Cầu</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quote Request End -->
+    <!-- Testimonial Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Ý Kiến Khách Hàng</h6>
+                <h1 class="mb-4">Khách Hàng Nói Gì Về Chúng Tôi</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-1.jpg" style="width: 60px; height: 60px;" alt="Nguyễn Thành Đạt">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Nguyễn Thành Đạt</h6>
+                            <small>- Quản Lý Doanh Nghiệp Xuất Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Dịch vụ vận tải biển tại cảng Tiên Sa rất chuyên nghiệp, hàng hóa được giao đúng tiến độ và an toàn.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-2.jpg" style="width: 60px; height: 60px;" alt="Trần Thị Hồng Nhung">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Trần Thị Hồng Nhung</h6>
+                            <small>- Chủ Doanh Nghiệp Nhập Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Thủ tục hải quan tại cảng Tiên Sa được xử lý rất nhanh chóng, giúp tôi tiết kiệm thời gian và chi phí.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-3.jpg" style="width: 60px; height: 60px;" alt="Lê Văn Hùng">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Lê Văn Hùng</h6>
+                            <small>- Quản Lý Logistics</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Kho bãi tại cảng Tiên Sa rất hiện đại, hàng hóa của tôi luôn được bảo quản trong điều kiện tốt nhất.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-4.jpg" style="width: 60px; height: 60px;" alt="Phạm Thị Mai">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Phạm Thị Mai</h6>
+                            <small>- Nhân Viên Xuất Nhập Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Đội ngũ hỗ trợ tại cảng Tiên Sa rất tận tâm, luôn sẵn sàng giải đáp mọi thắc mắc của tôi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+</main>

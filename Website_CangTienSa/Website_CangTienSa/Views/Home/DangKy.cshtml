@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "DangKy";
+}
+
+<main aria-labelledby="title" style="font-family: Arial, sans-serif; background-color: #f4f7fa; display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh; padding: 40px 0; overflow: auto;">
+    <section style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 800px;">
+        <h1 id="title" style="text-align: center; color: #333;">ĐĂNG KÝ TÀI KHOẢN</h1>
+        <form asp-action="DangKy" method="post" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label for="tenDangNhap">Tên đăng nhập *</label>
+                <input type="text" id="tenDangNhap" name="tenDangNhap" required class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="tenKhachHang">Họ và tên *</label>
+                <input type="text" id="tenKhachHang" name="tenKhachHang" required class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="cccd">CCCD *</label>
+                <input type="text" id="cccd" name="cccd" required class="form-control" maxlength="12" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="sdtKhachHang">Số điện thoại *</label>
+                <input type="text" id="sdtKhachHang" name="sdtKhachHang" required class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email *</label>
+                <input type="email" id="Email" name="Email" required class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="diaChiLienLac">Địa chỉ *</label>
+                <input type="text" id="diaChiLienLac" name="diaChiLienLac" required class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="tenCongTy">Tên công ty (nếu có)</label>
+                <input type="text" id="tenCongTy" name="tenCongTy" class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div class="form-group">
+                <label for="maSoThueCongTy">Mã số thuế (nếu có)</label>
+                <input type="text" id="maSoThueCongTy" name="maSoThueCongTy" class="form-control" style="width: 100%; padding: 10px;">
+            </div>
+
+            <div style="grid-column: span 2; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px; background-color: #28a745; border: none; color: white; font-size: 16px; border-radius: 5px;">Gửi yêu cầu</button>
+            </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
+            Bạn đã có tài khoản?
+            <a href="@Url.Action("DangNhap", "Home")" style="color: #007bff; text-decoration: none;">Đăng nhập</a>
+        </div>
+    </section>
+</main>

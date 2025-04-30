@@ -1,0 +1,257 @@
+﻿@{
+    ViewBag.Title = "BangGia";
+}
+
+<main style="min-height: calc(100vh - 160px);">
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3">Bảng Giá</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="@Url.Action("Index", "Home")">Trang Chủ</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Bảng Giá</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <!-- Pricing Plan Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Bảng Giá Dịch Vụ</h6>
+                <h1 class="mb-4">Chi Phí Logistics Tại Cảng Tiên Sa</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-5">
+                    <div class="bg-secondary">
+                        <div class="text-center p-4">
+                            <h1 class="display-4 mb-0">
+                                <small class="align-top text-muted font-weight-medium" style="font-size: 22px; line-height: 45px;">VNĐ</small>500,000<small class="align-bottom text-muted font-weight-medium" style="font-size: 16px; line-height: 40px;">/Tấn</small>
+                            </h1>
+                        </div>
+                        <div class="bg-primary text-center p-4">
+                            <h3 class="m-0">Vận Tải Biển</h3>
+                        </div>
+                        <div class="d-flex flex-column align-items-center py-4">
+                            <p>Vận chuyển hàng hóa nội địa</p>
+                            <p>Đảm bảo an toàn hàng hóa</p>
+                            <p>Thời gian giao hàng nhanh</p>
+                            <p>Hỗ trợ 24/7</p>
+                            <a href="@Url.Action("BangGia_DatDichVu", "Home")" class="btn btn-primary py-2 px-4 my-2">Liên Hệ Ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="bg-secondary">
+                        <div class="text-center p-4">
+                            <h1 class="display-4 mb-0">
+                                <small class="align-top text-muted font-weight-medium" style="font-size: 22px; line-height: 45px;">VNĐ</small>200,000<small class="align-bottom text-muted font-weight-medium" style="font-size: 16px; line-height: 40px;">/Tấn/Tháng</small>
+                            </h1>
+                        </div>
+                        <div class="bg-primary text-center p-4">
+                            <h3 class="m-0">Lưu Kho Hàng Hóa</h3>
+                        </div>
+                        <div class="d-flex flex-column align-items-center py-4">
+                            <p>Kho bãi hiện đại tại cảng</p>
+                            <p>Bảo quản hàng hóa an toàn</p>
+                            <p>Quản lý hàng hóa thông minh</p>
+                            <p>Hỗ trợ xuất nhập kho 24/7</p>
+                            <a href="@Url.Action("BangGia_DatDichVu", "Home")" class="btn btn-primary py-2 px-4 my-2">Liên Hệ Ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="bg-secondary">
+                        <div class="text-center p-4">
+                            <h1 class="display-4 mb-0">
+                                <small class="align-top text-muted font-weight-medium" style="font-size: 22px; line-height: 45px;">VNĐ</small>300,000<small class="align-bottom text-muted font-weight-medium" style="font-size: 16px; line-height: 40px;">/Lô</small>
+                            </h1>
+                        </div>
+                        <div class="bg-primary text-center p-4">
+                            <h3 class="m-0">Thủ Tục Hải Quan</h3>
+                        </div>
+                        <div class="d-flex flex-column align-items-center py-4">
+                            <p>Hoàn tất thủ tục nhanh chóng</p>
+                            <p>Minh bạch, đúng quy định</p>
+                            <p>Hỗ trợ tư vấn pháp lý</p>
+                            <p>Đội ngũ chuyên nghiệp</p>
+                            <a href="@Url.Action("BangGia_DatDichVu", "Home")" class="btn btn-primary py-2 px-4 my-2">Liên Hệ Ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pricing Plan End -->
+    <!-- Detailed Pricing Table Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Chi Tiết Chi Phí</h6>
+                <h1 class="mb-4">Bảng Giá Dịch Vụ Logistics Tại Cảng Tiên Sa</h1>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Dịch Vụ</th>
+                            <th>Đơn Vị Tính</th>
+                            <th>Giá (VNĐ)</th>
+                            <th>Ghi Chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vận Tải Biển (Nội địa)</td>
+                            <td>Tấn</td>
+                            <td>500,000</td>
+                            <td>Áp dụng cho các tuyến nội địa</td>
+                        </tr>
+                        <tr>
+                            <td>Vận Tải Biển (Quốc tế)</td>
+                            <td>Tấn</td>
+                            <td>1,200,000</td>
+                            <td>Tùy thuộc vào tuyến vận chuyển</td>
+                        </tr>
+                        <tr>
+                            <td>Lưu Kho Hàng Hóa</td>
+                            <td>Tấn/Tháng</td>
+                            <td>200,000</td>
+                            <td>Miễn phí 3 ngày đầu</td>
+                        </tr>
+                        <tr>
+                            <td>Vận Chuyển Đường Bộ</td>
+                            <td>Tấn/Km</td>
+                            <td>5,000</td>
+                            <td>Tính theo khoảng cách</td>
+                        </tr>
+                        <tr>
+                            <td>Thủ Tục Hải Quan</td>
+                            <td>Lô</td>
+                            <td>300,000</td>
+                            <td>Không bao gồm phí hải quan</td>
+                        </tr>
+                        <tr>
+                            <td>Dịch Vụ Khẩn Cấp</td>
+                            <td>Lô</td>
+                            <td>500,000</td>
+                            <td>Xử lý trong 24h</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Detailed Pricing Table End -->
+    <!-- FAQ Start -->
+    <div class="container-fluid bg-secondary my-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Câu Hỏi Thường Gặp</h6>
+                <h1 class="mb-4">Giải Đáp Về Chi Phí Dịch Vụ</h1>
+            </div>
+            <div class="accordion" id="faqAccordion">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link text-decoration-none" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Chi phí có bao gồm thuế hải quan không?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Không, chi phí thủ tục hải quan tại cảng Tiên Sa không bao gồm thuế hải quan. Thuế hải quan sẽ được tính riêng theo quy định của cơ quan hải quan.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Tôi có thể yêu cầu báo giá chi tiết hơn không?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Có, bạn có thể liên hệ trực tiếp với chúng tôi qua trang "Liên Hệ" để nhận báo giá chi tiết dựa trên nhu cầu cụ thể của bạn.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link text-decoration-none collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Có ưu đãi cho hợp đồng dài hạn không?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Chúng tôi có chính sách ưu đãi cho các hợp đồng dài hạn. Vui lòng liên hệ để biết thêm chi tiết về mức chiết khấu.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FAQ End -->
+    <!-- Testimonial Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Ý Kiến Khách Hàng</h6>
+                <h1 class="mb-4">Khách Hàng Nói Gì Về Chúng Tôi</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-1.jpg" style="width: 60px; height: 60px;" alt="Nguyễn Thành Đạt">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Nguyễn Thành Đạt</h6>
+                            <small>- Quản Lý Doanh Nghiệp Xuất Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Chi phí vận tải tại cảng Tiên Sa rất hợp lý, dịch vụ chuyên nghiệp, đáng tin cậy.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-2.jpg" style="width: 60px; height: 60px;" alt="Trần Thị Hồng Nhung">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Trần Thị Hồng Nhung</h6>
+                            <small>- Chủ Doanh Nghiệp Nhập Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Phí lưu kho tại cảng Tiên Sa minh bạch, không phát sinh chi phí ngoài dự kiến.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-3.jpg" style="width: 60px; height: 60px;" alt="Lê Văn Hùng">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Lê Văn Hùng</h6>
+                            <small>- Quản Lý Logistics</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Chi phí thủ tục hải quan tại cảng Tiên Sa hợp lý, xử lý nhanh chóng và hiệu quả.</p>
+                </div>
+                <div class="position-relative bg-secondary p-4">
+                    <i class="fa fa-3x fa-quote-right text-primary position-absolute" style="top: -6px; right: 0;"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <img class="img-fluid rounded-circle" src="~/Content/img/testimonial-4.jpg" style="width: 60px; height: 60px;" alt="Phạm Thị Mai">
+                        <div class="ml-3">
+                            <h6 class="font-weight-semi-bold m-0">Phạm Thị Mai</h6>
+                            <small>- Nhân Viên Xuất Nhập Khẩu</small>
+                        </div>
+                    </div>
+                    <p class="m-0">Dịch vụ tại cảng Tiên Sa có giá cả cạnh tranh, rất phù hợp với doanh nghiệp nhỏ.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+</main>

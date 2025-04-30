@@ -6,24 +6,63 @@ using System.Web.Mvc;
 
 namespace Website_CangTienSa.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : System.Web.Mvc.Controller
     {
+        // GET: TaiKhoan
+        
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult About()
+        public ActionResult DangNhap()
         {
-            ViewBag.Message = "Your application description page.";
-
+            return View();
+        }
+        public ActionResult DangKy()
+        {
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult QuenMatKhau()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        public ActionResult GioiThieu()
+        {
+            return View();
+        }
+
+        public ActionResult DichVu()
+        {
+            return View();
+        }
+        public ActionResult DichVu_YeuCauBaoGia()
+        {
+            return View();
+        }
+
+        public ActionResult DichVu_TimHieuThem()
+        {
+            return View();
+        }
+        public ActionResult BangGia()
+        {
+            return View();
+        }
+
+        public ActionResult BangGia_DatDichVu()
+        {
+            return View();
+        }
+
+        public ActionResult TinTuc()
+        {
+            return View();
+        }
+
+        public ActionResult LienHe()
+        {
             return View();
         }
     }

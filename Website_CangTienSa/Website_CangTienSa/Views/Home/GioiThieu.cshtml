@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "GioiThieu";
+}
+
+<main style="min-height: calc(100vh - 160px);">
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3">Giới Thiệu</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="@Url.Action("Index", "Home")">Trang Chủ</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Giới Thiệu</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 pb-4 pb-lg-0">
+                    <img class="img-fluid w-100" src="~/Content/img/about.jpg" alt="Cảng Tiên Sa">
+                    <div class="bg-primary text-dark text-center p-4">
+                        <h3 class="m-0">Hơn 20 Năm Kinh Nghiệm</h3>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Về Chúng Tôi</h6>
+                    <h1 class="mb-4">Dịch Vụ Xuất Nhập Khẩu Uy Tín Tại Cảng Tiên Sa</h1>
+                    <p class="mb-4">Chúng tôi tự hào là đơn vị cung cấp dịch vụ logistics hàng đầu tại cảng Tiên Sa, Đà Nẵng. Với hơn 20 năm kinh nghiệm, chúng tôi đảm bảo quá trình xuất nhập khẩu diễn ra nhanh chóng, an toàn và hiệu quả, đáp ứng mọi nhu cầu của khách hàng từ cá nhân đến doanh nghiệp.</p>
+                    <div class="d-flex align-items-center pt-2">
+                        <a href="https://www.youtube.com/watch?v=XQQY8pJOWc4" target="_blank" class="btn-play">
+                            <span></span>
+                        </a>
+                        <h5 class="font-weight-bold m-0 ml-4">Xem Video</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+    <!-- Features Start -->
+    <div class="container-fluid bg-secondary my-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid w-100" src="~/Content/img/feature.jpg" alt="Dịch vụ logistics tại cảng Tiên Sa">
+                </div>
+                <div class="col-lg-7 py-5 py-lg-0">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Tại Sao Chọn Chúng Tôi</h6>
+                    <h1 class="mb-4">Dịch Vụ Logistics Nhanh Chóng, An Toàn, Uy Tín</h1>
+                    <p class="mb-4">Tại cảng Tiên Sa, chúng tôi cung cấp các giải pháp logistics toàn diện, từ vận chuyển hàng hóa, lưu kho, đến thủ tục hải quan. Đội ngũ chuyên nghiệp của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7 để đảm bảo hàng hóa được giao nhận đúng thời hạn.</p>
+                    <ul class="list-inline">
+                        <li><h6><i class="far fa-dot-circle text-primary mr-3"></i>Dẫn Đầu Ngành Logistics</h6></li>
+                        <li><h6><i class="far fa-dot-circle text-primary mr-3"></i>Dịch Vụ Khẩn Cấp</h6></li>
+                        <li><h6><i class="far fa-dot-circle text-primary mr-3"></i>Hỗ Trợ Khách Hàng 24/7</h6></li>
+                    </ul>
+                    <a href="@Url.Action("LienHe", "Home")" class="btn btn-primary mt-3 py-2 px-4">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Features End -->
+    <!-- Team Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Đội Ngũ Của Chúng Tôi</h6>
+                <h1 class="mb-4">Gặp Gỡ Đội Ngũ Logistics Của Chúng Tôi</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="team card position-relative overflow-hidden border-0 mb-5">
+                        <img class="card-img-top" src="~/Content/img/team-1.jpg" alt="Nguyễn Văn An">
+                        <div class="card-body text-center p-0">
+                            <div class="team-text d-flex flex-column justify-content-center bg-secondary">
+                                <h5 class="font-weight-bold">Nguyễn Văn An</h5>
+                                <span>Quản Lý Cảng</span>
+                            </div>
+                            <div class="team-social d-flex align-items-center justify-content-center bg-primary">
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-outline-dark btn-social" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="team card position-relative overflow-hidden border-0 mb-5">
+                        <img class="card-img-top" src="~/Content/img/team-2.jpg" alt="Trần Thị Bình">
+                        <div class="card-body text-center p-0">
+                            <div class="team-text d-flex flex-column justify-content-center bg-secondary">
+                                <h5 class="font-weight-bold">Trần Thị Bình</h5>
+                                <span>Chuyên Viên Hải Quan</span>
+                            </div>
+                            <div class="team-social d-flex align-items-center justify-content-center bg-primary">
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-outline-dark btn-social" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="team card position-relative overflow-hidden border-0 mb-5">
+                        <img class="card-img-top" src="~/Content/img/team-3.jpg" alt="Lê Hoàng Cường">
+                        <div class="card-body text-center p-0">
+                            <div class="team-text d-flex flex-column justify-content-center bg-secondary">
+                                <h5 class="font-weight-bold">Lê Hoàng Cường</h5>
+                                <span>Nhân Viên Vận Hành</span>
+                            </div>
+                            <div class="team-social d-flex align-items-center justify-content-center bg-primary">
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-outline-dark btn-social" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="team card position-relative overflow-hidden border-0 mb-5">
+                        <img class="card-img-top" src="~/Content/img/team-4.jpg" alt="Phạm Thị Duyên">
+                        <div class="card-body text-center p-0">
+                            <div class="team-text d-flex flex-column justify-content-center bg-secondary">
+                                <h5 class="font-weight-bold">Phạm Thị Duyên</h5>
+                                <span>Chuyên Viên Chăm Sóc Khách Hàng</span>
+                            </div>
+                            <div class="team-social d-flex align-items-center justify-content-center bg-primary">
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-dark btn-social mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-outline-dark btn-social" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+</main>
