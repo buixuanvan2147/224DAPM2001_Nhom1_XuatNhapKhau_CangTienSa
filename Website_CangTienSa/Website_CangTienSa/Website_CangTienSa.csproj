@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NhanVienNhapKhoController.cs" />
     <Compile Include="Controllers\QuanTriVienController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -320,6 +321,8 @@
     <Content Include="Views\QuanTriVien\QuanLyDonHang_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\ThongKeBaoCao_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\TrangCaNhan_QuanTriVien.cshtml" />
+    <Content Include="Views\Shared\_LayoutNhanVienNhapKho.cshtml" />
+    <Content Include="Views\NhanVienNhapKho\Index_NhanVienNhapKho.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
