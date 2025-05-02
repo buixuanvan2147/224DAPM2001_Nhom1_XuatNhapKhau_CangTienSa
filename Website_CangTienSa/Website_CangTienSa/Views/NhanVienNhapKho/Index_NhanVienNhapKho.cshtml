@@ -1,22 +1,391 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index_NhanVienNhapKho";
     Layout = "~/Views/Shared/_LayoutNhanVienNhapKho.cshtml";
 }
 
-<!-- Header Start -->
-<div class="jumbotron jumbotron-fluid mb-5">
-    <div class="container text-center py-5">
-        <h1 class="text-primary mb-4">Trang chủ</h1>
-        <h1 class="text-white display-3 mb-5">Nhân viên nhập kho</h1>
-        <div class="mx-auto" style="width: 100%; max-width: 600px;">
-            <div class="input-group">
-                <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Tracking Id">
-                <div class="input-group-append">
-                    <button class="btn btn-primary px-3">Tìm Đơn Hàng</button>
-                </div>
-            </div>
+<style>
+    /* CSS cho phần thân */
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .py-5 {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .text-2xl {
+        font-size: 24px;
+        line-height: 32px;
+    }
+
+    .font-bold {
+        font-weight: 700;
+    }
+
+    .mb-6 {
+        margin-bottom: 24px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .flex-wrap {
+        flex-wrap: wrap;
+    }
+
+    .gap-4 {
+        gap: 16px;
+    }
+
+    .justify-center {
+        justify-content: center;
+    }
+
+    .w-full {
+        width: 100%;
+    }
+
+    .md-w-1-3 {
+        width: 100%;
+    }
+
+    @@media (min-width: 768px) {
+        .md-w-1-3 {
+            width: 33.333333%;
+        }
+    }
+
+    .text-sm {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .font-medium {
+        font-weight: 500;
+    }
+
+    .text-gray-700 {
+        color: #4b5563;
+    }
+
+    .mt-1 {
+        margin-top: 4px;
+    }
+
+    .p-2 {
+        padding: 8px;
+    }
+
+    .border {
+        border: 1px solid #e5e7eb;
+    }
+
+    .rounded-md {
+        border-radius: 6px;
+    }
+
+    .bg-gray-200 {
+        background-color: #e5e7eb;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .text-lg {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    .font-semibold {
+        font-weight: 600;
+    }
+
+    .mb-4 {
+        margin-bottom: 16px;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .gap-3 {
+        gap: 12px;
+    }
+
+    .mt-4 {
+        margin-top: 16px;
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #212529;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 4px;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #ff6200; /* Màu cam giống hình ảnh */
+        border-color: #ff6200;
+    }
+
+        .btn-primary:hover {
+            background-color: #e55a00;
+            border-color: #e55a00;
+        }
+
+    .btn-secondary {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+            border-color: #4e555b;
+        }
+
+        .btn-secondary:disabled {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            opacity: 0.65;
+        }
+
+    .text-blue-500 {
+        color: #3b82f6;
+    }
+</style>
+
+<div class="container py-5">
+    <!-- Tiêu đề -->
+    <h1 class="text-2xl font-bold mb-6 text-center text-primary">Danh sách đơn hàng nhập kho</h1>
+
+    <!-- Bộ lọc -->
+    <div class="mb-6 flex flex-wrap gap-4 justify-center">
+        <div class="w-full md-w-1-3">
+            <label class="block text-sm font-medium text-gray-700">Lọc theo ngày</label>
+            <input type="date" id="dateFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
+        </div>
+        <div class="w-full md-w-1-3">
+            <label class="block text-sm font-medium text-gray-700">Lọc theo kho</label>
+            <select id="warehouseFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
+                <option value="">Tất cả</option>
+                <option value="Kho A">Kho A</option>
+                <option value="Kho B">Kho B</option>
+                <option value="Kho C">Kho C</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Danh sách đơn hàng -->
+    <div class="mb-6">
+        <table class="w-full border-collapse border">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Mã đơn hàng</th>
+                    <th class="border p-2">Ngày nhập</th>
+                    <th class="border p-2">Nhà cung cấp</th>
+                    <th class="border p-2">Kho</th>
+                    <th class="border p-2">Tổng tiền</th>
+                    <th class="border p-2">Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="orderTable">
+                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Phân trang -->
+    <div class="flex justify-between mb-6">
+        <button id="prevPage" class="btn btn-secondary px-4 py-2" onclick="changePage(-1)">Trang trước</button>
+        <span id="pageInfo" class="text-sm font-medium">Trang 1</span>
+        <button id="nextPage" class="btn btn-secondary px-4 py-2" onclick="changePage(1)">Trang sau</button>
+    </div>
+
+    <!-- Chi tiết đơn hàng -->
+    <div id="orderDetail" class="hidden mb-6">
+        <h2 class="text-lg font-semibold mb-2 text-primary">Chi tiết đơn hàng</h2>
+        <div class="mb-4">
+            <p><strong>Mã đơn hàng:</strong> <span id="detailOrderId"></span></p>
+            <p><strong>Ngày nhập:</strong> <span id="detailDate"></span></p>
+            <p><strong>Nhà cung cấp:</strong> <span id="detailSupplier"></span></p>
+            <p><strong>Kho:</strong> <span id="detailWarehouse"></span></p>
+        </div>
+        <table class="w-full border-collapse border">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Mã hàng</th>
+                    <th class="border p-2">Tên hàng</th>
+                    <th class="border p-2">Số lượng</th>
+                    <th class="border p-2">Đơn giá</th>
+                    <th class="border p-2">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody id="detailItems">
+            </tbody>
+        </table>
+        <div class="flex gap-3 mt-4">
+            <button class="btn btn-primary px-4 py-2" onclick="exportOrder()">Xuất danh sách đơn hàng (CSV)</button>
+            <button class="btn btn-secondary px-4 py-2" onclick="closeDetail()">Đóng</button>
         </div>
     </div>
 </div>
-<!-- Header End -->
+<!-- Inventory Management Script -->
+<script>
+    const orders = [
+        {
+            id: "PNK001", date: "2025-04-01", supplier: "Công ty ABC", warehouse: "Kho A", total: 1500000, items: [
+                { itemId: "MH001", name: "Hàng hóa A", quantity: 10, price: 100000, total: 1000000 },
+                { itemId: "MH002", name: "Hàng hóa B", quantity: 5, price: 100000, total: 500000 }
+            ]
+        },
+        {
+            id: "PNK002", date: "2025-04-02", supplier: "Công ty XYZ", warehouse: "Kho B", total: 2000000, items: [
+                { itemId: "MH003", name: "Hàng hóa C", quantity: 20, price: 100000, total: 2000000 }
+            ]
+        },
+        {
+            id: "PNK003", date: "2025-04-03", supplier: "Công ty DEF", warehouse: "Kho C", total: 3000000, items: [
+                { itemId: "MH004", name: "Hàng hóa D", quantity: 15, price: 200000, total: 3000000 }
+            ]
+        },
+        // Dữ liệu mới
+        {
+            id: "PNK004", date: "2025-04-04", supplier: "Công ty GHI", warehouse: "Kho A", total: 2500000, items: [
+                { itemId: "MH005", name: "Hàng hóa E", quantity: 25, price: 100000, total: 2500000 }
+            ]
+        },
+        {
+            id: "PNK005", date: "2025-04-05", supplier: "Công ty JKL", warehouse: "Kho B", total: 1800000, items: [
+                { itemId: "MH006", name: "Hàng hóa F", quantity: 12, price: 150000, total: 1800000 }
+            ]
+        },
+        {
+            id: "PNK006", date: "2025-04-06", supplier: "Công ty MNO", warehouse: "Kho C", total: 3200000, items: [
+                { itemId: "MH007", name: "Hàng hóa G", quantity: 8, price: 400000, total: 3200000 }
+            ]
+        }
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 2;
+    let filteredOrders = [...orders];
+
+    function displayOrders() {
+        const table = document.getElementById('orderTable');
+        table.innerHTML = '';
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedOrders = filteredOrders.slice(start, end);
+
+        paginatedOrders.forEach(order => {
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td class="border p-2">${order.id}</td>
+                <td class="border p-2">${order.date}</td>
+                <td class="border p-2">${order.supplier}</td>
+                <td class="border p-2">${order.warehouse}</td>
+                <td class="border p-2">${order.total.toLocaleString()} VNĐ</td>
+                <td class="border p-2">
+                    <button class="text-blue-500" onclick="viewDetail('${order.id}')">Xem chi tiết</button>
+                </td>
+            `;
+        });
+
+        document.getElementById('pageInfo').textContent = `Trang ${currentPage} / ${Math.ceil(filteredOrders.length / itemsPerPage)}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === Math.ceil(filteredOrders.length / itemsPerPage);
+    }
+
+    function filterOrders() {
+        const dateFilter = document.getElementById('dateFilter').value;
+        const warehouseFilter = document.getElementById('warehouseFilter').value;
+
+        filteredOrders = orders.filter(order => {
+            const matchesDate = dateFilter ? order.date === dateFilter : true;
+            const matchesWarehouse = warehouseFilter ? order.warehouse === warehouseFilter : true;
+            return matchesDate && matchesWarehouse;
+        });
+
+        currentPage = 1;
+        displayOrders();
+    }
+
+    function changePage(direction) {
+        currentPage += direction;
+        displayOrders();
+    }
+
+    function viewDetail(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        document.getElementById('orderDetail').classList.remove('hidden');
+        document.getElementById('detailOrderId').textContent = order.id;
+        document.getElementById('detailDate').textContent = order.date;
+        document.getElementById('detailSupplier').textContent = order.supplier;
+        document.getElementById('detailWarehouse').textContent = order.warehouse;
+
+        const detailItems = document.getElementById('detailItems');
+        detailItems.innerHTML = '';
+        order.items.forEach(item => {
+            const row = detailItems.insertRow();
+            row.innerHTML = `
+                <td class="border p-2">${item.itemId}</td>
+                <td class="border p-2">${item.name}</td>
+                <td class="border p-2">${item.quantity}</td>
+                <td class="border p-2">${item.price.toLocaleString()} VNĐ</td>
+                <td class="border p-2">${item.total.toLocaleString()} VNĐ</td>
+            `;
+        });
+    }
+
+    function closeDetail() {
+        document.getElementById('orderDetail').classList.add('hidden');
+    }
+
+    function exportOrder() {
+        const orderId = document.getElementById('detailOrderId').textContent;
+        const order = orders.find(o => o.id === orderId);
+        if (!order) return;
+
+        let csvContent = "Mã hàng,Tên hàng,Số lượng,Đơn giá,Thành tiền\n";
+        order.items.forEach(item => {
+            csvContent += `${item.itemId},${item.name},${item.quantity},${item.price},${item.total}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `DonHang_${orderId}.csv`;
+        link.click();
+    }
+
+    displayOrders();
+</script>
