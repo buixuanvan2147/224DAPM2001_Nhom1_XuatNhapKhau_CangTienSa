@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tien Sa E-PORT</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="~/Content/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/Content/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/Content/css/style.css" rel="stylesheet">
+
+    <!-- CSS để cố định header -->
+    <style>
+        /* Đảm bảo body không có padding/margin gây ảnh hưởng */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cố định header (bao gồm topbar và navbar) */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* Thêm padding cho main để không bị che bởi header */
+        main {
+            padding-top: 110px; /* Tổng chiều cao của topbar (~50px) + navbar (~60px), điều chỉnh nếu cần */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Start (bao gồm topbar và navbar) -->
+    <header class="fixed-header">
+        <!-- Topbar Start -->
+        <div class="container-fluid bg-dark">
+            <div class="row py-2 px-lg-5">
+                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center text-white">
+                        <small><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</small>
+                        <small class="px-3">|</small>
+                        <small><i class="fa fa-envelope mr-2"></i>infoCangTienSa@example.com</small>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-white px-2" href="">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="text-white px-2" href="">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a class="text-white px-2" href="">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="text-white px-2" href="">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a class="text-white pl-2" href="">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+        <!-- Navbar Start -->
+        <div class="container-fluid p-0">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand ml-lg-3">
+                    <h1 class="m-0 display-5 text-uppercase text-primary"><i class="fa fa-ship mr-2"></i>Tien Sa E-PORT</h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                    <div class="navbar-nav m-auto py-0">
+                        <a href="@Url.Action("Index", "Home")" class="nav-item nav-link @(ViewBag.Title == "Index" ? "active" : "")">Trang Chủ</a>
+                        <a href="@Url.Action("GioiThieu", "Home")" class="nav-item nav-link @(ViewBag.Title == "GioiThieu" ? "active" : "")">Giới Thiệu</a>
+                        <a href="@Url.Action("DichVu", "Home")" class="nav-item nav-link @(ViewBag.Title == "DichVu" ? "active" : "")">Dịch Vụ</a>
+                        <a href="@Url.Action("BangGia", "Home")" class="nav-item nav-link @(ViewBag.Title == "BangGia" ? "active" : "")">Bảng Giá</a>
+                        <a href="@Url.Action("TinTuc", "Home")" class="nav-item nav-link @(ViewBag.Title == "TinTuc" ? "active" : "")">Tin Tức</a>
+                        <a href="@Url.Action("LienHe", "Home")" class="nav-item nav-link @(ViewBag.Title == "LienHe" ? "active" : "")">Liên Hệ</a>
+                    </div>
+                    <a style="margin-right: 10px" href="@Url.Action("Index_NhanVienXuatKho", "NhanVienXuatKho")" class="btn btn-primary py-2 px-4 d-none d-lg-block">Kênh nhân viên xuất kho</a>                   
+                </div>
+            </nav>
+        </div>
+        <!-- Navbar End -->
+    </header>
+    <!-- Header End -->
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-4 px-sm-3 px-md-5">
+        <div class="row">
+            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
+                <p class="m-0 text-white">
+                    224DAPM2001_Nhóm 1_Hệ thống quản lý xuất nhập khẩu Cảng Tiên Sa
+                </p>
+            </div>
+            <div class="col-lg-6 text-center text-md-right">
+                <ul class="nav d-inline-flex">
+                    <li class="nav-item">
+                        <a class="nav-link text-white py-0" href="#">Chính sách bảo mật</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white py-0" href="#">Điều khoản sử dụng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white py-0" href="#">Câu hỏi thường gặp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white py-0" href="#">Hỗ trợ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/lib/easing/easing.min.js"></script>
+    <script src="~/Content/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/Content/lib/counterup/counterup.min.js"></script>
+    <script src="~/Content/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="~/Content/mail/jqBootstrapValidation.min.js"></script>
+    <script src="~/Content/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/Content/js/main.js"></script>
+</body>
+
+</html>

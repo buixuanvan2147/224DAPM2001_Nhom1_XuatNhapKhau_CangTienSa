@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "Index_NhanVienXuatKho";
+    Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
+}
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #ff6200;
+        color: white;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #e55a00;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+    .hidden {
+        display: none;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            text-align: left;
+        }
+
+    .bg-gray-200 {
+        background-color: #e5e7eb;
+    }
+</style>
+
+<div class="container">
+    <h1 class="text-primary text-center">Danh sách đơn hàng xuất kho</h1>
+
+    <!-- Bộ lọc -->
+    <div class="mb-4">
+        <label>Ngày xuất:</label>
+        <input type="date" id="dateFilter" onchange="filterOrders()">
+        <label>Kho:</label>
+        <select id="warehouseFilter" onchange="filterOrders()">
+            <option value="">Tất cả</option>
+            <option value="Kho A">Kho A</option>
+            <option value="Kho B">Kho B</option>
+            <option value="Kho C">Kho C</option>
+        </select>
+    </div>
+
+    <!-- Danh sách đơn hàng -->
+    <table class="table">
+        <thead class="bg-gray-200">
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày xuất</th>
+                <th>Khách hàng</th>
+                <th>Kho</th>
+                <th>Tổng tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="orderTable"></tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="mt-3 mb-4">
+        <button id="prevPage" class="btn btn-secondary" onclick="changePage(-1)">Trang trước</button>
+        <span id="pageInfo">Trang 1</span>
+        <button id="nextPage" class="btn btn-secondary" onclick="changePage(1)">Trang sau</button>
+    </div>
+
+    <!-- Chi tiết đơn hàng -->
+    <div id="orderDetail" class="hidden">
+        <h2 class="text-primary">Chi tiết đơn hàng xuất</h2>
+        <p><strong>Mã đơn hàng:</strong> <span id="detailOrderId"></span></p>
+        <p><strong>Ngày xuất:</strong> <span id="detailDate"></span></p>
+        <p><strong>Khách hàng:</strong> <span id="detailCustomer"></span></p>
+        <p><strong>Kho:</strong> <span id="detailWarehouse"></span></p>
+
+        <table class="table mt-2">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th>Mã hàng</th>
+                    <th>Tên hàng</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody id="detailItems"></tbody>
+        </table>
+
+        <div class="mt-3">
+            <button class="btn btn-primary" onclick="exportOrder()">Xuất CSV</button>
+            <button class="btn btn-secondary" onclick="closeDetail()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const orders = [
+        {
+            id: "PXK001", date: "2025-04-01", customer: "Công ty ABC", warehouse: "Kho A", total: 1200000, items: [
+                { itemId: "HH001", name: "Sản phẩm A", quantity: 6, price: 200000, total: 1200000 }
+            ]
+        },
+        {
+            id: "PXK002", date: "2025-04-02", customer: "Công ty XYZ", warehouse: "Kho B", total: 900000, items: [
+                { itemId: "HH002", name: "Sản phẩm B", quantity: 3, price: 300000, total: 900000 }
+            ]
+        },
+        {
+            id: "PXK003", date: "2025-04-03", customer: "Công ty DEF", warehouse: "Kho C", total: 2000000, items: [
+                { itemId: "HH003", name: "Sản phẩm C", quantity: 10, price: 200000, total: 2000000 }
+            ]
+        }
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 2;
+    let filteredOrders = [...orders];
+
+    function displayOrders() {
+        const table = document.getElementById('orderTable');
+        table.innerHTML = '';
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginated = filteredOrders.slice(start, end);
+
+        paginated.forEach(order => {
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td>${order.id}</td>
+                <td>${order.date}</td>
+                <td>${order.customer}</td>
+                <td>${order.warehouse}</td>
+                <td>${order.total.toLocaleString()} VNĐ</td>
+                <td><button class="text-primary" onclick="viewDetail('${order.id}')">Xem chi tiết</button></td>
+            `;
+        });
+
+        document.getElementById('pageInfo').textContent = `Trang ${currentPage} / ${Math.ceil(filteredOrders.length / itemsPerPage)}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage >= Math.ceil(filteredOrders.length / itemsPerPage);
+    }
+
+    function filterOrders() {
+        const date = document.getElementById('dateFilter').value;
+        const warehouse = document.getElementById('warehouseFilter').value;
+
+        filteredOrders = orders.filter(o => {
+            const matchesDate = date ? o.date === date : true;
+            const matchesWarehouse = warehouse ? o.warehouse === warehouse : true;
+            return matchesDate && matchesWarehouse;
+        });
+
+        currentPage = 1;
+        displayOrders();
+    }
+
+    function changePage(offset) {
+        currentPage += offset;
+        displayOrders();
+    }
+
+    function viewDetail(id) {
+        const order = orders.find(o => o.id === id);
+        if (!order) return;
+
+        document.getElementById('orderDetail').classList.remove('hidden');
+        document.getElementById('detailOrderId').textContent = order.id;
+        document.getElementById('detailDate').textContent = order.date;
+        document.getElementById('detailCustomer').textContent = order.customer;
+        document.getElementById('detailWarehouse').textContent = order.warehouse;
+
+        const detailItems = document.getElementById('detailItems');
+        detailItems.innerHTML = '';
+        order.items.forEach(item => {
+            const row = detailItems.insertRow();
+            row.innerHTML = `
+                <td>${item.itemId}</td>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price.toLocaleString()} VNĐ</td>
+                <td>${item.total.toLocaleString()} VNĐ</td>
+            `;
+        });
+    }
+
+    function closeDetail() {
+        document.getElementById('orderDetail').classList.add('hidden');
+    }
+
+    function exportOrder() {
+        const id = document.getElementById('detailOrderId').textContent;
+        const order = orders.find(o => o.id === id);
+        if (!order) return;
+
+        let csv = "Mã hàng,Tên hàng,Số lượng,Đơn giá,Thành tiền\n";
+        order.items.forEach(i => {
+            csv += `${i.itemId},${i.name},${i.quantity},${i.price},${i.total}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `DonHang_Xuat_${id}.csv`;
+        link.click();
+    }
+
+    displayOrders();
+</script>

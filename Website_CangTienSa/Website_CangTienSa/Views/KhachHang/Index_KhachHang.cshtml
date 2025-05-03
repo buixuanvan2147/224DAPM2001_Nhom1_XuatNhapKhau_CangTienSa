@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Index_KhachHang";
+    Layout = "~/Views/Shared/_LayoutKhachHang.cshtml";
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Tien Sa E-PORT - Đăng ký gửi hàng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="fixed-header">
+        <!-- (header markup copied from template #1) -->
+    </header>
+
+    <main class="dashboard-container" style="padding-top: 10px;">
+        <div class="main-content">
+            <h2>Đăng ký gửi hàng</h2>
+            <form method="post" action="@Url.Action("DangKyGuiHang", "KhachHang")">
+                <!-- Tên KH + Tên CTY + MST -->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="TenKhachHang">Tên khách hàng</label>
+                        <input type="text" id="TenKhachHang" name="TenKhachHang" class="form-control" value="Nguyễn Văn A" readonly />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="TenCongTy">Tên công ty</label>
+                        <input type="text" id="TenCongTy" name="TenCongTy" class="form-control" value="Công Ty TNHH ABC" readonly />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="MaSoThue">Mã số thuế công ty</label>
+                        <input type="text" id="MaSoThue" name="MaSoThue" class="form-control" value="0400123456" readonly />
+                    </div>
+                </div>
+
+                <!-- Ngày gửi + Tên người nhận + SĐT -->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="NgayGui">Ngày gửi</label>
+                        <input type="text" id="NgayGui" name="NgayGui" class="form-control" value="@currentDate" readonly />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="TenNguoiNhan">Tên người nhận</label>
+                        <input type="text" id="TenNguoiNhan" name="TenNguoiNhan" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="SDTNguoiNhan">Số điện thoại người nhận</label>
+                        <input type="text" id="SDTNguoiNhan" name="SDTNguoiNhan" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Cảng đích đến + Khối lượng -->
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="CangDichDen">Cảng đích đến</label>
+                        <select id="CangDichDen" name="CangDichDen" class="form-control">
+                            <option value="">-- Chọn cảng --</option>
+                            <option value="Cảng Tiên Sa">Cảng Tiên Sa</option>
+                            <option value="Cảng Đình Vũ">Cảng Đình Vũ</option>
+                            <option value="Cảng Cát Lái">Cảng Cát Lái</option>
+                            <option value="Cảng Hải Phòng">Cảng Hải Phòng</option>
+                            <option value="Cảng Sài Gòn">Cảng Sài Gòn</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="KhoiLuong">Khối lượng (kg)</label>
+                        <input type="number" id="KhoiLuong" name="KhoiLuong" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="form-group">
+                    <label for="MoTa">Mô tả hàng hóa</label>
+                    <textarea id="MoTa" name="MoTa" class="form-control" rows="4" placeholder="Nhập mô tả hàng hóa..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Gửi</button>
+            </form>
+        </div>
+    </main>
+
+
+    <footer class="bg-dark text-white py-4">
+        <!-- footer markup -->
+    </footer>
+</body>
+</html>
