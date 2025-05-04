@@ -22597,6 +22597,21 @@
 										},
 										{
 											"_type": "ERDColumnView",
+											"_id": "AAAAAAGWm+SAd9dulDY=",
+											"_parent": {
+												"$ref": "AAAAAAGV4ipVVxTtZSg="
+											},
+											"model": {
+												"$ref": "AAAAAAGWm+SAcNdrI5A="
+											},
+											"font": "Arial;13;0",
+											"left": 517,
+											"top": 997,
+											"width": 309.1865234375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
 											"_id": "AAAAAAGV4i0UYBUlBjM=",
 											"_parent": {
 												"$ref": "AAAAAAGV4ipVVxTtZSg="
@@ -22606,7 +22621,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 517,
-											"top": 997,
+											"top": 1012,
 											"width": 309.1865234375,
 											"height": 13
 										},
@@ -22621,7 +22636,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 517,
-											"top": 1012,
+											"top": 1027,
 											"width": 309.1865234375,
 											"height": 13
 										}
@@ -22630,14 +22645,14 @@
 									"left": 512,
 									"top": 887,
 									"width": 319.1865234375,
-									"height": 143
+									"height": 158
 								}
 							],
 							"font": "Arial;13;0",
 							"left": 512,
 							"top": 864,
 							"width": 319.1865234375,
-							"height": 166,
+							"height": 181,
 							"nameLabel": {
 								"$ref": "AAAAAAGV4ipVVxTsMDU="
 							},
@@ -22898,7 +22913,7 @@
 								"$ref": "AAAAAAGV4ipVVxTrUmY="
 							},
 							"lineStyle": 1,
-							"points": "831:869;839:865"
+							"points": "831:871;839:867"
 						},
 						{
 							"_type": "ERDEntityView",
@@ -25307,13 +25322,28 @@
 											"top": 1265,
 											"width": 321.69775390625,
 											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGWm+VM+Nd/3GE=",
+											"_parent": {
+												"$ref": "AAAAAAGV/EJ2/gTRAO8="
+											},
+											"model": {
+												"$ref": "AAAAAAGWm+VM6Nd8qUs="
+											},
+											"font": "Arial;13;0",
+											"left": 525,
+											"top": 1280,
+											"width": 321.69775390625,
+											"height": 13
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 520,
 									"top": 1095,
 									"width": 331.69775390625,
-									"height": 188
+									"height": 203
 								}
 							],
 							"font": "Arial;13;0",
@@ -26337,6 +26367,16 @@
 							"type": "NVarchar",
 							"length": "100",
 							"nullable": true
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGWm+SAcNdrI5A=",
+							"_parent": {
+								"$ref": "AAAAAAGV4ipVVhTpl7Y="
+							},
+							"name": "anhDaiDienNhanVienUrl",
+							"type": "VarChar",
+							"length": "255"
 						},
 						{
 							"_type": "ERDColumn",
@@ -27823,6 +27863,16 @@
 							"name": "trangThaiTaiKhoanKhachHang",
 							"type": "NVarChar",
 							"length": "100"
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGWm+VM6Nd8qUs=",
+							"_parent": {
+								"$ref": "AAAAAAGV/EJ2/QTNaMI="
+							},
+							"name": "anhDaiDienKhachHangUrl",
+							"type": "VarChar",
+							"length": "255"
 						}
 					]
 				},
@@ -32842,7 +32892,7 @@
 							"left": 506,
 							"top": 786,
 							"width": 54.18994140625,
-							"height": 39,
+							"height": 52,
 							"text": "Nhận thông báo vị phạm",
 							"wordWrap": true
 						}
@@ -33473,7 +33523,7 @@
 							"left": 434,
 							"top": 338,
 							"width": 85,
-							"height": 78,
+							"height": 91,
 							"text": "Nhân thông báo duyệt thành công kèm theo các chi phí phải trả và phiếu nhập hàng",
 							"wordWrap": true
 						}
@@ -33504,7 +33554,7 @@
 							"left": 442,
 							"top": 482,
 							"width": 54.18994140625,
-							"height": 39,
+							"height": 52,
 							"text": "Chuyển hàng đến cảng",
 							"wordWrap": true
 						}

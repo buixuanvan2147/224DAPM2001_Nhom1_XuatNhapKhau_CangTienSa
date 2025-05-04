@@ -135,7 +135,66 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\NhanVienKhoBai.cs" />
+    <Compile Include="Models\chiTietDonHang.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\chiTietKho.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\chiTietPhieuNhap.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\container.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\danhMucContainer.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\danhMucHangHoa.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\donHang.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\hangHoa.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\khachHang.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\kho.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\loaiKho.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelWebsiteCangTienSa.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelWebsiteCangTienSa.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelWebsiteCangTienSa.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelWebsiteCangTienSa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\nhanVien.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\phieuNhap.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\phieuXuat.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vaiTroNhanVien.cs">
+      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +250,16 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\ModelWebsiteCangTienSa.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+      <LastGenOutput>ModelWebsiteCangTienSa.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelWebsiteCangTienSa.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+      <LastGenOutput>ModelWebsiteCangTienSa.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -291,6 +360,13 @@
     <Content Include="Content\scss\bootstrap\scss\_utilities.scss" />
     <Content Include="Content\scss\bootstrap\scss\_variables.scss" />
     <Content Include="Content\scss\style.scss" />
+    <EntityDeploy Include="Models\ModelWebsiteCangTienSa.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelWebsiteCangTienSa.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelWebsiteCangTienSa.edmx.diagram">
+      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -369,6 +445,9 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

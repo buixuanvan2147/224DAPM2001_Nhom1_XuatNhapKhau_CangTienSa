@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="804edbf870a04eb2868e00eff7fb52ed" Name="Diagram1">
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.chiTietDonHang" Width="1.5" PointX="7.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.chiTietKho" Width="1.5" PointX="5.25" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.chiTietPhieuNhap" Width="1.5" PointX="9.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.container" Width="1.5" PointX="7.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.danhMucContainer" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.danhMucHangHoa" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.donHang" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.hangHoa" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.khachHang" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.kho" Width="1.5" PointX="3" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.loaiKho" Width="1.5" PointX="0.75" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.nhanVien" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.phieuNhap" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.phieuXuat" Width="1.5" PointX="7.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="XuatNhapHangTaiCangTienSaModel.vaiTroNhanVien" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__chiTietDo__maDon__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__chiTietDo__maHan__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__chiTietKh__maKho__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__container__maChi__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__chiTietPh__maCon__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__chiTietPh__maPhi__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__container__maDan__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__hangHoa__maDanhM__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__donHang__maKhach__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__donHang__maNhanV__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__phieuNhap__maDon__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__phieuXuat__maDon__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__kho__maLoaiKho__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="XuatNhapHangTaiCangTienSaModel.FK__nhanVien__maLoai__3C69FB99" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

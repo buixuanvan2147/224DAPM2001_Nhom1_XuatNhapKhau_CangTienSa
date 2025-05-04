@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Website_CangTienSa.Models;
 
 namespace Website_CangTienSa.Controllers
 {
     public class HomeController : System.Web.Mvc.Controller
     {
+        private XuatNhapHangTaiCangTienSaEntities db = new XuatNhapHangTaiCangTienSaEntities();
         // GET: TaiKhoan
-        
+
         public ActionResult Index()
         {
             return View();
