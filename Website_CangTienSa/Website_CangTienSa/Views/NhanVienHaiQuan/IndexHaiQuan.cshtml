@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "IndexHaiQuan";
+    Layout = "~/Views/Shared/_LayoutNhanVienHaiQuan.cshtml";
+}
+
+<h2 style="margin-top: 40px">Bảng Điều Khiển Nhân Viên Hải Quan - Quản Lý Đơn Hàng</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Mã Đơn Hàng</th>
+            <th>Loại Hàng Hóa</th>
+            <th>Yêu Cầu Lưu Trữ</th>
+            <th>Thời Gian Giao Hàng</th>
+            <th>Trạng Thái Phân Loại</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>DH001</td>
+            <td>Hàng Nguy Hiểm</td>
+            <td>Nhiệt độ < 5°C</td>
+            <td>05/05/2025 (Ưu tiên)</td>
+            <td>Chưa phân loại</td>
+            <td>
+                <button class="btn-action" onclick="phanLoai('DH001')">Phân Loại</button>
+                <button class="btn-warning" onclick="baoCao('DH001')">Báo Cáo Vi Phạm</button>
+            </td>
+        </tr>
+        <tr>
+            <td>DH002</td>
+            <td>Hàng Đông Lạnh</td>
+            <td>Lưu trữ -20°C</td>
+            <td>06/05/2025</td>
+            <td>Ưu tiên cao</td>
+            <td>
+                <button class="btn-action" onclick="phanLoai('DH002')">Chỉnh Sửa</button>
+                <button class="btn-warning" onclick="baoCao('DH002')">Báo Cáo Vi Phạm</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal phân loại đơn hàng -->
+<div id="modalPhanLoai" class="modal">
+    <div class="modal-content">
+        <h3>Phân Loại Đơn Hàng</h3>
+        <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHang"></span></p>
+
+        <label>Loại Hàng Hóa:</label>
+        <select>
+            <option>Hàng thông thường</option>
+            <option>Hàng dễ hỏng</option>
+            <option>Hàng nguy hiểm</option>
+        </select>
+
+        <label>Mức độ ưu tiên:</label>
+        <select>
+            <option>Bình thường</option>
+            <option>Ưu tiên cao</option>
+        </select>
+
+        <button class="btn-action" onclick="luuPhanLoai()">Lưu</button>
+        <button onclick="dongModal('modalPhanLoai')">Hủy</button>
+    </div>
+</div>
+
+<!-- Modal báo cáo vi phạm -->
+<div id="modalBaoCao" class="modal">
+    <div class="modal-content">
+        <h3>Báo Cáo Vi Phạm</h3>
+        <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHangBC"></span></p>
+
+        <label>Loại Vi Phạm:</label>
+        <select>
+            <option>Hư hỏng</option>
+            <option>Thiếu số lượng</option>
+            <option>Thiếu giấy tờ</option>
+        </select>
+
+        <label>Mô Tả Chi Tiết:</label>
+        <textarea rows="4" cols="50"></textarea>
+
+        <label>Hình Ảnh Minh Họa (tùy chọn):</label>
+        <input type="file">
+
+        <button class="btn-warning" onclick="guiBaoCao()">Gửi Báo Cáo</button>
+        <button onclick="dongModal('modalBaoCao')">Hủy</button>
+    </div>
+</div>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    h2, h3 {
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    .btn-action {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        margin: 2px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .btn-warning {
+        background-color: #FF5722;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        margin: 2px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 25%;
+        width: 50%;
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    textarea, select, input[type="file"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+</style>
+
+<script>
+    function phanLoai(maDonHang) {
+        document.getElementById("maDonHang").innerText = maDonHang;
+        document.getElementById("modalPhanLoai").style.display = "block";
+    }
+
+    function baoCao(maDonHang) {
+        document.getElementById("maDonHangBC").innerText = maDonHang;
+        document.getElementById("modalBaoCao").style.display = "block";
+    }
+
+    function dongModal(id) {
+        document.getElementById(id).style.display = "none";
+    }
+
+    function luuPhanLoai() {
+        alert("Đã lưu phân loại đơn hàng!");
+        dongModal("modalPhanLoai");
+    }
+
+    function guiBaoCao() {
+        alert("Đã gửi báo cáo vi phạm!");
+        dongModal("modalBaoCao");
+    }
+</script>
