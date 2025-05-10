@@ -41,7 +41,7 @@
             var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == username && kh.trangThaiTaiKhoanKhachHang == "Đã duyệt");
             if (khachHang != null)
             {
-                return "KhachHang";
+                return "_LayoutKhachHang";
             }
 
             var nhanVienRole = (from nv in db.nhanViens

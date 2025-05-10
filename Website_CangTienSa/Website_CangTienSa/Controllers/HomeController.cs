@@ -33,7 +33,7 @@ namespace Website_CangTienSa.Controllers
             {
                 FormsAuthentication.SetAuthCookie(khachHang.tenDangNhap, false); // Tạo cookie xác thực
                 Session["LoggedInUserId"] = khachHang.maKhachHang; // Lưu ID khách hàng
-                Session["UserRole"] = "KhachHang";
+                Session["UserRole"] = "_LayoutKhachHang";
                 return RedirectToAction("Index_KhachHang", "KhachHang"); // Chuyển đến trang dành cho khách hàng
             }
 
