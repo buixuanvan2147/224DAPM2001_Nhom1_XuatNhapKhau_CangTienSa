@@ -1,5 +1,6 @@
 ﻿CREATE DATABASE  XuatNhapHangTaiCangTienSa
 GO
+
 USE XuatNhapHangTaiCangTienSa
 GO
 
@@ -37,6 +38,7 @@ CREATE TABLE nhanVien (
 	tenHienThi NVARCHAR(100) NULL,
 	sdtNhanVien VARCHAR(11) NULL, -- UNIQUE
 	diaChi NVARCHAR(100) NULL, -- UNIQUE
+	email NVARCHAR(50) NOT NULL, -- UNIQUE
 	trangThaiTaiKhoanNhanVien NVARCHAR(100) NOT NULL,--Mở, Khóa
 	thoiGianDangNhapGanNhat DATETIME NOT NULL,
 	anhDaiDienNhanVienUrl VARCHAR(255) NULL
@@ -207,18 +209,18 @@ VALUES
 ('VTNV000006', N'Nhân viên kế toán', N'Quản lý tài chính và thanh toán');
 
 --3 Insert dữ liệu cho bảng nhanVien
-INSERT INTO nhanVien (maNhanVien, maLoaiNhanVien, tenDangNhap, matKhau, tenHienThi, sdtNhanVien, diaChi, trangThaiTaiKhoanNhanVien, thoiGianDangNhapGanNhat, anhDaiDienNhanVienUrl)
+INSERT INTO nhanVien (maNhanVien, maLoaiNhanVien, tenDangNhap, matKhau, tenHienThi, sdtNhanVien, diaChi, email, trangThaiTaiKhoanNhanVien, thoiGianDangNhapGanNhat, anhDaiDienNhanVienUrl)
 VALUES 
-('NV00000001', 'VTNV000001', 'admin1', 'admin123', N'Nguyễn Văn Admin', '0912345678', N'123 Đường Admin, Đà Nẵng', N'Mở', '2025-05-01 08:00:00', NULL),
-('NV00000002', 'VTNV000002', 'nhapkho1', 'nhapkho123', N'Trần Thị Nhập', '0912345679', N'456 Đường Nhập Kho, Đà Nẵng', N'Mở', '2025-05-02 09:00:00', NULL),
-('NV00000003', 'VTNV000003', 'xuatkho1', 'xuatkho123', N'Lê Văn Xuất', '0912345680', N'789 Đường Xuất Kho, Đà Nẵng', N'Mở', '2025-05-03 10:00:00', NULL),
-('NV00000004', 'VTNV000004', 'khobai1', 'khobai123', N'Phạm Thị Kho', '0912345681', N'101 Đường Kho Bãi, Đà Nẵng', N'Mở', '2025-05-04 11:00:00', NULL),
-('NV00000005', 'VTNV000005', 'haiquan1', 'haiquan123', N'Hoàng Văn Hải', '0912345682', N'202 Đường Hải Quan, Đà Nẵng', N'Mở', '2025-05-05 12:00:00', NULL),
-('NV00000006', 'VTNV000006', 'ketoan1', 'ketoan123', N'Ngô Thị Kế', '0912345683', N'303 Đường Kế Toán, Đà Nẵng', N'Mở', '2025-05-06 13:00:00', NULL),
-('NV00000007', 'VTNV000001', 'admin2', 'admin456', N'Vũ Văn Admin', '0912345684', N'404 Đường Admin, Đà Nẵng', N'Mở', '2025-05-07 14:00:00', NULL),
-('NV00000008', 'VTNV000002', 'nhapkho2', 'nhapkho456', N'Đỗ Thị Nhập', '0912345685', N'505 Đường Nhập Kho, Đà Nẵng', N'Mở', '2025-05-08 15:00:00', NULL),
-('NV00000009', 'VTNV000003', 'xuatkho2', 'xuatkho456', N'Bùi Văn Xuất', '0912345686', N'606 Đường Xuất Kho, Đà Nẵng', N'Mở', '2025-05-09 16:00:00', NULL),
-('NV00000010', 'VTNV000004', 'khobai2', 'khobai456', N'Nguyễn Thị Kho', '0912345687', N'707 Đường Kho Bãi, Đà Nẵng', N'Mở', '2025-05-10 17:00:00', NULL);
+('NV00000001', 'VTNV000001', 'admin1', 'admin123', N'Nguyễn Văn Admin', '0912345678', N'123 Đường Admin, Đà Nẵng', 'admin1.le@email.com', N'Mở', '2025-05-01 08:00:00', NULL),
+('NV00000002', 'VTNV000002', 'nhapkho1', 'nhapkho123', N'Trần Thị Nhập', '0912345679', N'456 Đường Nhập Kho, Đà Nẵng', 'nhap1.le@email.com', N'Mở', '2025-05-02 09:00:00', NULL),
+('NV00000003', 'VTNV000003', 'xuatkho1', 'xuatkho123', N'Lê Văn Xuất', '0912345680', N'789 Đường Xuất Kho, Đà Nẵng', 'xuat1.le@email.com', N'Mở', '2025-05-03 10:00:00', NULL),
+('NV00000004', 'VTNV000004', 'khobai1', 'khobai123', N'Phạm Thị Kho', '0912345681', N'101 Đường Kho Bãi, Đà Nẵng', 'khobai1.le@email.com', N'Mở', '2025-05-04 11:00:00', NULL),
+('NV00000005', 'VTNV000005', 'haiquan1', 'haiquan123', N'Hoàng Văn Hải', '0912345682', N'202 Đường Hải Quan, Đà Nẵng', 'haiquan1.le@email.com', N'Mở', '2025-05-05 12:00:00', NULL),
+('NV00000006', 'VTNV000006', 'ketoan1', 'ketoan123', N'Ngô Thị Kế', '0912345683', N'303 Đường Kế Toán, Đà Nẵng', 'ketoan1.le@email.com', N'Mở', '2025-05-06 13:00:00', NULL),
+('NV00000007', 'VTNV000001', 'admin2', 'admin456', N'Vũ Văn Admin', '0912345684', N'404 Đường Admin, Đà Nẵng', 'admin2.le@email.com', N'Mở', '2025-05-07 14:00:00', NULL),
+('NV00000008', 'VTNV000002', 'nhapkho2', 'nhapkho456', N'Đỗ Thị Nhập', '0912345685', N'505 Đường Nhập Kho, Đà Nẵng', 'nhapkho2.le@email.com', N'Mở', '2025-05-08 15:00:00', NULL),
+('NV00000009', 'VTNV000003', 'xuatkho2', 'xuatkho456', N'Bùi Văn Xuất', '0912345686', N'606 Đường Xuất Kho, Đà Nẵng', 'xuatkho2.le@email.com', N'Mở', '2025-05-09 16:00:00', NULL),
+('NV00000010', 'VTNV000004', 'khobai2', 'khobai456', N'Nguyễn Thị Kho', '0912345687', N'707 Đường Kho Bãi, Đà Nẵng', 'khobai2.le@email.com', N'Mở', '2025-05-10 17:00:00', NULL);
 
 --4 Insert dữ liệu cho bảng donHang
 INSERT INTO donHang (maDonHang, maKhachHang, maNhanVien, tenNguoiGui, tenNguoiNhan, cangDichDen, ngayTaoDonHang, thoiGianLuuTru, ngayXuatCang, ngayNhapCang, trangThaiDonHang, trangThaiThanhToan, tongTien, moTa)

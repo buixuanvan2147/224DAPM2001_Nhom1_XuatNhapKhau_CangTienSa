@@ -1,46 +1,31 @@
 ﻿@{
     ViewBag.Title = "DangNhap";
 }
-
 <main aria-labelledby="title" style="font-family: Arial, sans-serif; background-color: #f4f7fa; display: flex; justify-content: center; align-items: center; padding: 60px 0; margin: 0; flex: 1; min-height: calc(100vh - 120px);">
     <div class="login-container" style="background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 300px;">
         <h2 id="title" style="text-align: center; margin-bottom: 20px; font-size: 28px; color: #333;">ĐĂNG NHẬP</h2>
         <h3 style="text-align: center; color: #555;">@ViewBag.Message</h3>
 
-        <!-- Form đăng nhập -->
-        <form class="login-form">
-            <!-- Tên đăng nhập -->
+        @using (Html.BeginForm("DangNhap", "Home", FormMethod.Post, new { @class = "login-form" }))
+        {
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="username" style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Tên Đăng Nhập</label>
                 <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;">
             </div>
 
-            <!-- Mật khẩu -->
             <div class="form-group" style="margin-bottom: 10px;">
                 <label for="password" style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Mật Khẩu</label>
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required
                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;">
             </div>
 
-            <!-- Quên mật khẩu -->
             <div style="text-align: right; margin-bottom: 15px;">
                 <a href="@Url.Action("QuenMatKhau", "Home")" style="font-size: 14px; color: #007bff; text-decoration: none;">Quên mật khẩu?</a>
             </div>
 
-            <!-- Nút đăng nhập -->
             <button type="submit" class="login-button" style="width: 100%; padding: 10px; background-color: #007bff; border: none; border-radius: 5px; color: white; font-size: 16px; cursor: pointer;">Đăng Nhập</button>
-        </form>
-
-        <!-- Nút đăng nhập - tạm dùng để vào trạng thái đã đăng nhập-->
-        <a href="@Url.Action("TongQuan_QuanTriVien", "QuanTriVien")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập QTV</a>
-        <a href="@Url.Action("Index_NhanVienNhapKho", "NhanVienNhapKho")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập Nhập kho</a>
-        <a href="@Url.Action("Index_NhanVienXuatKho", "NhanVienXuatKho")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập Xuất kho</a>
-        <a href="@Url.Action("Index", "NhanVienKeToan")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập Kế toán</a>
-        <a href="@Url.Action("IndexHaiQuan", "NhanVienHaiQuan")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập Hải quan</a>
-        <a href="@Url.Action("Index", "NhanVienKhoBai")" class="btn btn-primary py-2 px-4 my-2">Đăng nhập Kho bãi</a>
-        <a href="@Url.Action("Index_KhachHang", "KhachHang")" class="btn btn-primary py-2 px-4 my-2">Khách hàng</a>
-        <!-- Chưa có tài khoản -->
+        }
         <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
             Bạn chưa có tài khoản?
             <a href="@Url.Action("DangKy", "Home")" style="color: #007bff; text-decoration: none;">Đăng ký</a>

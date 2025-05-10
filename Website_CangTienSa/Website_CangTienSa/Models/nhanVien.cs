@@ -30,6 +30,7 @@ namespace Website_CangTienSa.Models
         public string trangThaiTaiKhoanNhanVien { get; set; }
         public System.DateTime thoiGianDangNhapGanNhat { get; set; }
         public string anhDaiDienNhanVienUrl { get; set; }
+        public string email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<donHang> donHangs { get; set; }

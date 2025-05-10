@@ -10,7 +10,7 @@ namespace Website_CangTienSa.Controllers
     {
         // GET: NhanVienKeToan
 
-        public ActionResult Index()
+        public ActionResult Index_NhanVienKeToan()
         {
             return View();
         }

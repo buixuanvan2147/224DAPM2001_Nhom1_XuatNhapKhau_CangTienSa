@@ -1,3 +1,92 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutKhachVangLai.cshtml";
+﻿@using Website_CangTienSa.Models;
+@using System.Linq;
+@using System.Web.Security;
+
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        var actor = Session["UserRole"] as string;
+
+        if (string.IsNullOrEmpty(actor))
+        {
+            // Trường hợp session bị mất, cố gắng lấy lại vai trò dựa trên User.Identity.Name
+            // và lưu lại vào Session để tránh truy vấn database ở các request sau
+            actor = GetUserRoleFromDatabase(User.Identity.Name);
+            if (!string.IsNullOrEmpty(actor))
+            {
+                Session["UserRole"] = actor;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(actor))
+        {
+            Layout = "~/Views/Shared/" + actor + ".cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutKhachVangLai.cshtml"; // Mặc định nếu không có vai trò
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutKhachVangLai.cshtml"; // Layout cho người dùng chưa đăng nhập
+    }
+}
+
+@functions {
+    private string GetUserRoleFromDatabase(string username)
+    {
+        using (var db = new XuatNhapHangTaiCangTienSaEntities())
+        {
+            var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == username && kh.trangThaiTaiKhoanKhachHang == "Đã duyệt");
+            if (khachHang != null)
+            {
+                return "KhachHang";
+            }
+
+            var nhanVienRole = (from nv in db.nhanViens
+                                join vtr in db.vaiTroNhanViens on nv.maLoaiNhanVien equals vtr.maVaiTroNhanVien
+                                where nv.tenDangNhap == username
+                                select vtr.tenLoaiNhanVien).FirstOrDefault();
+
+            if (nhanVienRole != null)
+            {
+                return ConvertRoleNameToLayoutName(nhanVienRole);
+            }
+        }
+        return null;
+    }
+
+    // Sao chép hàm ConvertRoleNameToLayoutName từ HomeController
+    private string ConvertRoleNameToLayoutName(string roleName)
+    {
+        if (roleName == "Quản trị viên")
+        {
+            return "_LayoutQuanTriVien";
+        }
+        else if (roleName == "Nhân viên nhập kho")
+        {
+            return "_LayoutNhanVienNhapKho";
+        }
+        else if (roleName == "Nhân viên xuất kho")
+        {
+            return "_LayoutNhanVienXuatKho";
+        }
+        else if (roleName == "Nhân viên kế toán")
+        {
+            return "_LayoutNhanVienKeToan";
+        }
+        else if (roleName == "Nhân viên hải quan")
+        {
+            return "_LayoutNhanVienHaiQuan";
+        }
+        else if (roleName == "Nhân viên kho bãi")
+        {
+            return "_LayoutNhanVienKhoBai";
+        }
+        else
+        {
+            return "_LayoutKhachVangLai"; // Hoặc một layout mặc định cho nhân viên khác
+        }
+    }
 }

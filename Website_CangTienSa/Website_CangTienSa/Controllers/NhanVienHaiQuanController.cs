@@ -9,7 +9,7 @@ namespace Website_CangTienSa.Controllers
     public class NhanVienHaiQuanController : Controller
     {
         // GET: NhanVienHaiQuan
-        public ActionResult IndexHaiQuan()
+        public ActionResult Index_NhanVienHaiQuan()
         {
             return View();
         }

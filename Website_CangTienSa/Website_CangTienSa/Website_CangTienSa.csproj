@@ -138,64 +138,65 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\chiTietDonHang.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\chiTietKho.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\chiTietPhieuNhap.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\container.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\danhMucContainer.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\danhMucHangHoa.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\donHang.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\hangHoa.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\khachHang.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\kho.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\loaiKho.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelWebsiteCangTienSa.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelWebsiteCangTienSa.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelWebsiteCangTienSa.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelWebsiteCangTienSa.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\nhanVien.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\phieuNhap.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\phieuXuat.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuanTriVienViewModel.cs" />
     <Compile Include="Models\vaiTroNhanVien.cs">
-      <DependentUpon>ModelWebsiteCangTienSa.tt</DependentUpon>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\XuatNhapHangTaiCangTienSa.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\XuatNhapHangTaiCangTienSa.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\XuatNhapHangTaiCangTienSa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -221,6 +222,7 @@
     <Content Include="Content\img\about.jpg" />
     <Content Include="Content\img\blog-1.jpg" />
     <Content Include="Content\img\blog-2.jpg" />
+    <Content Include="Content\img\default_user_image.png" />
     <Content Include="Content\img\feature.jpg" />
     <Content Include="Content\img\header.jpg" />
     <Content Include="Content\img\team-1.jpg" />
@@ -252,15 +254,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\ModelWebsiteCangTienSa.Context.tt">
+    <Content Include="Models\XuatNhapHangTaiCangTienSa.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
-      <LastGenOutput>ModelWebsiteCangTienSa.Context.cs</LastGenOutput>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.edmx</DependentUpon>
+      <LastGenOutput>XuatNhapHangTaiCangTienSa.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ModelWebsiteCangTienSa.tt">
+    <Content Include="Models\XuatNhapHangTaiCangTienSa.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
-      <LastGenOutput>ModelWebsiteCangTienSa.cs</LastGenOutput>
+      <DependentUpon>XuatNhapHangTaiCangTienSa.edmx</DependentUpon>
+      <LastGenOutput>XuatNhapHangTaiCangTienSa.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -362,12 +364,12 @@
     <Content Include="Content\scss\bootstrap\scss\_utilities.scss" />
     <Content Include="Content\scss\bootstrap\scss\_variables.scss" />
     <Content Include="Content\scss\style.scss" />
-    <EntityDeploy Include="Models\ModelWebsiteCangTienSa.edmx">
+    <EntityDeploy Include="Models\XuatNhapHangTaiCangTienSa.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelWebsiteCangTienSa.Designer.cs</LastGenOutput>
+      <LastGenOutput>XuatNhapHangTaiCangTienSa.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\ModelWebsiteCangTienSa.edmx.diagram">
-      <DependentUpon>ModelWebsiteCangTienSa.edmx</DependentUpon>
+    <Content Include="Models\XuatNhapHangTaiCangTienSa.edmx.diagram">
+      <DependentUpon>XuatNhapHangTaiCangTienSa.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -404,7 +406,7 @@
     <Content Include="Views\Home\BangGia_DatDichVu.cshtml" />
     <Content Include="Views\Home\DichVu_TimHieuThem.cshtml" />
     <Content Include="Views\Shared\_LayoutQuanTriVien.cshtml" />
-    <Content Include="Views\QuanTriVien\TongQuan_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien\Index_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyTaiKhoan_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyDonHang_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\ThongKeBaoCao_QuanTriVien.cshtml" />
@@ -416,10 +418,10 @@
     <Content Include="Views\KhachHang\Index_KhachHang.cshtml" />
     <Content Include="Views\Shared\_LayoutKhachHang.cshtml" />
     <Content Include="Views\KhachHang\XemChiTiet.cshtml" />
-    <Content Include="Views\NhanVienKhoBai\Index.cshtml" />
-    <Content Include="Views\NhanVienKeToan\Index.cshtml" />
+    <Content Include="Views\NhanVienKhoBai\Index_NhanVienKhoBai.cshtml" />
+    <Content Include="Views\NhanVienKeToan\Index_NhanVienKeToan.cshtml" />
     <Content Include="Views\Shared\_LayoutNhanVienKeToan.cshtml" />
-    <Content Include="Views\NhanVienHaiQuan\IndexHaiQuan.cshtml" />
+    <Content Include="Views\NhanVienHaiQuan\Index_NhanVienHaiQuan.cshtml" />
     <Content Include="Views\Shared\_LayoutNhanVienHaiQuan.cshtml" />
   </ItemGroup>
   <ItemGroup>
