@@ -1,10 +1,14 @@
-﻿@{
+﻿@model List<Website_CangTienSa.Models.PhieuNhapModel>
+@using Newtonsoft.Json;
+@using Website_CangTienSa.Models; 
+
+@{
     ViewBag.Title = "Index_NhanVienNhapKho";
     Layout = "~/Views/Shared/_LayoutNhanVienNhapKho.cshtml";
 }
 
 <style>
-    /* CSS cho phần thân */
+    /* CSS giữ nguyên, không thay đổi */
     .container {
         width: 100%;
         max-width: 1200px;
@@ -150,7 +154,7 @@
 
     .btn-primary {
         color: #fff;
-        background-color: #ff6200; /* Màu cam giống hình ảnh */
+        background-color: #ff6200;
         border-color: #ff6200;
     }
 
@@ -195,9 +199,10 @@
             <label class="block text-sm font-medium text-gray-700">Lọc theo kho</label>
             <select id="warehouseFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
                 <option value="">Tất cả</option>
-                <option value="Kho A">Kho A</option>
-                <option value="Kho B">Kho B</option>
-                <option value="Kho C">Kho C</option>
+                @foreach (var kho in ViewBag.KhoList)
+                {
+                    <option value="@kho">@kho</option>
+                }
             </select>
         </div>
     </div>
@@ -216,7 +221,33 @@
                 </tr>
             </thead>
             <tbody id="orderTable">
-                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var phieuNhap in Model)
+                    {
+                        <tr>
+                            <td class="border p-2">@phieuNhap.MaPhieuNhap</td>
+                            <td class="border p-2">@phieuNhap.NgayNhapCang?.ToString("yyyy-MM-dd")</td>
+                            <td class="border p-2">@phieuNhap.TenNguoiGui</td>
+                            <td class="border p-2">@phieuNhap.TenKho</td>
+                            <td class="border p-2">
+                                @{
+                                    float total = phieuNhap.Items.Sum(item => item.DonGia * item.SoLuong);
+                                    @total.ToString("N0") @("VNĐ")
+                                }
+                            </td>
+                            <td class="border p-2">
+                                <button class="text-blue-500" onclick="viewDetail('@phieuNhap.MaPhieuNhap')">Xem chi tiết</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="border p-2 text-center">Không có dữ liệu đơn hàng.</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -230,9 +261,9 @@
 
     <!-- Chi tiết đơn hàng -->
     <div id="orderDetail" class="hidden mb-6">
-        <h2 class="text-lg font-semibold mb-2 text-primary">Chi tiết đơn hàng</h2>
+        <h2 class="text-lg font-semibold mb-2 text-primary">Chi tiết phiếu nhập kho</h2>
         <div class="mb-4">
-            <p><strong>Mã đơn hàng:</strong> <span id="detailOrderId"></span></p>
+            <p><strong>Mã phiếu nhập:</strong> <span id="detailOrderId"></span></p>
             <p><strong>Ngày nhập:</strong> <span id="detailDate"></span></p>
             <p><strong>Nhà cung cấp:</strong> <span id="detailSupplier"></span></p>
             <p><strong>Kho:</strong> <span id="detailWarehouse"></span></p>
@@ -240,59 +271,31 @@
         <table class="w-full border-collapse border">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="border p-2">Mã hàng</th>
-                    <th class="border p-2">Tên hàng</th>
+                    <th class="border p-2">Mã hàng hóa</th>
+                    <th class="border p-2">Tên hàng hóa</th>
                     <th class="border p-2">Số lượng</th>
+                    <th class="border p-2">Đơn vị tính</th>
                     <th class="border p-2">Đơn giá</th>
-                    <th class="border p-2">Thành tiền</th>
+                    <th class="border p-2">Mã container</th>
+                    <th class="border p-2">Vị trí trong kho</th>
+                    <th class="border p-2">Kích thước (m)</th>
                 </tr>
             </thead>
             <tbody id="detailItems">
             </tbody>
         </table>
         <div class="flex gap-3 mt-4">
-            <button class="btn btn-primary px-4 py-2" onclick="exportOrder()">Xuất danh sách đơn hàng (CSV)</button>
+            <button class="btn btn-primary px-4 py-2" onclick="exportOrder()">Xuất danh sách container (CSV)</button>
             <button class="btn btn-secondary px-4 py-2" onclick="closeDetail()">Đóng</button>
         </div>
     </div>
 </div>
+
 <!-- Inventory Management Script -->
 <script>
-    const orders = [
-        {
-            id: "PNK001", date: "2025-04-01", supplier: "Công ty ABC", warehouse: "Kho A", total: 1500000, items: [
-                { itemId: "MH001", name: "Hàng hóa A", quantity: 10, price: 100000, total: 1000000 },
-                { itemId: "MH002", name: "Hàng hóa B", quantity: 5, price: 100000, total: 500000 }
-            ]
-        },
-        {
-            id: "PNK002", date: "2025-04-02", supplier: "Công ty XYZ", warehouse: "Kho B", total: 2000000, items: [
-                { itemId: "MH003", name: "Hàng hóa C", quantity: 20, price: 100000, total: 2000000 }
-            ]
-        },
-        {
-            id: "PNK003", date: "2025-04-03", supplier: "Công ty DEF", warehouse: "Kho C", total: 3000000, items: [
-                { itemId: "MH004", name: "Hàng hóa D", quantity: 15, price: 200000, total: 3000000 }
-            ]
-        },
-        // Dữ liệu mới
-        {
-            id: "PNK004", date: "2025-04-04", supplier: "Công ty GHI", warehouse: "Kho A", total: 2500000, items: [
-                { itemId: "MH005", name: "Hàng hóa E", quantity: 25, price: 100000, total: 2500000 }
-            ]
-        },
-        {
-            id: "PNK005", date: "2025-04-05", supplier: "Công ty JKL", warehouse: "Kho B", total: 1800000, items: [
-                { itemId: "MH006", name: "Hàng hóa F", quantity: 12, price: 150000, total: 1800000 }
-            ]
-        },
-        {
-            id: "PNK006", date: "2025-04-06", supplier: "Công ty MNO", warehouse: "Kho C", total: 3200000, items: [
-                { itemId: "MH007", name: "Hàng hóa G", quantity: 8, price: 400000, total: 3200000 }
-            ]
-        }
-    ];
-
+    // Chuyển dữ liệu từ Model sang JavaScript
+    let orders = @Html.Raw(JsonConvert.SerializeObject(Model ?? null));
+    if (!orders) orders = [];
     let currentPage = 1;
     const itemsPerPage = 2;
     let filteredOrders = [...orders];
@@ -304,16 +307,22 @@
         const end = start + itemsPerPage;
         const paginatedOrders = filteredOrders.slice(start, end);
 
+        if (paginatedOrders.length === 0) {
+            table.innerHTML = '<tr><td colspan="6" class="border p-2 text-center">Không có dữ liệu để hiển thị.</td></tr>';
+            return;
+        }
+
         paginatedOrders.forEach(order => {
+            const total = order.Items.reduce((sum, item) => sum + (item.DonGia * item.SoLuong), 0);
             const row = table.insertRow();
             row.innerHTML = `
-                <td class="border p-2">${order.id}</td>
-                <td class="border p-2">${order.date}</td>
-                <td class="border p-2">${order.supplier}</td>
-                <td class="border p-2">${order.warehouse}</td>
-                <td class="border p-2">${order.total.toLocaleString()} VNĐ</td>
+                <td class="border p-2">${order.MaPhieuNhap}</td>
+                <td class="border p-2">${order.NgayNhapCang ? order.NgayNhapCang.split('T')[0] : ''}</td>
+                <td class="border p-2">${order.TenNguoiGui}</td>
+                <td class="border p-2">${order.TenKho}</td>
+                <td class="border p-2">${total.toLocaleString()} VNĐ</td>
                 <td class="border p-2">
-                    <button class="text-blue-500" onclick="viewDetail('${order.id}')">Xem chi tiết</button>
+                    <button class="text-blue-500" onclick="viewDetail('${order.MaPhieuNhap}')">Xem chi tiết</button>
                 </td>
             `;
         });
@@ -328,8 +337,9 @@
         const warehouseFilter = document.getElementById('warehouseFilter').value;
 
         filteredOrders = orders.filter(order => {
-            const matchesDate = dateFilter ? order.date === dateFilter : true;
-            const matchesWarehouse = warehouseFilter ? order.warehouse === warehouseFilter : true;
+            const orderDate = order.NgayNhapCang ? order.NgayNhapCang.split('T')[0] : '';
+            const matchesDate = dateFilter ? orderDate === dateFilter : true;
+            const matchesWarehouse = warehouseFilter ? order.TenKho === warehouseFilter : true;
             return matchesDate && matchesWarehouse;
         });
 
@@ -343,25 +353,28 @@
     }
 
     function viewDetail(orderId) {
-        const order = orders.find(o => o.id === orderId);
+        const order = orders.find(o => o.MaPhieuNhap === orderId);
         if (!order) return;
 
         document.getElementById('orderDetail').classList.remove('hidden');
-        document.getElementById('detailOrderId').textContent = order.id;
-        document.getElementById('detailDate').textContent = order.date;
-        document.getElementById('detailSupplier').textContent = order.supplier;
-        document.getElementById('detailWarehouse').textContent = order.warehouse;
+        document.getElementById('detailOrderId').textContent = order.MaPhieuNhap;
+        document.getElementById('detailDate').textContent = order.NgayNhapCang ? order.NgayNhapCang.split('T')[0] : '';
+        document.getElementById('detailSupplier').textContent = order.TenNguoiGui;
+        document.getElementById('detailWarehouse').textContent = order.TenKho;
 
         const detailItems = document.getElementById('detailItems');
         detailItems.innerHTML = '';
-        order.items.forEach(item => {
+        order.Items.forEach(item => {
             const row = detailItems.insertRow();
             row.innerHTML = `
-                <td class="border p-2">${item.itemId}</td>
-                <td class="border p-2">${item.name}</td>
-                <td class="border p-2">${item.quantity}</td>
-                <td class="border p-2">${item.price.toLocaleString()} VNĐ</td>
-                <td class="border p-2">${item.total.toLocaleString()} VNĐ</td>
+                <td class="border p-2">${item.MaHangHoa}</td>
+                <td class="border p-2">${item.TenHangHoa}</td>
+                <td class="border p-2">${item.SoLuong}</td>
+                <td class="border p-2">${item.DonViTinh}</td>
+                <td class="border p-2">${item.DonGia.toLocaleString()} VNĐ</td>
+                <td class="border p-2">${item.MaContainer}</td>
+                <td class="border p-2">${item.ViTriTrongKho}</td>
+                <td class="border p-2">${item.KichThuoc}</td>
             `;
         });
     }
@@ -372,18 +385,18 @@
 
     function exportOrder() {
         const orderId = document.getElementById('detailOrderId').textContent;
-        const order = orders.find(o => o.id === orderId);
+        const order = orders.find(o => o.MaPhieuNhap === orderId);
         if (!order) return;
 
-        let csvContent = "Mã hàng,Tên hàng,Số lượng,Đơn giá,Thành tiền\n";
-        order.items.forEach(item => {
-            csvContent += `${item.itemId},${item.name},${item.quantity},${item.price},${item.total}\n`;
+        let csvContent = "Mã hàng hóa,Tên hàng hóa,Số lượng,Đơn vị tính,Đơn giá,Mã container,Vị trí,Kích thước (m)\n";
+        order.Items.forEach(item => {
+            csvContent += `${item.MaHangHoa},${item.TenHangHoa},${item.SoLuong},${item.DonViTinh},${item.DonGia.toLocaleString()},"${item.MaContainer}",${item.ViTriTrongKho},${item.KichThuoc}\n`;
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `DonHang_${orderId}.csv`;
+        link.download = `PhieuNhap_${orderId}.csv`;
         link.click();
     }
 
