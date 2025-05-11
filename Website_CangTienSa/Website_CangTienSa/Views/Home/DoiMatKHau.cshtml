@@ -1,0 +1,85 @@
+﻿@model Website_CangTienSa.Models.DoiMatKhauViewModel
+@{
+    ViewBag.Title = "ĐoiMatKHau";
+}
+
+<main aria-labelledby="title"
+      style="font-family: Arial, sans-serif; background-color: #f4f7fa; display: flex; justify-content: center; align-items: center; padding: 20px 0 60px; margin: 0; flex: 1; ">
+    <div class="login-container"
+         style="background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 350px;">
+        <h2 id="title" style="text-align: center; margin-bottom: 20px; font-size: 28px; color: #333;">ĐỔI MẬT KHẨU</h2>
+
+        <h3 style="text-align: center; color: #555;">@ViewBag.Message</h3>
+
+        @using (Html.BeginForm("DoiMatKhau", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="control-label" style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Tên hiển thị:</label>
+                <div style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; background-color: #eee;">
+                    @Model.TenHienThi
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                @Html.LabelFor(m => m.MatKhauCu, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.MatKhauCu, new { @class = "form-control password-input", placeholder = "Mật khẩu cũ", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
+                    @Html.ValidationMessageFor(m => m.MatKhauCu, "", new { @class = "text-danger" })
+                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                @Html.LabelFor(m => m.MatKhauMoi, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.MatKhauMoi, new { @class = "form-control password-input", placeholder = "Mật khẩu mới", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
+                    @Html.ValidationMessageFor(m => m.MatKhauMoi, "", new { @class = "text-danger" })
+                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                @Html.LabelFor(m => m.XacNhanMatKhauMoi, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.XacNhanMatKhauMoi, new { @class = "form-control password-input", placeholder = "Nhập lại mật khẩu mới", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
+                    @Html.ValidationMessageFor(m => m.XacNhanMatKhauMoi, "", new { @class = "text-danger" })
+                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="login-button btn btn-primary" style="width: 100%; padding: 10px; background-color: #007bff; border: none; border-radius: 5px; color: white; font-size: 16px; cursor: pointer;">Đổi mật khẩu</button>
+            </div>
+        }
+        <div style="text-align: center; margin-top: 15px; font-size: 14px; color: #555;">
+            <a href="@Url.Action("QuenMatKhau", "Home")" style="color: #007bff; text-decoration: none;">Quên mật khẩu?</a>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".toggle-password").click(function () {
+                var passwordInput = $(this).prev(".password-input");
+                if (passwordInput.attr("type") === "password") {
+                    passwordInput.attr("type", "text");
+                    $(this).find("i").removeClass("fa-eye").addClass("fa-eye-slash");
+                } else {
+                    passwordInput.attr("type", "password");
+                    $(this).find("i").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            });
+        });
+    </script>
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using Website_CangTienSa.Models;
@@ -52,6 +53,10 @@ namespace Website_CangTienSa.Controllers
                     FormsAuthentication.SetAuthCookie(nhanVien.tenDangNhap, false); // Tạo cookie xác thực
                     Session["LoggedInUserId"] = nhanVien.maNhanVien; // Lưu ID nhân viên
                     Session["UserRole"] = userRole;
+
+                    // Cập nhật thời gian đăng nhập gần nhất cho nhân viên
+                    nhanVien.thoiGianDangNhapGanNhat = DateTime.Now;
+                    db.SaveChanges(); // Lưu thay đổi vào database
 
                     // Chuyển hướng dựa trên vai trò của nhân viên
                     switch (vaiTroNhanVien.tenLoaiNhanVien)
@@ -124,6 +129,97 @@ namespace Website_CangTienSa.Controllers
         public ActionResult QuenMatKhau()
         {
             return View();
+        }
+
+        [Authorize] // Yêu cầu người dùng phải đăng nhập để truy cập action này
+        public ActionResult DoiMatKhau()
+        {
+            string currentUsername = User.Identity.Name;
+            string tenHienThi = "";
+
+            var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == currentUsername);
+            if (khachHang != null)
+            {
+                tenHienThi = khachHang.tenKhachHang; // Giả sử bạn có trường tenHienThi
+            }
+            else
+            {
+                var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.tenDangNhap == currentUsername);
+                if (nhanVien != null)
+                {
+                    tenHienThi = nhanVien.tenHienThi; // Giả sử bạn có trường tenNhanVien
+                }
+            }
+
+            var model = new DoiMatKhauViewModel
+            {
+                TenHienThi = tenHienThi
+            };
+
+            return View(model);
+        }
+
+        // POST: DoiMatKhau
+        [HttpPost]
+        [Authorize] // Yêu cầu người dùng phải đăng nhập để truy cập action này
+        [ValidateAntiForgeryToken] // Xác thực token chống CSRF từ form
+        public ActionResult DoiMatKhau(DoiMatKhauViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string currentUsername = User.Identity.Name;
+                bool passwordChanged = false;
+
+                var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == currentUsername);
+                if (khachHang != null)
+                {
+                    // **Quan trọng:** So sánh mật khẩu cũ đã nhập với mật khẩu đã hash trong database.
+                    // Sử dụng Crypto.VerifyHashedPassword (CHỈ CHO MỤC ĐÍCH DEMO)
+                    if (Crypto.VerifyHashedPassword(khachHang.matKhau, model.MatKhauCu))
+                    {
+                        // Hash mật khẩu mới trước khi lưu
+                        khachHang.matKhau = Crypto.HashPassword(model.MatKhauMoi);
+                        db.SaveChanges();
+                        ViewBag.Message = "Đổi mật khẩu thành công.";
+                        passwordChanged = true;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("MatKhauCu", "Mật khẩu cũ không đúng.");
+                    }
+                }
+                else
+                {
+                    var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.tenDangNhap == currentUsername);
+                    if (nhanVien != null)
+                    {
+                        // **Quan trọng:** So sánh mật khẩu cũ đã nhập với mật khẩu đã hash trong database.
+                        // Sử dụng Crypto.VerifyHashedPassword (CHỈ CHO MỤC ĐÍCH DEMO)
+                        if (Crypto.VerifyHashedPassword(nhanVien.matKhau, model.MatKhauCu))
+                        {
+                            // Hash mật khẩu mới
+                            nhanVien.matKhau = Crypto.HashPassword(model.MatKhauMoi);
+                            db.SaveChanges();
+                            ViewBag.Message = "Đổi mật khẩu thành công.";
+                            passwordChanged = true;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("MatKhauCu", "Mật khẩu cũ không đúng.");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Không tìm thấy tài khoản người dùng.");
+                    }
+                }
+
+                if (passwordChanged)
+                {
+                    return View();
+                }
+            }
+            return View(model);
         }
 
         public ActionResult GioiThieu()

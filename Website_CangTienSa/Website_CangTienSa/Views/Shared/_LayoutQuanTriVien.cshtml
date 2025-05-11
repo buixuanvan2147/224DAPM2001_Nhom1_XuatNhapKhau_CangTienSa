@@ -11,13 +11,15 @@
     <link href="~/Content/img/favicon.ico" rel="icon">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <link href="~/Content/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <link href="~/Content/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <style>
         /* Đảm bảo body không có padding/margin gây ảnh hưởng */
@@ -58,7 +60,7 @@
             color: #fff;
             padding-top: 30px;
             padding-bottom: 30px;
-            margin-bottom: 30px;
+
             font-size: 24px;
             font-weight: 700;
             text-align: center;
@@ -115,6 +117,22 @@
         .navbar-nav a.nav-link.active {
             color: #007bff !important; /* Màu chữ active trên navbar */
         }
+        /* Style cho footer */
+.bg-dark.text-white.py-4 {
+    position: fixed; /* Cố định footer */
+    bottom: 0;
+    width: 100%;
+    z-index: 999; /* Đảm bảo footer không bị che */
+}
+
+/* Điều chỉnh padding bottom cho main content để tránh bị footer che */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #f4f6f9; /* sáng hơn */
+    color: #333;
+    padding-bottom: 78px; /* Bằng chiều cao của footer (py-4 có padding top và bottom) */
+}
     </style>
 </head>
 
@@ -173,29 +191,29 @@
         </div>
         <div style="border-bottom: 1px solid rgb(255, 72, 0);"></div>
     </header>
-    <main class="dashboard-container">
-        <div class="sidebar ">
-            <div style="color: #fff; padding-top: 30px; padding-bottom: 30px; margin-bottom: 30px; font-size: 24px; font-weight: 700; text-align: center; border-radius: 8px; background-image: url('@Url.Content("~/Content/img/cangtiensa.jpg")'); background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    <main class="dashboard-container" style="display: flex; flex: 1; overflow: hidden;">
+        <div class="sidebar" style="width: 240px; background-color: #2a2d3e; padding: 20px; display: flex; flex-direction: column; height: 100%; overflow-y: auto;">
+            <div style="color: #fff; padding-top: 50px; padding-bottom: 30px; margin-bottom: 30px; font-size: 24px; font-weight: 700; text-align: center; border-radius: 8px; background-image: url('@Url.Content("~/Content/img/cangtiensa.jpg")'); background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 4px 8px rgba(0,0,0,0.2); flex-shrink: 0;">
                 Quản Trị Viên
             </div>
-            <a href="@Url.Action("TongQuan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TongQuan" ? "active" : "")">
+            <a href="@Url.Action("TongQuan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TongQuan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Tổng Quan
             </a>
-            <a href="@Url.Action("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyTaiKhoan" ? "active" : "")">
+            <a href="@Url.Action("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyTaiKhoan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Quản Lý Tài Khoản
             </a>
-            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyDonHang" ? "active" : "")">
+            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyDonHang" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Quản Lý Đơn Hàng
             </a>
-            <a href="@Url.Action("ThongKeBaoCao_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "ThongKeBaoCao" ? "active" : "")">
+            <a href="@Url.Action("ThongKeBaoCao_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "ThongKeBaoCao" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Thống Kê Báo Cáo
             </a>
-            <a href="@Url.Action("TrangCaNhan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TrangCaNhan" ? "active" : "")">
+            <a href="@Url.Action("TrangCaNhan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TrangCaNhan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Trang Cá Nhân
             </a>
         </div>
 
-        <div class="main-content">
+        <div class="main-content" style="flex: 1; padding: 30px; background-color: #f4f6f9; color: #333; overflow-y: auto; height: auto;">
             <div>
                 @RenderBody()
             </div>
@@ -256,5 +274,7 @@
         });
     </script>
 </body>
-
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("Scripts", required: false)
 </html>

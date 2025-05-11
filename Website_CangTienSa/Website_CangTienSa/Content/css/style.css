@@ -54,6 +54,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 body {
+    font-family: "Roboto", sans-serif !important;
+}
+
+p, div, span, a, h1, h2, h3, h4, h5, h6, label, input, textarea, button {
+    font-family: "Roboto", sans-serif !important;
+}
+
+body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
