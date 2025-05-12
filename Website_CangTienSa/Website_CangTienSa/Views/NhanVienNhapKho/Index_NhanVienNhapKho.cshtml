@@ -1,6 +1,6 @@
 ﻿@model List<Website_CangTienSa.Models.PhieuNhapModel>
 @using Newtonsoft.Json;
-@using Website_CangTienSa.Models; 
+@using Website_CangTienSa.Models;
 
 @{
     ViewBag.Title = "Index_NhanVienNhapKho";
@@ -8,7 +8,7 @@
 }
 
 <style>
-    /* CSS giữ nguyên, không thay đổi */
+    /* Giữ nguyên CSS của bạn */
     .container {
         width: 100%;
         max-width: 1200px;
@@ -158,10 +158,10 @@
         border-color: #ff6200;
     }
 
-        .btn-primary:hover {
-            background-color: #e55a00;
-            border-color: #e55a00;
-        }
+    .btn-primary:hover {
+        background-color: #e55a00;
+        border-color: #e55a00;
+    }
 
     .btn-secondary {
         color: #fff;
@@ -169,16 +169,16 @@
         border-color: #6c757d;
     }
 
-        .btn-secondary:hover {
-            background-color: #545b62;
-            border-color: #4e555b;
-        }
+    .btn-secondary:hover {
+        background-color: #545b62;
+        border-color: #4e555b;
+    }
 
-        .btn-secondary:disabled {
-            background-color: #6c757d;
-            border-color: #6c757d;
-            opacity: 0.65;
-        }
+    .btn-secondary:disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        opacity: 0.65;
+    }
 
     .text-blue-500 {
         color: #3b82f6;
@@ -189,21 +189,26 @@
     <!-- Tiêu đề -->
     <h1 class="text-2xl font-bold mb-6 text-center text-primary">Danh sách đơn hàng nhập kho</h1>
 
-    <!-- Bộ lọc -->
-    <div class="mb-6 flex flex-wrap gap-4 justify-center">
-        <div class="w-full md-w-1-3">
-            <label class="block text-sm font-medium text-gray-700">Lọc theo ngày</label>
-            <input type="date" id="dateFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
+    <!-- Bộ lọc và nút Xuất phiếu nhập kho -->
+    <div class="mb-6 flex flex-wrap gap-4 justify-between">
+        <div class="flex gap-4">
+            <div class="w-full md-w-1-3">
+                <label class="block text-sm font-medium text-gray-700">Lọc theo ngày</label>
+                <input type="date" id="dateFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
+            </div>
+            <div class="w-full md-w-1-3">
+                <label class="block text-sm font-medium text-gray-700">Lọc theo kho</label>
+                <select id="warehouseFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
+                    <option value="">Tất cả</option>
+                    @foreach (var kho in ViewBag.KhoList)
+                    {
+                        <option value="@kho">@kho</option>
+                    }
+                </select>
+            </div>
         </div>
-        <div class="w-full md-w-1-3">
-            <label class="block text-sm font-medium text-gray-700">Lọc theo kho</label>
-            <select id="warehouseFilter" class="mt-1 p-2 w-full border rounded-md" onchange="filterOrders()">
-                <option value="">Tất cả</option>
-                @foreach (var kho in ViewBag.KhoList)
-                {
-                    <option value="@kho">@kho</option>
-                }
-            </select>
+        <div>
+            <button class="btn btn-primary" onclick="showPhieuNhapModal()">Xuất phiếu nhập kho</button>
         </div>
     </div>
 
@@ -291,7 +296,33 @@
     </div>
 </div>
 
-<!-- Inventory Management Script -->
+<!-- Modal chọn phiếu nhập -->
+<div class="modal fade" id="selectPhieuNhapModal" tabindex="-1" role="dialog" aria-labelledby="selectPhieuNhapModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectPhieuNhapModalLabel">Chọn phiếu nhập kho</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select id="phieuNhapSelect" class="form-control">
+                    <option value="">-- Chọn phiếu nhập --</option>
+                    @foreach (var phieuNhap in Model)
+                    {
+                        <option value="@phieuNhap.MaPhieuNhap">@phieuNhap.MaPhieuNhap - @phieuNhap.TenKho</option>
+                    }
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="loadPhieuNhap()">Xem phiếu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // Chuyển dữ liệu từ Model sang JavaScript
     let orders = @Html.Raw(JsonConvert.SerializeObject(Model ?? null));
@@ -398,6 +429,36 @@
         link.href = URL.createObjectURL(blob);
         link.download = `PhieuNhap_${orderId}.csv`;
         link.click();
+    }
+
+    function showPhieuNhapModal() {
+        $('#selectPhieuNhapModal').modal('show');
+    }
+
+    function loadPhieuNhap() {
+        const maPhieuNhap = document.getElementById('phieuNhapSelect').value;
+        if (!maPhieuNhap) {
+            alert('Vui lòng chọn một phiếu nhập!');
+            return;
+        }
+
+        const order = orders.find(o => o.MaPhieuNhap === maPhieuNhap);
+        if (!order) return;
+
+        // Gọi AJAX để tải partial view
+        $.ajax({
+            url: '@Url.Action("GetPhieuNhapModal", "NhanVienNhapKho")',
+            type: 'GET',
+            data: { maPhieuNhap: maPhieuNhap },
+            success: function (result) {
+                $('#selectPhieuNhapModal').modal('hide');
+                $('body').append(result);
+                $('#phieuNhapModal').modal('show');
+            },
+            error: function () {
+                alert('Lỗi khi tải phiếu nhập kho.');
+            }
+        });
     }
 
     displayOrders();

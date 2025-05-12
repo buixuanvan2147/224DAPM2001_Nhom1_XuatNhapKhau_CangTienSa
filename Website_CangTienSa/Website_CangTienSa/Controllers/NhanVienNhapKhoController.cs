@@ -25,9 +25,8 @@ namespace Website_CangTienSa.Controllers
                 var khoList = _phieuNhapDAO.GetAllKho();
                 ViewBag.KhoList = khoList;
 
-                // Lấy danh sách kho dưới dạng List<KhoModel>
                 var khoDetailList = _phieuNhapDAO.GetAllKhoList();
-                ViewBag.KhoDetailList = khoDetailList; // Truyền vào ViewBag để sử dụng trong view nếu cần
+                ViewBag.KhoDetailList = khoDetailList;
 
                 return View(phieuNhapList);
             }
@@ -35,6 +34,24 @@ namespace Website_CangTienSa.Controllers
             {
                 ViewBag.ErrorMessage = "Đã xảy ra lỗi khi lấy dữ liệu: " + ex.Message;
                 return View(new List<PhieuNhapModel>());
+            }
+        }
+
+        public ActionResult GetPhieuNhapModal(string maPhieuNhap)
+        {
+            try
+            {
+                var phieuNhapList = _phieuNhapDAO.GetAllPhieuNhap();
+                var phieuNhap = phieuNhapList.FirstOrDefault(p => p.MaPhieuNhap == maPhieuNhap);
+                if (phieuNhap == null)
+                {
+                    return HttpNotFound();
+                }
+                return PartialView("_PhieuNhapKhoModal", phieuNhap);
+            }
+            catch (Exception ex)
+            {
+                return Content("Lỗi: " + ex.Message);
             }
         }
     }

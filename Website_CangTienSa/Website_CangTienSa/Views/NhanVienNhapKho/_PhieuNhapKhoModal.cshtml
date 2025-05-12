@@ -1,0 +1,131 @@
+﻿@model Website_CangTienSa.Models.PhieuNhapModel
+
+<style>
+    .modal-content {
+        border-radius: 8px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .modal-header {
+        background-color: #ff6200;
+        color: white;
+        border-radius: 8px 8px 0 0;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 15px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .btn-print {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+        .btn-print:hover {
+            background-color: #218838;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+</style>
+
+<div class="modal fade" id="phieuNhapModal" tabindex="-1" role="dialog" aria-labelledby="phieuNhapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="phieuNhapModalLabel">Phiếu Nhập Kho</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Mã phiếu nhập:</strong> <span id="modalMaPhieuNhap">@(Model != null ? Model.MaPhieuNhap : "")</span></p>
+                        <p><strong>Ngày nhập cảng:</strong> <span id="modalNgayNhapCang">@(Model != null && Model.NgayNhapCang.HasValue ? Model.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "")</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Tên người gửi:</strong> <span id="modalTenNguoiGui">@(Model != null ? Model.TenNguoiGui : "")</span></p>
+                        <p><strong>Tên kho:</strong> <span id="modalTenKho">@(Model != null ? Model.TenKho : "")</span></p>
+                    </div>
+                </div>
+                <h6 class="mt-4 mb-2 font-semibold">Danh sách hàng hóa</h6>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã hàng hóa</th>
+                            <th>Tên hàng hóa</th>
+                            <th>Số lượng</th>
+                            <th>Đơn vị tính</th>
+                            <th>Đơn giá</th>
+                            <th>Container</th>
+                            <th>Vị trí trong kho</th>
+                            <th>Kích thước (m)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalItems">
+                        @if (Model != null && Model.Items != null)
+                        {
+                            foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@item.MaHangHoa</td>
+                                    <td>@item.TenHangHoa</td>
+                                    <td>@item.SoLuong</td>
+                                    <td>@item.DonViTinh</td>
+                                    <td>@item.DonGia.ToString("N0") VNĐ</td>
+                                    <td>@item.MaContainer</td>
+                                    <td>@item.ViTriTrongKho</td>
+                                    <td>@item.KichThuoc</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">Không có hàng hóa.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-print">In phiếu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
