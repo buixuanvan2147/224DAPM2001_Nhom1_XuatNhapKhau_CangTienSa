@@ -444,6 +444,7 @@
     <Content Include="Views\Shared\_LayoutNhanVienHaiQuan.cshtml" />
     <Content Include="Views\Home\DoiMatKHau.cshtml" />
     <Content Include="Views\Shared\_LayoutNhanVienKhoBai.cshtml" />
+    <Content Include="Views\NhanVienNhapKho\_PhieuNhapKhoModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
