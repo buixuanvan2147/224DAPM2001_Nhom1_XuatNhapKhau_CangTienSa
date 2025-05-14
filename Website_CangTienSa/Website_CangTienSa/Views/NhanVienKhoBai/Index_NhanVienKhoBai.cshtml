@@ -1,116 +1,67 @@
-﻿
-
+﻿@model List<Website_CangTienSa.Models.DonHangModel>
 @{
-    ViewBag.Title = "Index_NhanVienXuatKho";
-    Layout = "~/Views/Shared/_LayoutNhanVienKhoBai.cshtml";
+    ViewBag.Title = "Quản lý đơn hàng - Nhân viên kho bãi";
 }
 
-<h2 style="margin-top:50px">Bảng Điều Khiển Nhân Viên Kho Bãi - Yêu Cầu Xuất Kho</h2>
+<h2 class="mt-4 mb-3">Danh sách đơn hàng đang vận chuyển</h2>
 
-<table>
-    <thead>
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
         <tr>
-            <th>Mã Kho</th>
-            <th>Tên Kho</th>
-            <th>Mã Container</th>
-            <th>Ngày Nhập Kho</th>
-            <th>Ngày Xuất Kho</th>
-            <th>Mã Phiếu Xuất</th>
-            <th>Mã Hàng Hóa</th>
-            <th>Số Lượng</th>
-            <th>Trạng Thái</th>
-            <th>Ngày Xuất</th>
-            <th>Người Xác Nhận</th>
-            <th>Hành Động</th>
+            <th>Mã đơn hàng</th>
+            <th>Người gửi</th>
+            <th>Ngày nhập cảng</th>
+            <th>Số lượng</th>
+            <th>Trạng thái</th>
+            <th>Người xác nhận</th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>KH001</td>
-            <td>Kho Chính</td>
-            <td>CTN001</td>
-            <td>01/05/2025</td>
-            <td>Chưa có</td>
-            <td>PX001</td>
-            <td>HH001</td>
-            <td>100</td>
-            <td>Đang Chờ</td>
-            <td>04/05/2025</td>
-            <td>Chưa có</td>
-            <td>
-                <button class="btn-confirm" onclick="alert('Đã xác nhận vận chuyển cho PX001')">Xác Nhận Vận Chuyển</button>
-            </td>
-        </tr>
-        <tr>
-            <td>KH002</td>
-            <td>Kho Phụ</td>
-            <td>CTN002</td>
-            <td>02/05/2025</td>
-            <td>03/05/2025</td>
-            <td>PX002</td>
-            <td>HH002</td>
-            <td>50</td>
-            <td>Hoàn Thành</td>
-            <td>03/05/2025</td>
-            <td>Nguyễn Văn A</td>
-            <td>
-                <button class="btn-confirm" disabled>Đã Xác Nhận</button>
-            </td>
-        </tr>
-        <tr>
-            <td>KH001</td>
-            <td>Kho Chính</td>
-            <td>CTN003</td>
-            <td>03/05/2025</td>
-            <td>Chưa có</td>
-            <td>PX003</td>
-            <td>HH003</td>
-            <td>200</td>
-            <td>Đang Tiến Hành</td>
-            <td>04/05/2025</td>
-            <td>Chưa có</td>
-            <td>
-                <button class="btn-confirm" onclick="alert('Đã xác nhận vận chuyển cho PX003')">Xác Nhận Vận Chuyển</button>
-            </td>
-        </tr>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var donHang in Model)
+            {
+                <tr>
+                    <td>@donHang.MaDonHang</td>
+                    <td>@donHang.TenNguoiGui</td>
+                    <td>@(donHang.NgayNhapCang != null ? donHang.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
+                    <td>@donHang.SoLuong</td>
+                    <td>@donHang.TrangThai</td>
+                    <td>@(string.IsNullOrEmpty(donHang.NguoiXacNhan) ? "Chưa có" : donHang.NguoiXacNhan)</td>
+                    <td>
+                        <a href="@Url.Action("ChiTietDonHang", "NhanVienKhoBai", new { maDonHang = donHang.MaDonHang })" class="btn btn-info btn-sm">Xem chi tiết</a>
+                        <button class="btn btn-success btn-sm"
+                                @(donHang.TrangThai == "Hoàn Thành" ? "disabled" : "")
+                                onclick="xacNhanNhapKho('@donHang.MaDonHang')">
+                            Xác nhận
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="7" class="text-center">Không có đơn hàng nào.</td></tr>
+        }
     </tbody>
 </table>
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-
-    .btn-confirm {
-        padding: 5px 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 3px;
-    }
-
-        .btn-confirm:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+<script>
+    function xacNhanNhapKho(maDonHang) {
+        if (confirm(`Xác nhận nhập kho cho đơn hàng ${maDonHang}?`)) {
+            $.ajax({
+                url: '@Url.Action("ConfirmTransport", "NhanVienKhoBai")',
+                type: 'POST',
+                data: { maPhieuXuat: maDonHang },
+                success: function (result) {
+                    alert(result.message);
+                    if (result.success) location.reload();
+                },
+                error: function () {
+                    alert("Lỗi khi xác nhận.");
+                }
+            });
         }
-
-    h2 {
-        font-family: Arial, sans-serif;
-        color: #333;
     }
-</style>
+</script>

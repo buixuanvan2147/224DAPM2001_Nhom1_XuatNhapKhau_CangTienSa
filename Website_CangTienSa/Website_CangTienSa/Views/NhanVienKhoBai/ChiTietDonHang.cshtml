@@ -1,0 +1,27 @@
+﻿@model Website_CangTienSa.Models.DonHangModel
+
+<h2 class="mt-4"> Chi tiết đơn hàng: @Model.MaDonHang</h2>
+
+<table class="table table-striped">
+    <tr><th>Người gửi</th><td>@Model.TenNguoiGui</td></tr>
+    <tr>
+        <th>Ngày nhập cảng</th>
+        <td>@(Model.NgayNhapCang != null ? Model.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
+    </tr>
+    <tr>
+        <th>Mã Container</th>
+        <td>@(!string.IsNullOrEmpty(Model.MaContainer) ? Model.MaContainer : "Chưa có")</td>
+    </tr>
+    <tr>
+        <th>Mã Hàng Hóa</th>
+        <td>@(!string.IsNullOrEmpty(Model.MaHangHoa) ? Model.MaHangHoa : "Chưa có")</td>
+    </tr>
+    <tr><th>Số lượng</th><td>@Model.SoLuong</td></tr>
+    <tr><th>Trạng thái</th><td>@Model.TrangThai</td></tr>
+    <tr>
+        <th>Người xác nhận</th>
+        <td>@(!string.IsNullOrEmpty(Model.NguoiXacNhan) ? Model.NguoiXacNhan : "Chưa có")</td>
+    </tr>
+</table>
+
+<a href="@Url.Action("Index_NhanVienKhoBai", "NhanVienKhoBai")" class="btn btn-secondary">⬅ Quay lại</a>
