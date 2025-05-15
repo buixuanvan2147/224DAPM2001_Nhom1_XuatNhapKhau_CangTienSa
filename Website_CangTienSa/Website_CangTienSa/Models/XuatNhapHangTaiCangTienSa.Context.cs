@@ -40,5 +40,6 @@ namespace Website_CangTienSa.Models
         public virtual DbSet<phieuNhap> phieuNhaps { get; set; }
         public virtual DbSet<phieuXuat> phieuXuats { get; set; }
         public virtual DbSet<vaiTroNhanVien> vaiTroNhanViens { get; set; }
+        public object PhieuXuat { get; internal set; }
     }
 }

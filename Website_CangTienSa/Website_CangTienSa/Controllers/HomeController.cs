@@ -33,10 +33,12 @@ namespace Website_CangTienSa.Controllers
             if (khachHang != null)
             {
                 FormsAuthentication.SetAuthCookie(khachHang.tenDangNhap, false); // Tạo cookie xác thực
-                Session["LoggedInUserId"] = khachHang.maKhachHang; // Lưu ID khách hàng
+                Session["KhachHang"] = khachHang; // ⚠️ Thêm dòng này để các controller khác biết ai đang đăng nhập
+                Session["LoggedInUserId"] = khachHang.maKhachHang;
                 Session["UserRole"] = "_LayoutKhachHang";
-                return RedirectToAction("Index_KhachHang", "KhachHang"); // Chuyển đến trang dành cho khách hàng
+                return RedirectToAction("Index_KhachHang", "KhachHang");
             }
+
 
             // 2. Kiểm tra thông tin đăng nhập của nhân viên
             var nhanVien = db.nhanViens.FirstOrDefault(nv =>

@@ -11,7 +11,7 @@
     <link href="~/Content/img/favicon.ico" rel="icon">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
@@ -92,7 +92,7 @@
         }
 
         .sidebar a.active {
-            background-color: #007bff; /* Màu nền active */
+background-color: #007bff; /* Màu nền active */
             color: #fff !important;
         }
 
@@ -105,10 +105,10 @@
 
         /* Style cho footer */
         .bg-dark.text-white.py-4 {
-            position: relative;
+            position: fixed;
             bottom: 0;
             width: 100%;
-            z-index: 999; /* Đảm bảo footer không bị che */
+            z-index: 1000 /* Đảm bảo footer không bị che */
         }
 
         /* Style cho active trên navbar */
@@ -180,6 +180,7 @@
             </div>
             <a href="@Url.Action("Index_KhachHang", "KhachHang")" class="@(ViewBag.ActiveSidebar == "DangKyGuiHang" ? "active" : "")">Đăng ký gửi hàng</a>
             <a href="@Url.Action("XemChiTiet", "KhachHang")" class="@(ViewBag.ActiveSidebar == "XemChiTietVaLichSu" ? "active" : "")">Xem chi tiết và lịch sử</a>
+            <a href="@Url.Action("ThongTinCaNhan", "KhachHang")" class="@(ViewBag.ActiveSidebar == "ThongTin" ? "active" : "")">Thông tin cá nhân</a>
         </div>
 
         <div class="main-content">
@@ -242,6 +243,7 @@
             });
         });
     </script>
+    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

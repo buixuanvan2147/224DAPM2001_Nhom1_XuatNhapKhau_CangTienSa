@@ -1,7 +1,6 @@
 ﻿@{
-    ViewBag.Title = "Index_KhachHang";
+    ViewBag.Title = "Đăng ký gửi hàng";
     Layout = "~/Views/Shared/_LayoutKhachHang.cshtml";
-    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
 <!DOCTYPE html>
@@ -11,6 +10,45 @@
     <title>Tien Sa E-PORT - Đăng ký gửi hàng</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Thêm thư viện jQuery -->
+    <script>
+        $(document).ready(function () {
+            // Khi thay đổi giá trị trong dropdown đơn vị tính
+            $('#DonViTinhKhoiLuong').change(function () {
+                var selectedUnit = $(this).val();
+
+                // Ẩn tất cả các trường liên quan
+                $('#KhoiLuongDiv').hide();
+                $('#SoLuongDiv').hide();
+
+                if (selectedUnit === 'ton') {
+                    // Hiển thị ô nhập khối lượng khi chọn tấn
+                    $('#KhoiLuongDiv').show();
+                    $('#KhoiLuongLabel').text('Khối lượng (Tấn)');
+                } else if (selectedUnit === 'cai') {
+                    // Hiển thị ô nhập số lượng khi chọn cái
+                    $('#SoLuongDiv').show();
+                    $('#SoLuongLabel').text('Số lượng (Cái)');
+                }
+            });
+
+            // Khi thay đổi giá trị trong dropdown thời gian lưu kho tối đa
+            $('#ThoiGianLuuKho').change(function () {
+                var selectedTime = $(this).val();
+
+                // Nếu chọn "Khác", hiển thị ô nhập số ngày
+                if (selectedTime === 'other') {
+                    $('#ThoiGianLuuKhoKhacDiv').show();  // Hiển thị ô nhập số ngày
+                } else {
+                    $('#ThoiGianLuuKhoKhacDiv').hide();  // Ẩn ô nhập số ngày
+                }
+            });
+
+            // Khi trang được tải, kiểm tra đơn vị tính đã chọn và hiển thị đúng ô nhập
+            $('#DonViTinhKhoiLuong').trigger('change');
+            $('#ThoiGianLuuKho').trigger('change');
+        });
+    </script>
 </head>
 <body>
     <header class="fixed-header">
@@ -25,15 +63,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="TenKhachHang">Tên khách hàng</label>
-                        <input type="text" id="TenKhachHang" name="TenKhachHang" class="form-control" value="Nguyễn Văn A" readonly />
+                        <input type="text" id="TenKhachHang" name="TenKhachHang" class="form-control" value="@ViewBag.TenKhachHang" readonly />
                     </div>
                     <div class="form-group col-md-4">
                         <label for="TenCongTy">Tên công ty</label>
-                        <input type="text" id="TenCongTy" name="TenCongTy" class="form-control" value="Công Ty TNHH ABC" readonly />
+                        <input type="text" id="TenCongTy" name="TenCongTy" class="form-control" value="@ViewBag.TenCongTy" readonly />
                     </div>
                     <div class="form-group col-md-4">
                         <label for="MaSoThue">Mã số thuế công ty</label>
-                        <input type="text" id="MaSoThue" name="MaSoThue" class="form-control" value="0400123456" readonly />
+                        <input type="text" id="MaSoThue" name="MaSoThue" class="form-control" value="@ViewBag.MaSoThue" readonly />
                     </div>
                 </div>
 
@@ -41,7 +79,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="NgayGui">Ngày gửi</label>
-                        <input type="text" id="NgayGui" name="NgayGui" class="form-control" value="@currentDate" readonly />
+                        <input type="text" id="NgayGui" name="NgayGui" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
                     </div>
                     <div class="form-group col-md-4">
                         <label for="TenNguoiNhan">Tên người nhận</label>
@@ -53,9 +91,20 @@
                     </div>
                 </div>
 
-                <!-- Cảng đích đến + Khối lượng -->
+                <!-- Cảng xuất phát + Cảng đích đến + Loại hàng -->
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
+                        <label for="CangXuatPhat">Cảng xuất phát</label>
+                        <select id="CangXuatPhat" name="CangXuatPhat" class="form-control">
+                            <option value="">-- Chọn cảng --</option>
+                            <option value="Cảng Tiên Sa">Cảng Tiên Sa</option>
+                            <option value="Cảng Đình Vũ">Cảng Đình Vũ</option>
+                            <option value="Cảng Cát Lái">Cảng Cát Lái</option>
+                            <option value="Cảng Hải Phòng">Cảng Hải Phòng</option>
+                            <option value="Cảng Sài Gòn">Cảng Sài Gòn</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label for="CangDichDen">Cảng đích đến</label>
                         <select id="CangDichDen" name="CangDichDen" class="form-control">
                             <option value="">-- Chọn cảng --</option>
@@ -66,11 +115,60 @@
                             <option value="Cảng Sài Gòn">Cảng Sài Gòn</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="KhoiLuong">Khối lượng (kg)</label>
-                        <input type="number" id="KhoiLuong" name="KhoiLuong" class="form-control" />
+                    <div class="form-group col-md-4">
+                        <label for="LoaiHang">Loại hàng</label>
+                        <select id="LoaiHang" name="LoaiHang" class="form-control">
+                            <option value="cao_cap">Cao cấp</option>
+                            <option value="de_vo">Dễ vỡ</option>
+                            <option value="tot">Tốt</option>
+                            <option value="binh_thuong">Bình thường</option>
+                        </select>
                     </div>
                 </div>
+
+                <!-- Thời gian lưu kho + Đơn vị tính + Khối lượng/Số lượng -->
+                <div class="form-row">
+                    <!-- Thời gian lưu kho tối đa -->
+                    <div class="form-group col-md-4">
+                        <label for="ThoiGianLuuKho">Thời gian lưu kho tối đa (ngày)</label>
+                        <select id="ThoiGianLuuKho" name="ThoiGianLuuKho" class="form-control">
+                            <option value="5">5 ngày</option>
+                            <option value="10">10 ngày</option>
+                            <option value="15">15 ngày</option>
+                            <option value="20">20 ngày</option>
+                            <option value="25">25 ngày</option>
+                            <option value="30">30 ngày</option>
+                            <option value="other">Khác</option>
+                        </select>
+                        <!-- Nếu chọn "Khác", hiển thị ô nhập số ngày -->
+                        <div id="ThoiGianLuuKhoKhacDiv" style="display:none; margin-top: 5px;">
+                            <label for="ThoiGianLuuKhoKhac">Số ngày</label>
+                            <input type="number" id="ThoiGianLuuKhoKhac" name="ThoiGianLuuKhoKhac" class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- Đơn vị tính -->
+                    <div class="form-group col-md-4">
+                        <label for="DonViTinhKhoiLuong">Đơn vị tính</label>
+                        <select id="DonViTinhKhoiLuong" name="DonViTinhKhoiLuong" class="form-control">
+                            <option value="ton">Tấn (ton)</option>
+                            <option value="cai">Cái (items)</option>
+                        </select>
+                    </div>
+
+                    <!-- Khối lượng hoặc Số lượng -->
+                    <div class="form-group col-md-4">
+                        <div id="KhoiLuongDiv" style="display:none;">
+                            <label id="KhoiLuongLabel" for="KhoiLuong">Khối lượng (Tấn)</label>
+                            <input type="number" id="KhoiLuong" name="KhoiLuong" class="form-control" />
+                        </div>
+                        <div id="SoLuongDiv" style="display:none;">
+                            <label id="SoLuongLabel" for="SoLuong">Số lượng (Cái)</label>
+                            <input type="number" id="SoLuong" name="SoLuong" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Mô tả -->
                 <div class="form-group">
@@ -78,14 +176,9 @@
                     <textarea id="MoTa" name="MoTa" class="form-control" rows="4" placeholder="Nhập mô tả hàng hóa..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Gửi</button>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 90px;">Gửi</button>
             </form>
         </div>
     </main>
-
-
-    <footer class="bg-dark text-white py-4">
-        <!-- footer markup -->
-    </footer>
 </body>
 </html>

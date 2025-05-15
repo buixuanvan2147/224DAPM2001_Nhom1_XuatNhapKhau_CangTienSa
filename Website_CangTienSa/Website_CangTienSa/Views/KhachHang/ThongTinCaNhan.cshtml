@@ -1,0 +1,176 @@
+﻿@using Website_CangTienSa.Models
+@model Website_CangTienSa.Models.khachHang
+
+@{
+    ViewBag.Title = "Thông Tin Cá Nhân";
+    Layout = "~/Views/Shared/_LayoutKhachHang.cshtml";
+}
+
+<div class="container customer-profile-page" style="margin-top: 40px; margin-bottom: 40px;">
+    <div class="row">
+        <div class="col-md-4">
+            <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center; padding: 30px 20px;">
+                <img src="@Url.Content(Model.anhDaiDienKhachHangUrl ?? "~/Content/img/user.jpg")" alt="Ảnh đại diện" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 15px; border: 3px solid #28a745;">
+                <h5>Khách Hàng</h5>
+                <p><i class="fas fa-user-tag mr-2"></i> @Model.tenDangNhap</p>
+                <button class="btn btn-success btn-sm" style="margin-top: 10px; padding: 6px 12px; font-size: 14px;">
+                    <i class="fas fa-edit mr-2"></i> Chỉnh sửa ảnh
+                </button>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 25px 30px;">
+                <div style="margin-bottom: 20px;">
+                    <h5 style="font-weight: 600; color: #28a745;"><i class="fas fa-info-circle mr-2"></i> Thông tin cá nhân</h5>
+                </div>
+
+                <!-- Tên khách hàng -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-user mr-2"></i> Tên khách hàng:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">@Model.tenKhachHang</div>
+                </div>
+
+                <!-- Tên công ty -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-building mr-2"></i> Tên công ty:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">@Model.tenCongTy</div>
+                </div>
+
+                <!-- Mã số thuế -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-receipt mr-2"></i> Mã số thuế:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">@Model.maSoThueCongTy</div>
+                </div>
+
+                <!-- Email -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-envelope mr-2"></i> Email:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">
+                        @Model.email
+                        <i class="fas fa-edit" style="margin-left: 10px; color: #28a745; cursor: pointer;" data-toggle="modal" data-target="#editEmailModal"></i>
+                    </div>
+                </div>
+
+                <!-- Số điện thoại -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-phone mr-2"></i> Số điện thoại:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">
+                        @Model.sdtKhachHang
+                        <i class="fas fa-edit" style="margin-left: 10px; color: #28a745; cursor: pointer;" data-toggle="modal" data-target="#editPhoneModal"></i>
+                    </div>
+                </div>
+
+                <!-- Địa chỉ -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-map-marker-alt mr-2"></i> Địa chỉ:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">
+                        @Model.diaChiLienLac
+                        <i class="fas fa-edit" style="margin-left: 10px; color: #28a745; cursor: pointer;" data-toggle="modal" data-target="#editAddressModal"></i>
+                    </div>
+                </div>
+
+                <!-- Trạng thái tài khoản -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-calendar-alt mr-2"></i> Trạng thái tài khoản:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">@Model.trangThaiTaiKhoanKhachHang</div>
+                </div>
+
+                <!-- Lần đăng nhập gần nhất -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; align-items: center;">
+                    <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-history mr-2"></i> Lần đăng nhập gần nhất:</div>
+                    <div style="color: #333; flex: 1; text-align: right;">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+
+                <!-- Modal Chỉnh sửa Email -->
+                <div class="modal fade" id="editEmailModal" tabindex="-1" role="dialog" aria-labelledby="editEmailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editEmailModalLabel">Chỉnh sửa Email</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="@Url.Action("UpdateEmail", "KhachHang")">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="email">Email mới:</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="@Model.email" required />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-success">Lưu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Chỉnh sửa Số điện thoại -->
+                <div class="modal fade" id="editPhoneModal" tabindex="-1" role="dialog" aria-labelledby="editPhoneModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editPhoneModalLabel">Chỉnh sửa Số điện thoại</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="@Url.Action("UpdatePhone", "KhachHang")">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="phone">Số điện thoại mới:</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" value="@Model.sdtKhachHang" required />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-success">Lưu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Chỉnh sửa Địa chỉ -->
+                <div class="modal fade" id="editAddressModal" tabindex="-1" role="dialog" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAddressModalLabel">Chỉnh sửa Địa chỉ</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="@Url.Action("UpdateAddress", "KhachHang")">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="address">Địa chỉ mới:</label>
+                                        <input type="text" class="form-control" id="address" name="address" value="@Model.diaChiLienLac" required />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-success">Lưu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đăng xuất và Đổi mật khẩu -->
+                <div style="margin-top: 30px; text-align: right;">
+                    @Html.ActionLink("Đổi mật khẩu", "DoiMatKhau", "Home", null, new
+                       {
+                           @style = "display: inline-block; background-color: #ffc107; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none;"
+                       })
+                    @Html.ActionLink("Đăng xuất", "DangXuat", "KhachHang", null, new
+                    {
+                        @style = "display: inline-block; background-color: #dc3545; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; margin-left: 10px;"
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

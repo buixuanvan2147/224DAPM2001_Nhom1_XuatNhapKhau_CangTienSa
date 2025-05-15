@@ -1,241 +1,79 @@
-﻿@{
-    ViewBag.Title = "Index_NhanVienXuatKho";
+﻿@using Website_CangTienSa.Models
+@model List<donHang>
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
+
+    // Lọc danh sách đơn hàng loại bỏ "Đơn hàng nhập khẩu"
+    var filteredDonHangs = Model?
+        .Where(dh => dh.moTa != "Đơn hàng nhập khẩu")
+        .ToList();
 }
 
-<style>
-    .container {
-        max-width: 1200px;
-        margin: auto;
-        padding: 20px;
-    }
+<div class="container" style="margin-top: 40px; margin-bottom: 40px;">
+    <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 30px;">
+        <div style="margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between;">
+            <h3 style="font-weight: 600; color: #28a745;">
+                <i class="fas fa-clipboard-list mr-2"></i> Danh sách đơn hàng
+            </h3>
+        </div>
 
-    .text-primary {
-        color: #007bff;
-    }
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered" style="background-color: #fff; border-radius: 10px; overflow: hidden;">
+                <thead class="thead-dark">
+                    <tr style="background-color: #28a745; color: white;">
+                        <th scope="col">Mã đơn hàng</th>
+                        <th scope="col">Khách hàng</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (filteredDonHangs != null && filteredDonHangs.Any())
+                    {
+                        foreach (var item in filteredDonHangs)
+                        {
+                            <tr>
+                                <td>@item.maDonHang</td>
+                                <td>@(item.khachHang != null ? item.khachHang.tenKhachHang : "Không xác định")</td>
+                                <td>@item.ngayTaoDonHang.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <span class="badge @(item.trangThaiDonHang == "Đã xuất kho" ? "badge-success" : "badge-warning")">
+                                        @item.trangThaiDonHang
+                                    </span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm mr-1"
+                                       href="@Url.Action("ChiTietDonHang", "NhanVienXuatKho", new { id = item.maDonHang })">
+                                        <i class="fas fa-eye"></i> Chi tiết
+                                    </a>
 
-    .btn {
-        padding: 6px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .btn-primary {
-        background-color: #ff6200;
-        color: white;
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background-color: #e55a00;
-        }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-        border: none;
-    }
-
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-
-    .hidden {
-        display: none;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .table th, .table td {
-            border: 1px solid #e5e7eb;
-            padding: 8px;
-            text-align: left;
-        }
-
-    .bg-gray-200 {
-        background-color: #e5e7eb;
-    }
-</style>
-
-<div class="container">
-    <h1 class="text-primary text-center">Danh sách đơn hàng xuất kho</h1>
-
-    <!-- Bộ lọc -->
-    <div class="mb-4">
-        <label>Ngày xuất:</label>
-        <input type="date" id="dateFilter" onchange="filterOrders()">
-        <label>Kho:</label>
-        <select id="warehouseFilter" onchange="filterOrders()">
-            <option value="">Tất cả</option>
-            <option value="Kho A">Kho A</option>
-            <option value="Kho B">Kho B</option>
-            <option value="Kho C">Kho C</option>
-        </select>
-    </div>
-
-    <!-- Danh sách đơn hàng -->
-    <table class="table">
-        <thead class="bg-gray-200">
-            <tr>
-                <th>Mã đơn hàng</th>
-                <th>Ngày xuất</th>
-                <th>Khách hàng</th>
-                <th>Kho</th>
-                <th>Tổng tiền</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody id="orderTable"></tbody>
-    </table>
-
-    <!-- Phân trang -->
-    <div class="mt-3 mb-4">
-        <button id="prevPage" class="btn btn-secondary" onclick="changePage(-1)">Trang trước</button>
-        <span id="pageInfo">Trang 1</span>
-        <button id="nextPage" class="btn btn-secondary" onclick="changePage(1)">Trang sau</button>
-    </div>
-
-    <!-- Chi tiết đơn hàng -->
-    <div id="orderDetail" class="hidden">
-        <h2 class="text-primary">Chi tiết đơn hàng xuất</h2>
-        <p><strong>Mã đơn hàng:</strong> <span id="detailOrderId"></span></p>
-        <p><strong>Ngày xuất:</strong> <span id="detailDate"></span></p>
-        <p><strong>Khách hàng:</strong> <span id="detailCustomer"></span></p>
-        <p><strong>Kho:</strong> <span id="detailWarehouse"></span></p>
-
-        <table class="table mt-2">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th>Mã hàng</th>
-                    <th>Tên hàng</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody id="detailItems"></tbody>
-        </table>
-
-        <div class="mt-3">
-            <button class="btn btn-primary" onclick="exportOrder()">Xuất CSV</button>
-            <button class="btn btn-secondary" onclick="closeDetail()">Đóng</button>
+                                    @* Nếu trạng thái không phải Hoàn thành hoặc Đang vận chuyển mới hiện nút Xuất kho *@
+                                    @if (item.trangThaiDonHang != "Hoàn thành" && item.trangThaiDonHang != "Đang vận chuyển")
+                                    {
+                                        using (Html.BeginForm("XuatKho", "NhanVienXuatKho", FormMethod.Post, new { @style = "display:inline;" }))
+                                        {
+                                            @Html.Hidden("id", item.maDonHang)
+                                            <button type="submit" class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Bạn có chắc muốn xuất kho đơn hàng này?');">
+                                                <i class="fas fa-dolly"></i> Xuất kho
+                                            </button>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Không có đơn hàng nào.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
-<script>
-    const orders = [
-        {
-            id: "PXK001", date: "2025-04-01", customer: "Công ty ABC", warehouse: "Kho A", total: 1200000, items: [
-                { itemId: "HH001", name: "Sản phẩm A", quantity: 6, price: 200000, total: 1200000 }
-            ]
-        },
-        {
-            id: "PXK002", date: "2025-04-02", customer: "Công ty XYZ", warehouse: "Kho B", total: 900000, items: [
-                { itemId: "HH002", name: "Sản phẩm B", quantity: 3, price: 300000, total: 900000 }
-            ]
-        },
-        {
-            id: "PXK003", date: "2025-04-03", customer: "Công ty DEF", warehouse: "Kho C", total: 2000000, items: [
-                { itemId: "HH003", name: "Sản phẩm C", quantity: 10, price: 200000, total: 2000000 }
-            ]
-        }
-    ];
-
-    let currentPage = 1;
-    const itemsPerPage = 2;
-    let filteredOrders = [...orders];
-
-    function displayOrders() {
-        const table = document.getElementById('orderTable');
-        table.innerHTML = '';
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginated = filteredOrders.slice(start, end);
-
-        paginated.forEach(order => {
-            const row = table.insertRow();
-            row.innerHTML = `
-                <td>${order.id}</td>
-                <td>${order.date}</td>
-                <td>${order.customer}</td>
-                <td>${order.warehouse}</td>
-                <td>${order.total.toLocaleString()} VNĐ</td>
-                <td><button class="text-primary" onclick="viewDetail('${order.id}')">Xem chi tiết</button></td>
-            `;
-        });
-
-        document.getElementById('pageInfo').textContent = `Trang ${currentPage} / ${Math.ceil(filteredOrders.length / itemsPerPage)}`;
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage >= Math.ceil(filteredOrders.length / itemsPerPage);
-    }
-
-    function filterOrders() {
-        const date = document.getElementById('dateFilter').value;
-        const warehouse = document.getElementById('warehouseFilter').value;
-
-        filteredOrders = orders.filter(o => {
-            const matchesDate = date ? o.date === date : true;
-            const matchesWarehouse = warehouse ? o.warehouse === warehouse : true;
-            return matchesDate && matchesWarehouse;
-        });
-
-        currentPage = 1;
-        displayOrders();
-    }
-
-    function changePage(offset) {
-        currentPage += offset;
-        displayOrders();
-    }
-
-    function viewDetail(id) {
-        const order = orders.find(o => o.id === id);
-        if (!order) return;
-
-        document.getElementById('orderDetail').classList.remove('hidden');
-        document.getElementById('detailOrderId').textContent = order.id;
-        document.getElementById('detailDate').textContent = order.date;
-        document.getElementById('detailCustomer').textContent = order.customer;
-        document.getElementById('detailWarehouse').textContent = order.warehouse;
-
-        const detailItems = document.getElementById('detailItems');
-        detailItems.innerHTML = '';
-        order.items.forEach(item => {
-            const row = detailItems.insertRow();
-            row.innerHTML = `
-                <td>${item.itemId}</td>
-                <td>${item.name}</td>
-                <td>${item.quantity}</td>
-                <td>${item.price.toLocaleString()} VNĐ</td>
-                <td>${item.total.toLocaleString()} VNĐ</td>
-            `;
-        });
-    }
-
-    function closeDetail() {
-        document.getElementById('orderDetail').classList.add('hidden');
-    }
-
-    function exportOrder() {
-        const id = document.getElementById('detailOrderId').textContent;
-        const order = orders.find(o => o.id === id);
-        if (!order) return;
-
-        let csv = "Mã hàng,Tên hàng,Số lượng,Đơn giá,Thành tiền\n";
-        order.items.forEach(i => {
-            csv += `${i.itemId},${i.name},${i.quantity},${i.price},${i.total}\n`;
-        });
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `DonHang_Xuat_${id}.csv`;
-        link.click();
-    }
-
-    displayOrders();
-</script>

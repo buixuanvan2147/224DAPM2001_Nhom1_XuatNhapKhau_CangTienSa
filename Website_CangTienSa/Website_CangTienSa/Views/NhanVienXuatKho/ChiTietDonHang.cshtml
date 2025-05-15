@@ -1,0 +1,74 @@
+﻿@model Website_CangTienSa.Models.DonHangChiTietViewModel
+@using System.Globalization
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
+
+    var culture = new CultureInfo("vi-VN");
+}
+
+<div class="container mt-4 mb-4">
+    <div class="card shadow p-4">
+        <h4 class="text-danger mb-4">
+            <i class="fas fa-info-circle mr-2"></i> Chi tiết đơn hàng
+        </h4>
+
+        <p><strong>Mã đơn hàng:</strong> @Model.DonHang.maDonHang</p>
+        <p><strong>Tên người gửi:</strong> @(Model.DonHang.khachHang?.tenKhachHang ?? "Không xác định")</p>
+        <p><strong>Ngày tạo:</strong> @Model.DonHang.ngayTaoDonHang.ToString("g")</p>
+        <p><strong>Tên người nhận:</strong> @Model.DonHang.tenNguoiNhan</p>
+        <p><strong>Cảng đích đến:</strong> @Model.DonHang.cangDichDen</p>
+        <p><strong>Thời gian lưu trữ:</strong> @Model.DonHang.thoiGianLuuTru ngày</p>
+        <p><strong>Ngày xuất cảng:</strong> @(Model.DonHang.ngayXuatCang?.ToString("g") ?? "Chưa có")</p>
+        <p><strong>Ngày nhập cảng:</strong> @(Model.DonHang.ngayNhapCang?.ToString("g") ?? "Chưa có")</p>
+        <p><strong>Trạng thái thanh toán:</strong> @Model.DonHang.trangThaiThanhToan</p>
+        <p>
+            <strong>Trạng thái:</strong>
+            <span class="badge @(Model.DonHang.trangThaiDonHang == "Hoàn thành" ? "badge-warning" : "badge-success")">
+                @Model.DonHang.trangThaiDonHang
+            </span>
+        </p>
+
+        <h5 class="mt-4 mb-3">Danh sách chi tiết:</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Mã chi tiết</th>
+                        <th>Mã hàng hóa</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị tính</th>
+                        <th>Chất lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Tiền lưu kho</th>
+                        <th>Tổng tiền</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.ChiTietDonHang)
+                    {
+                        var tienLuuKho = detail.tienLuuKho ?? 0;
+                        var tongTien = (detail.soLuong * detail.donGia) + tienLuuKho;
+                        <tr>
+                            <td>@detail.maChiTietDonHang</td>
+                            <td>@detail.maHangHoa</td>
+                            <td>@detail.soLuong</td>
+                            <td>@detail.donViTinh</td>
+                            <td>@detail.chatLuong</td>
+                            <td>@detail.donGia.ToString("C0", culture)</td>
+                            <td>@tienLuuKho.ToString("C0", culture)</td>
+                            <td>@tongTien.ToString("C0", culture)</td>
+                            <td>@detail.moTa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <a href="@Url.Action("Index_NhanVienXuatKho", "NhanVienXuatKho")" class="btn btn-secondary mt-3">
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+</div>
