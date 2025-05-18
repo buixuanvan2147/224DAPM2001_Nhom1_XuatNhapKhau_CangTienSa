@@ -1,22 +1,95 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-
-<!-- Header Start -->
 <div class="jumbotron jumbotron-fluid mb-5">
     <div class="container text-center py-5">
         <h1 class="text-primary mb-4">An Toàn & Nhanh Chóng</h1>
         <h1 class="text-white display-3 mb-5">Tra Cứu Thông Tin Đơn Hàng</h1>
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
             <div class="input-group">
-                <input type="text" class="form-control border-light" style="padding: 30px;" placeholder="Mã Đơn Hàng">
+                <input type="text" id="maDonHang" class="form-control border-light" style="padding: 30px;" placeholder="Mã Đơn Hàng">
                 <div class="input-group-append">
-                    <button class="btn btn-primary px-3">Tra Cứu</button>
+                    <button id="btnTraCuu" class="btn btn-primary px-3"> <i class="fas fa-search"></i> Tra Cứu </button>
                 </div>
             </div>
         </div>
+        <div class="mt-3">
+            <small class="text-white-50">Vui lòng nhập mã đơn hàng của bạn để theo dõi.</small>
+        </div>
     </div>
 </div>
-<!-- Header End -->
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log("jQuery đã sẵn sàng. Kiểm tra sự kiện click cho #btnTraCuu.");
+
+            // Kiểm tra xem nút có tồn tại không
+            var btnTraCuu = $("#btnTraCuu");
+            if (!btnTraCuu.length) {
+                console.error("Không tìm thấy nút với ID 'btnTraCuu'. Vui lòng kiểm tra HTML.");
+                return;
+            }
+
+            btnTraCuu.click(function () {
+                console.log("Nút Tra Cứu được nhấn.");
+
+                var maDonHangInput = $("#maDonHang");
+                if (!maDonHangInput.length) {
+                    console.error("Không tìm thấy phần tử với ID 'maDonHang'. Vui lòng kiểm tra HTML.");
+                    alert("Lỗi: Không tìm thấy ô nhập mã đơn hàng.");
+                    return;
+                }
+
+                var maDonHang = maDonHangInput.val();
+                console.log("Mã đơn hàng nhập vào: " + maDonHang);
+
+                if (maDonHang.trim() === "") {
+                    alert("Vui lòng nhập Mã Đơn Hàng.");
+                    console.log("Mã đơn hàng rỗng.");
+                    return;
+                }
+
+                // Kiểm tra định dạng mã đơn hàng
+                if (!/^[a-zA-Z0-9-]+$/.test(maDonHang)) {
+                    alert("Mã đơn hàng chỉ chứa chữ cái, số và dấu gạch ngang.");
+                    console.log("Mã đơn hàng không hợp lệ: " + maDonHang);
+                    return;
+                }
+
+                var urlTraCuu = '@Url.Action("TraCuuDonHang", "Home")';
+                console.log("URL TraCuuDonHang: " + urlTraCuu);
+
+                // Gọi AJAX để gửi yêu cầu tra cứu đến server
+                $.ajax({
+                    url: urlTraCuu,
+                    type: 'POST',
+                    data: { maDonHang: maDonHang },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log("Phản hồi từ server:", data);
+                        if (data.Success) {
+                            if (data.MaDonHang) {
+                                var redirectUrl = '@Url.Action("KhachVangLai_TraCuuDonHang", "Home")?maDonHang=' + encodeURIComponent(data.MaDonHang);
+                                console.log("Chuyển hướng đến: " + redirectUrl);
+                                window.location.href = redirectUrl;
+                            } else {
+                                console.error("MaDonHang không có giá trị trong phản hồi.");
+                                alert("Lỗi: Không tìm thấy mã đơn hàng trong phản hồi từ server.");
+                            }
+                        } else {
+                            alert(data.Message || "Không tìm thấy đơn hàng.");
+                            console.log("Tra cứu thất bại: " + (data.Message || "Không có thông báo lỗi."));
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi AJAX:", status, error);
+                        console.error("Phản hồi từ server:", xhr.responseText);
+                        alert("Đã có lỗi xảy ra trong quá trình tra cứu: " + (xhr.responseText || error));
+                    }
+                });
+            });
+        });
+    </script>
+}

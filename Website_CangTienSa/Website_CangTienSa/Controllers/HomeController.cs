@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -18,6 +19,170 @@ namespace Website_CangTienSa.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public JsonResult TraCuuDonHang(string maDonHang)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Nhận yêu cầu TraCuuDonHang với maDonHang: {maDonHang}");
+
+                if (string.IsNullOrEmpty(maDonHang))
+                {
+                    System.Diagnostics.Debug.WriteLine("Mã đơn hàng rỗng.");
+                    return Json(new { Success = false, Message = "Vui lòng nhập Mã Đơn Hàng." });
+                }
+
+                // Kiểm tra định dạng mã đơn hàng
+                if (!Regex.IsMatch(maDonHang, @"^[a-zA-Z0-9-]+$"))
+                {
+                    System.Diagnostics.Debug.WriteLine($"Mã đơn hàng không hợp lệ: {maDonHang}");
+                    return Json(new { Success = false, Message = "Mã đơn hàng chỉ chứa chữ cái, số và dấu gạch ngang." });
+                }
+
+                // Thực hiện logic tra cứu đơn hàng từ database
+                System.Diagnostics.Debug.WriteLine($"Bắt đầu truy vấn database với maDonHang: {maDonHang}");
+                var donHang = db.donHangs.FirstOrDefault(dh => dh.maDonHang == maDonHang);
+
+                if (donHang != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Tìm thấy đơn hàng: {donHang.maDonHang}");
+
+                    // Đảm bảo maDonHang không null (dựa trên mô hình, đây là string, không nullable)
+                    if (string.IsNullOrEmpty(donHang.maDonHang))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Mã đơn hàng rỗng trong database cho maDonHang: {maDonHang}");
+                        return Json(new { Success = false, Message = "Dữ liệu đơn hàng không hợp lệ (mã đơn hàng rỗng)." });
+                    }
+
+                    // Đảm bảo các trường không nullable có giá trị hợp lệ
+                    if (donHang.ngayTaoDonHang == default(DateTime))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Ngày tạo đơn hàng không hợp lệ cho maDonHang: {maDonHang}");
+                        return Json(new { Success = false, Message = "Dữ liệu đơn hàng không hợp lệ (ngày tạo đơn hàng không hợp lệ)." });
+                    }
+
+                    if (donHang.thoiGianLuuTru <= 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Thời gian lưu trữ không hợp lệ cho maDonHang: {maDonHang}");
+                        return Json(new { Success = false, Message = "Dữ liệu đơn hàng không hợp lệ (thời gian lưu trữ không hợp lệ)." });
+                    }
+
+                    // Lưu thông tin đơn hàng vào TempData (chỉ lấy các trường cần thiết)
+                    TempData["DonHang"] = new
+                    {
+                        MaDonHang = donHang.maDonHang,
+                        //TenNguoiGui = donHang.tenNguoiGui ?? string.Empty,
+                        TenNguoiNhan = donHang.tenNguoiNhan ?? string.Empty,
+                        CangDichDen = donHang.cangDichDen ?? string.Empty,
+                        NgayTaoDonHang = donHang.ngayTaoDonHang.ToString("dd/MM/yyyy"),
+                        ThoiGianLuuTru = donHang.thoiGianLuuTru.ToString(),
+                        NgayXuatCang = donHang.ngayXuatCang.HasValue ? donHang.ngayXuatCang.Value.ToString("dd/MM/yyyy") : null,
+                        NgayNhapCang = donHang.ngayNhapCang.HasValue ? donHang.ngayNhapCang.Value.ToString("dd/MM/yyyy") : null,
+                        TrangThaiDonHang = donHang.trangThaiDonHang ?? string.Empty,
+                        TrangThaiThanhToan = donHang.trangThaiThanhToan ?? string.Empty,
+                        //TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0.00") : null,
+                        MoTa = donHang.moTa ?? string.Empty
+                    };
+                    System.Diagnostics.Debug.WriteLine($"TempData[DonHang] set: MaDonHang = {donHang.maDonHang}");
+                    return Json(new { Success = true, MaDonHang = donHang.maDonHang });
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Không tìm thấy đơn hàng với mã: {maDonHang}");
+                    return Json(new { Success = false, Message = "Không tìm thấy đơn hàng với mã: " + maDonHang });
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Lỗi trong TraCuuDonHang: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                return Json(new { Success = false, Message = "Đã có lỗi xảy ra trong quá trình tra cứu: " + ex.Message });
+            }
+        }
+
+        public ActionResult KhachVangLai_TraCuuDonHang(string maDonHang)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Nhận yêu cầu KhachVangLai_TraCuuDonHang với maDonHang: {maDonHang}");
+
+                // Ưu tiên lấy từ TempData trước
+                if (TempData["DonHang"] != null)
+                {
+                    ViewBag.DonHang = TempData["DonHang"];
+                    var maDonHangValue = (TempData["DonHang"] as dynamic)?.MaDonHang ?? "null";
+                    System.Diagnostics.Debug.WriteLine($"ViewBag.DonHang set từ TempData: MaDonHang = {maDonHangValue}");
+                }
+                else if (!string.IsNullOrEmpty(maDonHang))
+                {
+                    // Kiểm tra định dạng mã đơn hàng
+                    if (!Regex.IsMatch(maDonHang, @"^[a-zA-Z0-9-]+$"))
+                    {
+                        ViewBag.ErrorMessage = "Mã đơn hàng không hợp lệ.";
+                        System.Diagnostics.Debug.WriteLine("Mã đơn hàng không hợp lệ: " + maDonHang);
+                    }
+                    else
+                    {
+                        // Tra cứu lại từ database nếu có mã đơn hàng
+                        System.Diagnostics.Debug.WriteLine($"Bắt đầu truy vấn database với maDonHang: {maDonHang}");
+                        var donHang = db.donHangs.FirstOrDefault(dh => dh.maDonHang == maDonHang);
+                        if (donHang != null)
+                        {
+                            // Kiểm tra các trường không nullable
+                            if (donHang.ngayTaoDonHang == default(DateTime))
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Ngày tạo đơn hàng không hợp lệ cho maDonHang: {maDonHang}");
+                                ViewBag.ErrorMessage = "Dữ liệu đơn hàng không hợp lệ (ngày tạo đơn hàng không hợp lệ).";
+                                return View();
+                            }
+
+                            if (donHang.thoiGianLuuTru <= 0)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Thời gian lưu trữ không hợp lệ cho maDonHang: {maDonHang}");
+                                ViewBag.ErrorMessage = "Dữ liệu đơn hàng không hợp lệ (thời gian lưu trữ không hợp lệ).";
+                                return View();
+                            }
+
+                            ViewBag.DonHang = new
+                            {
+                                MaDonHang = donHang.maDonHang,
+                                //TenNguoiGui = donHang.tenNguoiGui ?? string.Empty,
+                                TenNguoiNhan = donHang.tenNguoiNhan ?? string.Empty,
+                                CangDichDen = donHang.cangDichDen ?? string.Empty,
+                                NgayTaoDonHang = donHang.ngayTaoDonHang.ToString("dd/MM/yyyy"),
+                                ThoiGianLuuTru = donHang.thoiGianLuuTru.ToString(),
+                                NgayXuatCang = donHang.ngayXuatCang.HasValue ? donHang.ngayXuatCang.Value.ToString("dd/MM/yyyy") : null,
+                                NgayNhapCang = donHang.ngayNhapCang.HasValue ? donHang.ngayNhapCang.Value.ToString("dd/MM/yyyy") : null,
+                                TrangThaiDonHang = donHang.trangThaiDonHang ?? string.Empty,
+                                TrangThaiThanhToan = donHang.trangThaiThanhToan ?? string.Empty,
+                                //TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0.00") : null,
+                                MoTa = donHang.moTa ?? string.Empty
+                            };
+                            System.Diagnostics.Debug.WriteLine($"ViewBag.DonHang set từ database: MaDonHang = {donHang.maDonHang}");
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = "Không tìm thấy đơn hàng với mã: " + maDonHang;
+                            System.Diagnostics.Debug.WriteLine($"Không tìm thấy đơn hàng với mã: {maDonHang}");
+                        }
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Không có mã đơn hàng để tra cứu.";
+                    System.Diagnostics.Debug.WriteLine("Không có mã đơn hàng để tra cứu.");
+                }
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Lỗi trong KhachVangLai_TraCuuDonHang: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                ViewBag.ErrorMessage = "Đã có lỗi xảy ra: " + ex.Message;
+                return View();
+            }
+        }
+
         public ActionResult DangNhap()
         {
             return View();
@@ -261,5 +426,7 @@ namespace Website_CangTienSa.Controllers
         {
             return View();
         }
+
+        
     }
 }
