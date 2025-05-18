@@ -1,8 +1,8 @@
 ﻿@{
     ViewBag.Title = "Tra Cứu Đơn Hàng";
-}   
+}
 
-<main style="min-height: calc(100vh - 160px); padding-top:0px;">
+<main style="min-height: calc(100vh - 160px); padding-top:0;">
     <div class="container mt-5" style="margin-top: 3rem !important;">
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
         {
@@ -46,21 +46,21 @@
                                         <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Cảng Đích Đến</th>
                                         <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Ngày Tạo</th>
                                         <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Lưu Trữ</th>
-                                        @if (donHang.GetType().GetProperty("NgayXuatCang")?.GetValue(donHang) != null)
+                                        @if (donHang.GetType().GetProperty("NgayXuatCang") != null && donHang.GetType().GetProperty("NgayXuatCang").GetValue(donHang) != null)
                                         {
                                             <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Ngày Xuất Cảng</th>
                                         }
-                                        @if (donHang.GetType().GetProperty("NgayNhapCang")?.GetValue(donHang) != null)
+                                        @if (donHang.GetType().GetProperty("NgayNhapCang") != null && donHang.GetType().GetProperty("NgayNhapCang").GetValue(donHang) != null)
                                         {
                                             <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Ngày Nhập Cảng</th>
                                         }
                                         <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Trạng Thái Đơn Hàng</th>
                                         <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Thanh Toán</th>
-                                        @if (!string.IsNullOrEmpty((string)donHang.GetType().GetProperty("TongTien")?.GetValue(donHang)))
+                                        @if (donHang.GetType().GetProperty("TongTien") != null && !string.IsNullOrEmpty((string)donHang.GetType().GetProperty("TongTien").GetValue(donHang)))
                                         {
                                             <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Tổng Tiền</th>
                                         }
-                                        @if (!string.IsNullOrEmpty((string)donHang.GetType().GetProperty("MoTa")?.GetValue(donHang)))
+                                        @if (donHang.GetType().GetProperty("MoTa") != null && !string.IsNullOrEmpty((string)donHang.GetType().GetProperty("MoTa").GetValue(donHang)))
                                         {
                                             <th style="padding: 0.75rem; border: 1px solid #dee2e6; text-align: left; font-weight: bold; color: #495057;">Mô Tả</th>
                                         }
@@ -74,52 +74,52 @@
                                         @*<td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
                                                 @Html.Encode((string)donHang.GetType().GetProperty("TenNguoiGui").GetValue(donHang))
                                             </td>*@
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    @((string)donHang.GetType().GetProperty("TenNguoiNhan").GetValue(donHang))
-                </td>
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    @Html.Encode((string)donHang.GetType().GetProperty("CangDichDen").GetValue(donHang))
-                </td>
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    @Html.Encode((string)donHang.GetType().GetProperty("NgayTaoDonHang").GetValue(donHang))
-                </td>
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    <span class="badge badge-info" style="background-color: #17a2b8 !important; color: #fff !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@Html.Encode((string)donHang.GetType().GetProperty("ThoiGianLuuTru").GetValue(donHang)) ngày</span>
-                </td>
-                @if (donHang.GetType().GetProperty("NgayXuatCang")?.GetValue(donHang) != null)
-{
-                    <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                        @Html.Encode((string)donHang.GetType().GetProperty("NgayXuatCang").GetValue(donHang))
-                    </td>
-}
-                @if (donHang.GetType().GetProperty("NgayNhapCang")?.GetValue(donHang) != null)
-{
-                    <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                        @Html.Encode((string)donHang.GetType().GetProperty("NgayNhapCang").GetValue(donHang))
-                    </td>
-}
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    <span class="badge badge-warning" style="background-color: #ffc107 !important; color: #212529 !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@((string)donHang.GetType().GetProperty("TrangThaiDonHang").GetValue(donHang))</span>
-                </td>
-                <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                    <span class="badge badge-success" style="background-color: #28a745 !important; color: #fff !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@((string)donHang.GetType().GetProperty("TrangThaiThanhToan").GetValue(donHang))</span>
-                </td>
-                @if (!string.IsNullOrEmpty((string)donHang.GetType().GetProperty("TongTien")?.GetValue(donHang)))
-{
-                    <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #dc3545;">
-                        <span class="font-weight-bold text-danger" style="font-weight: bold !important;">@Html.Encode((string)donHang.GetType().GetProperty("TongTien").GetValue(donHang)) VNĐ</span>
-                    </td>
-}
-                @if (!string.IsNullOrEmpty((string)donHang.GetType().GetProperty("MoTa")?.GetValue(donHang)))
-{
-                    <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
-                        @((string)donHang.GetType().GetProperty("MoTa").GetValue(donHang))
-                    </td>
-}
-                </tr>
-                </tbody>
-                </table>
-            </div>
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            @((string)donHang.GetType().GetProperty("TenNguoiNhan").GetValue(donHang))
+                                        </td>
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            @Html.Encode((string)donHang.GetType().GetProperty("CangDichDen").GetValue(donHang))
+                                        </td>
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            @Html.Encode((string)donHang.GetType().GetProperty("NgayTaoDonHang").GetValue(donHang))
+                                        </td>
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            <span class="badge badge-info" style="background-color: #17a2b8 !important; color: #fff !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@Html.Encode((string)donHang.GetType().GetProperty("ThoiGianLuuTru").GetValue(donHang)) ngày</span>
+                                        </td>
+                                        @if (donHang.GetType().GetProperty("NgayXuatCang") != null && donHang.GetType().GetProperty("NgayXuatCang").GetValue(donHang) != null)
+                                        {
+                                            <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                                @Html.Encode((string)donHang.GetType().GetProperty("NgayXuatCang").GetValue(donHang))
+                                            </td>
+                                        }
+                                        @if (donHang.GetType().GetProperty("NgayNhapCang") != null && donHang.GetType().GetProperty("NgayNhapCang").GetValue(donHang) != null)
+                                        {
+                                            <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                                @Html.Encode((string)donHang.GetType().GetProperty("NgayNhapCang").GetValue(donHang))
+                                            </td>
+                                        }
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            <span class="badge badge-warning" style="background-color: #ffc107 !important; color: #212529 !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@((string)donHang.GetType().GetProperty("TrangThaiDonHang").GetValue(donHang))</span>
+                                        </td>
+                                        <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                            <span class="badge badge-success" style="background-color: #28a745 !important; color: #fff !important; display: inline-block !important; padding: 0.25em 0.4em !important; font-size: 75% !important; font-weight: 700 !important; line-height: 1 !important; text-align: center !important; white-space: nowrap !important; border-radius: 0.25rem !important;">@((string)donHang.GetType().GetProperty("TrangThaiThanhToan").GetValue(donHang))</span>
+                                        </td>
+                                        @if (donHang.GetType().GetProperty("TongTien") != null && !string.IsNullOrEmpty((string)donHang.GetType().GetProperty("TongTien").GetValue(donHang)))
+                                        {
+                                            <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #dc3545;">
+                                                <span class="font-weight-bold text-danger" style="font-weight: bold !important;">@Html.Encode((string)donHang.GetType().GetProperty("TongTien").GetValue(donHang)) VNĐ</span>
+                                            </td>
+                                        }
+                                        @if (donHang.GetType().GetProperty("MoTa") != null && !string.IsNullOrEmpty((string)donHang.GetType().GetProperty("MoTa").GetValue(donHang)))
+                                        {
+                                            <td style="padding: 0.75rem; border: 1px solid #dee2e6; color: #212529;">
+                                                @((string)donHang.GetType().GetProperty("MoTa").GetValue(donHang))
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 }
                 else
@@ -131,9 +131,9 @@
             }
             catch (Exception ex)
             {
-    <div class="alert alert-danger mt-4" role="alert" style="margin-top: 1.5rem !important; background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24 !important; padding: 0.75rem 1.25rem !important; border: 1px solid transparent !important; border-radius: 0.25rem !important;">
-        <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i> Lỗi khi hiển thị thông tin đơn hàng: @((string)(ex.Message))
-    </div>
+                <div class="alert alert-danger mt-4" role="alert" style="margin-top: 1.5rem !important; background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24 !important; padding: 0.75rem 1.25rem !important; border: 1px solid transparent !important; border-radius: 0.25rem !important;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i> Lỗi khi hiển thị thông tin đơn hàng: @((string)(ex.Message))
+                </div>
             }
         }
         else
