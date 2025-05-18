@@ -196,27 +196,27 @@
             <div style="color: #fff; padding-top: 50px; padding-bottom: 30px; margin-bottom: 30px; font-size: 24px; font-weight: 700; text-align: center; border-radius: 8px; background-image: url('@Url.Content("~/Content/img/cangtiensa.jpg")'); background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 4px 8px rgba(0,0,0,0.2); flex-shrink: 0;">
                 Quản Trị Viên
             </div>
-            <a href="@Url.Action("TongQuan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TongQuan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
+            <a href="@Url.Action("Index_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TongQuan" ? "active" : "")" style="color: #ffffff; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Tổng Quan
             </a>
-            <a href="@Url.Action("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyTaiKhoan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
+            <a href="@Url.Action("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyTaiKhoan" ? "active" : "")" style="color: #ffffff; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Quản Lý Tài Khoản
             </a>
-            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyDonHang" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
+            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "QuanLyDonHang" ? "active" : "")" style="color: #ffffff; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Quản Lý Đơn Hàng
             </a>
-            <a href="@Url.Action("ThongKeBaoCao_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "ThongKeBaoCao" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
+            <a href="@Url.Action("ThongKeBaoCao_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "ThongKeBaoCao" ? "active" : "")" style="color: #ffffff; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Thống Kê Báo Cáo
             </a>
-            <a href="@Url.Action("TrangCaNhan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TrangCaNhan" ? "active" : "")" style="color: #cfd8dc; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
+            <a href="@Url.Action("TrangCaNhan_QuanTriVien", "QuanTriVien")" class="@(ViewBag.ActiveSidebar == "TrangCaNhan" ? "active" : "")" style="color: #ffffff; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; display: block; transition: all 0.3s ease; flex-shrink: 0;">
                 Trang Cá Nhân
             </a>
         </div>
 
         <div class="main-content" style="flex: 1; padding: 30px; background-color: #f4f6f9; color: #333; overflow-y: auto; height: auto;">
-            <div>
+            
                 @RenderBody()
-            </div>
+            
         </div>
     </main>
     <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

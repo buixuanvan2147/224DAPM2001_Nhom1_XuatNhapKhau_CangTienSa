@@ -18,6 +18,21 @@ namespace Website_CangTienSa.Controllers
         {
             ViewBag.Title = "Index_QuanTriVien";
             ViewBag.ActiveSidebar = "TongQuan";
+
+            int tongSoTKKhachHang = db.khachHangs.Count();
+            ViewBag.TongSoTaiKhoanKhachHang = tongSoTKKhachHang;
+
+            int tongSoTKNhanVien = db.nhanViens.Count();
+            ViewBag.TongSoTaiKhoanNhanVien = tongSoTKNhanVien;
+
+            int TongSoKhachHangChoDuyet = db.khachHangs
+            .Count(kh => kh.trangThaiTaiKhoanKhachHang == "Chờ duyệt");
+            ViewBag.TongSoKhachHangChoDuyet = TongSoKhachHangChoDuyet;
+
+            int TongSoDonHangDangXuLy = db.donHangs
+            .Count(kh => kh.trangThaiDonHang == "Đang xử lý");
+            ViewBag.TongSoDonHangDangXuLy = TongSoDonHangDangXuLy;
+
             return View();
         }
 
@@ -86,5 +101,6 @@ namespace Website_CangTienSa.Controllers
             Session.Abandon(); // Hủy bỏ toàn bộ session
             return RedirectToAction("Index", "Home"); // Chuyển hướng về trang chủ
         }
+
     }
 }
