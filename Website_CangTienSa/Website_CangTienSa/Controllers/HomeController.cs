@@ -7,6 +7,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using Website_CangTienSa.Models;
+using System.Linq.Dynamic;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -81,7 +82,7 @@ namespace Website_CangTienSa.Controllers
                         NgayNhapCang = donHang.ngayNhapCang.HasValue ? donHang.ngayNhapCang.Value.ToString("dd/MM/yyyy") : null,
                         TrangThaiDonHang = donHang.trangThaiDonHang ?? string.Empty,
                         TrangThaiThanhToan = donHang.trangThaiThanhToan ?? string.Empty,
-                        //TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0.00") : null,
+                        TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0") : null,
                         MoTa = donHang.moTa ?? string.Empty
                     };
                     System.Diagnostics.Debug.WriteLine($"TempData[DonHang] set: MaDonHang = {donHang.maDonHang}");
@@ -155,7 +156,7 @@ namespace Website_CangTienSa.Controllers
                                 NgayNhapCang = donHang.ngayNhapCang.HasValue ? donHang.ngayNhapCang.Value.ToString("dd/MM/yyyy") : null,
                                 TrangThaiDonHang = donHang.trangThaiDonHang ?? string.Empty,
                                 TrangThaiThanhToan = donHang.trangThaiThanhToan ?? string.Empty,
-                                //TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0.00") : null,
+                                TongTien = donHang.tongTien.HasValue ? donHang.tongTien.Value.ToString("#,##0") : null,
                                 MoTa = donHang.moTa ?? string.Empty
                             };
                             System.Diagnostics.Debug.WriteLine($"ViewBag.DonHang set từ database: MaDonHang = {donHang.maDonHang}");
@@ -180,6 +181,45 @@ namespace Website_CangTienSa.Controllers
                 System.Diagnostics.Debug.WriteLine($"Lỗi trong KhachVangLai_TraCuuDonHang: {ex.Message}\nStackTrace: {ex.StackTrace}");
                 ViewBag.ErrorMessage = "Đã có lỗi xảy ra: " + ex.Message;
                 return View();
+            }
+        }
+
+        public JsonResult GetOrderDetails(string maDonHang)
+        {
+            if (string.IsNullOrWhiteSpace(maDonHang) || maDonHang.Length > 10 || !Regex.IsMatch(maDonHang, @"^[a-zA-Z0-9-]+$"))
+            {
+                System.Diagnostics.Debug.WriteLine($"Mã đơn hàng không hợp lệ: {maDonHang}");
+                return Json(new { success = false, message = "Mã đơn hàng không hợp lệ" }, JsonRequestBehavior.AllowGet);
+            }
+
+            try
+            {
+                var orderDetails = db.chiTietDonHangs
+                    .Include("hangHoa.danhMucHangHoa")
+                    .Where(ctdh => ctdh.maDonHang == maDonHang) // Giữ lambda vì không có System.Linq.Dynamic
+                    .Select(ctdh => new
+                    {
+                        ctdh.maDonHang,
+                        ctdh.soLuong,
+                        ctdh.donViTinh,
+                        ctdh.moTa,
+                        ctdh.donGia,
+                        ctdh.tienLuuKho,
+                        ctdh.chatLuong,
+                        tenHH = ctdh.hangHoa != null ? ctdh.hangHoa.tenHangHoa : "Không có tên",
+                        tenDMHH = ctdh.hangHoa != null && ctdh.hangHoa.danhMucHangHoa != null
+                            ? ctdh.hangHoa.danhMucHangHoa.tenDanhMucHangHoa
+                            : "Không có danh mục"
+                    })
+                    .ToList();
+
+                System.Diagnostics.Debug.WriteLine($"Tải thành công {orderDetails.Count} chi tiết đơn hàng cho maDonHang: {maDonHang}");
+                return Json(new { success = true, orderDetails }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Lỗi trong GetOrderDetails: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                return Json(new { success = false, message = "Đã xảy ra lỗi khi lấy chi tiết đơn hàng" }, JsonRequestBehavior.AllowGet);
             }
         }
 
