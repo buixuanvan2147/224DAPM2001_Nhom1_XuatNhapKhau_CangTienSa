@@ -6,6 +6,12 @@
     Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
 
     var culture = new CultureInfo("vi-VN");
+
+    var tenKhachHang = Model.DonHang.khachHang != null ? Model.DonHang.khachHang.tenKhachHang : "Không xác định";
+    var ngayXuatCang = Model.DonHang.ngayXuatCang.HasValue ? Model.DonHang.ngayXuatCang.Value.ToString("g") : "Chưa có";
+    var ngayNhapCang = Model.DonHang.ngayNhapCang.HasValue ? Model.DonHang.ngayNhapCang.Value.ToString("g") : "Chưa có";
+    var isHoanThanh = Model.DonHang.trangThaiDonHang == "Hoàn thành";
+    var badgeClass = isHoanThanh ? "badge-warning" : "badge-success";
 }
 
 <div class="container mt-4 mb-4">
@@ -15,17 +21,17 @@
         </h4>
 
         <p><strong>Mã đơn hàng:</strong> @Model.DonHang.maDonHang</p>
-        <p><strong>Tên người gửi:</strong> @(Model.DonHang.khachHang?.tenKhachHang ?? "Không xác định")</p>
+        <p><strong>Tên người gửi:</strong> @tenKhachHang</p>
         <p><strong>Ngày tạo:</strong> @Model.DonHang.ngayTaoDonHang.ToString("g")</p>
         <p><strong>Tên người nhận:</strong> @Model.DonHang.tenNguoiNhan</p>
         <p><strong>Cảng đích đến:</strong> @Model.DonHang.cangDichDen</p>
         <p><strong>Thời gian lưu trữ:</strong> @Model.DonHang.thoiGianLuuTru ngày</p>
-        <p><strong>Ngày xuất cảng:</strong> @(Model.DonHang.ngayXuatCang?.ToString("g") ?? "Chưa có")</p>
-        <p><strong>Ngày nhập cảng:</strong> @(Model.DonHang.ngayNhapCang?.ToString("g") ?? "Chưa có")</p>
+        <p><strong>Ngày xuất cảng:</strong> @ngayXuatCang</p>
+        <p><strong>Ngày nhập cảng:</strong> @ngayNhapCang</p>
         <p><strong>Trạng thái thanh toán:</strong> @Model.DonHang.trangThaiThanhToan</p>
         <p>
             <strong>Trạng thái:</strong>
-            <span class="badge @(Model.DonHang.trangThaiDonHang == "Hoàn thành" ? "badge-warning" : "badge-success")">
+            <span class="badge @badgeClass">
                 @Model.DonHang.trangThaiDonHang
             </span>
         </p>
@@ -49,7 +55,7 @@
                 <tbody>
                     @foreach (var detail in Model.ChiTietDonHang)
                     {
-                        var tienLuuKho = detail.tienLuuKho ?? 0;
+                        var tienLuuKho = detail.tienLuuKho.HasValue ? detail.tienLuuKho.Value : 0;
                         var tongTien = (detail.soLuong * detail.donGia) + tienLuuKho;
                         <tr>
                             <td>@detail.maChiTietDonHang</td>

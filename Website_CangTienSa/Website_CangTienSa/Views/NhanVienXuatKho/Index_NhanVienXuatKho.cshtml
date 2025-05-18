@@ -5,11 +5,26 @@
     ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
 
-    // Lọc danh sách đơn hàng loại bỏ "Đơn hàng nhập khẩu"
-    var filteredDonHangs = Model?
-        .Where(dh => dh.moTa != "Đơn hàng nhập khẩu")
-        .ToList();
+    List<donHang> filteredDonHangs = new List<donHang>();
+    if (Model != null)
+    {
+        filteredDonHangs = Model
+            .Where(dh => dh.moTa != "Đơn hàng nhập khẩu")
+            .ToList();
+    }
 }
+
+<style>
+    table.table td:last-child {
+        white-space: nowrap;
+        width: 180px;
+    }
+
+        table.table td:last-child .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+</style>
 
 <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 30px;">
@@ -31,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (filteredDonHangs != null && filteredDonHangs.Any())
+                    @if (filteredDonHangs.Any())
                     {
                         foreach (var item in filteredDonHangs)
                         {
@@ -50,8 +65,7 @@
                                         <i class="fas fa-eye"></i> Chi tiết
                                     </a>
 
-                                    @* Nếu trạng thái không phải Hoàn thành hoặc Đang vận chuyển mới hiện nút Xuất kho *@
-                                    @if (item.trangThaiDonHang != "Hoàn thành" && item.trangThaiDonHang != "Đang vận chuyển")
+                                    @if (item.trangThaiDonHang == "Đang xử lý")
                                     {
                                         using (Html.BeginForm("XuatKho", "NhanVienXuatKho", FormMethod.Post, new { @style = "display:inline;" }))
                                         {
@@ -61,6 +75,13 @@
                                                 <i class="fas fa-dolly"></i> Xuất kho
                                             </button>
                                         }
+                                    }
+                                    else if (item.trangThaiDonHang == "Hoàn thành")
+                                    {
+                                        <a href="@Url.Action("XuatPhieuXuatKho", "NhanVienXuatKho", new { id = item.maDonHang })"
+                                           class="btn btn-primary btn-sm">
+                                            <i class="fas fa-file-invoice"></i> Xem phiếu
+                                        </a>
                                     }
                                 </td>
                             </tr>

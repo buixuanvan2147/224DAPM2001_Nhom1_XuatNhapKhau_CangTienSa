@@ -1,0 +1,72 @@
+﻿@model Website_CangTienSa.Models.PhieuXuatKhoViewModel
+@using System.Globalization
+
+@{
+    ViewBag.Title = "Phiếu xuất kho";
+    Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
+    var culture = new CultureInfo("vi-VN");
+}
+
+<div class="container mt-4 mb-4">
+    <div class="card shadow p-4">
+        <h2 class="text-success mb-4">
+            <i class="fas fa-file-invoice mr-2"></i> Phiếu xuất kho - Mã đơn hàng: @Model.DonHang.maDonHang
+        </h2>
+
+        <div class="mb-3">
+            <p><strong>Mã phiếu xuất:</strong> @(Model.PhieuXuat != null ? Model.PhieuXuat.maPhieuXuat : "Chưa có phiếu xuất")</p>
+            <p><strong>Khách hàng:</strong> @(Model.DonHang.khachHang != null ? Model.DonHang.khachHang.tenKhachHang : "Không xác định")</p>
+            <p><strong>Ngày tạo đơn hàng:</strong> @Model.DonHang.ngayTaoDonHang.ToString("dd/MM/yyyy")</p>
+            <p><strong>Trạng thái xuất hàng:</strong> @(Model.PhieuXuat != null ? Model.PhieuXuat.trangThaiXuatHang : "Chưa có trạng thái")</p>
+            <p><strong>Ngày xuất kho:</strong> @(Model.PhieuXuat != null ? Model.PhieuXuat.ngayXuatKho.ToString("dd/MM/yyyy") : "Chưa có ngày xuất")</p>
+            <p><strong>Mô tả phiếu xuất:</strong> @(Model.PhieuXuat != null ? Model.PhieuXuat.moTa : "")</p>
+
+        </div>
+
+        <h4>Chi tiết đơn hàng:</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Mã chi tiết</th>
+                        <th>Mã hàng hóa</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị tính</th>
+                        <th>Chất lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Tiền lưu kho</th>
+                        <th>Tổng tiền</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.ChiTietDonHang)
+                    {
+                        var tienLuuKho = detail.tienLuuKho ?? 0;
+                        var tongTien = (detail.soLuong * detail.donGia) + tienLuuKho;
+                        <tr>
+                            <td>@detail.maChiTietDonHang</td>
+                            <td>@detail.maHangHoa</td>
+                            <td>@detail.soLuong</td>
+                            <td>@detail.donViTinh</td>
+                            <td>@detail.chatLuong</td>
+                            <td>@detail.donGia.ToString("C0", culture)</td>
+                            <td>@tienLuuKho.ToString("C0", culture)</td>
+                            <td>@tongTien.ToString("C0", culture)</td>
+                            <td>@detail.moTa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @using (Html.BeginForm("XuatPhieuXuatKho", "NhanVienXuatKho", FormMethod.Post))
+        {
+            @Html.Hidden("id", Model.DonHang.maDonHang)
+            <button type="submit" class="btn btn-success" onclick="return confirm('Bạn có muốn xuất phiếu này ra file Word?');">
+                <i class="fas fa-file-download"></i> Xuất phiếu
+            </button>
+        }
+
+    </div>
+</div>
