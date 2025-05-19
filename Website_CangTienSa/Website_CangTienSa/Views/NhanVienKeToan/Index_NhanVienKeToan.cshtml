@@ -1,16 +1,13 @@
-﻿
-
+﻿@model List<Website_CangTienSa.Models.DonHangViewModel>
 @{
     Layout = "~/Views/Shared/_LayoutNhanVienKeToan.cshtml";
 }
-
 
 <h2 style="margin-top: 40px; font-family: Arial;">Bảng Điều Khiển Nhân Viên Kế Toán</h2>
 
 <div class="tab-container">
     <button class="tab-button" onclick="showTab('tab1')">1. Cập Nhật Trạng Thái</button>
-    <button class="tab-button" onclick="showTab('tab2')">2. Duyệt Gửi Hàng</button>
-    <button class="tab-button" onclick="showTab('tab3')">3. Xuất Biên Lai</button>
+    <button class="tab-button" onclick="showTab('tab3')">2. Xuất Biên Lai</button>
 </div>
 
 <div class="tab-content" id="tab1">
@@ -27,51 +24,26 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>DH001</td>
-                <td>Công ty ABC</td>
-                <td>01/05/2025</td>
-                <td>10,000,000 VNĐ</td>
-                <td>Chưa thanh toán</td>
-                <td><button class="btn-confirm" onclick="xacNhanThanhToan(this)">Xác Nhận Thanh Toán</button></td>
-            </tr>
-            <tr>
-                <td>DH002</td>
-                <td>Công ty XYZ</td>
-                <td>03/05/2025</td>
-                <td>5,500,000 VNĐ</td>
-                <td>Đã thanh toán</td>
-                <td><button class="btn-confirm" disabled>Đã Xác Nhận</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="tab-content" id="tab2" style="display:none">
-    <h3>Duyệt Yêu Cầu Gửi Hàng</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Mã Đơn Hàng</th>
-                <th>Người Gửi</th>
-                <th>Người Nhận</th>
-                <th>Chi Phí</th>
-                <th>Trạng Thái</th>
-                <th>Hành Động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>GH001</td>
-                <td>Nguyễn Văn A</td>
-                <td>Trần Thị B</td>
-                <td><input type="text" value="100,000 VNĐ" /></td>
-                <td>Chờ duyệt</td>
-                <td>
-                    <button class="btn-confirm" onclick="duyetDonHang(this)">Duyệt</button>
-                    <button class="btn-cancel" onclick="tuChoiDonHang(this)">Từ Chối</button>
-                </td>
-            </tr>
+            @foreach (var dh in Model)
+            {
+                <tr>
+                    <td>@dh.MaDonHang</td>
+                    <td>@dh.TenKhachHang</td>
+                    <td>@dh.NgayTaoDon.ToString("dd/MM/yyyy")</td>
+                    <td>@String.Format("{0:N0} VNĐ", dh.TongTien)</td>
+                    <td>@dh.TrangThai</td>
+                    <td>
+                        @if (dh.TrangThai == "Chưa thanh toán")
+                        {
+                            <button class="btn-confirm" onclick="xacNhanThanhToan(this, '@dh.MaDonHang')">Xác Nhận Thanh Toán</button>
+                        }
+                        else
+                        {
+                            <button class="btn-confirm" disabled>Đã Xác Nhận</button>
+                        }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
@@ -90,54 +62,75 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>DH001</td>
-                <td>Công ty ABC</td>
-                <td>10,000,000 VNĐ</td>
-                <td>05/05/2025</td>
-                <td>Đã thanh toán</td>
-                <td><button class="btn-confirm" onclick="xuatBienLai('DH001')">Xuất Biên Lai</button></td>
-            </tr>
-            <tr>
-                <td>DH003</td>
-                <td>Công ty DEF</td>
-                <td>7,200,000 VNĐ</td>
-                <td>—</td>
-                <td>Chưa thanh toán</td>
-                <td><button class="btn-confirm" disabled>Chưa Thanh Toán</button></td>
-            </tr>
+            @foreach (var dh in Model)
+            {
+                <tr>
+                    <td>@dh.MaDonHang</td>
+                    <td>@dh.TenKhachHang</td>
+                    <td>@String.Format("{0:N0} VNĐ", dh.TongTien)</td>
+                    <td>@(dh.ThoiGianThanhToan.HasValue ? dh.ThoiGianThanhToan.Value.ToString("dd/MM/yyyy") : "—")</td>
+                    <td>@dh.TrangThai</td>
+                    <td>
+                        @if (dh.TrangThai == "Đã thanh toán")
+                        {
+                            <button class="btn-confirm" onclick="xuatBienLai('@dh.MaDonHang')">Xuất Biên Lai</button>
+                        }
+                        else
+                        {
+                            <button class="btn-confirm" disabled>Chưa Thanh Toán</button>
+                        }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
 
-<script>
-    function showTab(id) {
-        document.querySelectorAll(".tab-content").forEach(e => e.style.display = "none");
-        document.getElementById(id).style.display = "block";
-    }
-
-    function xacNhanThanhToan(btn) {
-        if (confirm("Xác nhận đơn hàng đã thanh toán?")) {
-            alert("Cập nhật thành công.");
-            btn.disabled = true;
-            btn.innerText = "Đã Xác Nhận";
+@section Scripts {
+    <script>
+        function showTab(id) {
+            document.querySelectorAll(".tab-content").forEach(e => e.style.display = "none");
+            document.getElementById(id).style.display = "block";
         }
-    }
 
-    function duyetDonHang(btn) {
-        alert("Đã duyệt đơn hàng và cập nhật chi phí.");
-        btn.disabled = true;
-    }
+        function xacNhanThanhToan(button, maDonHang) {
+            if (confirm("Xác nhận đơn hàng đã thanh toán?")) {
+                fetch('/NhanVienKeToan/XacNhanThanhToan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ maDonHang: maDonHang })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            button.disabled = true;
+                            button.innerText = "Đã Xác Nhận";
+                            button.style.backgroundColor = "#ccc";
+                            button.style.cursor = "not-allowed";
+                            button.parentElement.previousElementSibling.textContent = "Đã thanh toán";
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                        alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                    });
+            }
+        }
 
-    function tuChoiDonHang(btn) {
-        alert("Đơn hàng đã bị từ chối.");
-        btn.disabled = true;
-    }
+        function xuatBienLai(maDH) {
+            alert("Biên lai cho đơn hàng " + maDH + " đã được tạo và gửi.");
+        }
 
-    function xuatBienLai(maDH) {
-        alert("Biên lai cho đơn hàng " + maDH + " đã được tạo và gửi.");
-    }
-</script>
+        console.log("Section Scripts đã được render!");
+    </script>
+}
+
+
 
 <style>
     .tab-container {
@@ -183,17 +176,7 @@
         border-radius: 4px;
     }
 
-    .btn-cancel {
-        padding: 6px 12px;
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-        margin-left: 5px;
-    }
-
-        .btn-confirm:disabled, .btn-cancel:disabled {
+        .btn-confirm:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }

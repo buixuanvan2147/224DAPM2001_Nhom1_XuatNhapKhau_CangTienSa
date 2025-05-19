@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Website_CangTienSa.Models.DonHangModel>
+@{
     ViewBag.Title = "IndexHaiQuan";
     Layout = "~/Views/Shared/_LayoutNhanVienHaiQuan.cshtml";
 }
@@ -10,35 +11,30 @@
         <tr>
             <th>Mã Đơn Hàng</th>
             <th>Loại Hàng Hóa</th>
-            <th>Yêu Cầu Lưu Trữ</th>
-            <th>Thời Gian Giao Hàng</th>
+            <th>Thời Gian Lưu Trữ</th>
+            <th>Ngày Giao Hàng</th>
             <th>Trạng Thái Phân Loại</th>
+            <th>Trạng Thái Gửi Hàng</th>
             <th>Hành Động</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>DH001</td>
-            <td>Hàng Nguy Hiểm</td>
-            <td>Nhiệt độ < 5°C</td>
-            <td>05/05/2025 (Ưu tiên)</td>
-            <td>Chưa phân loại</td>
-            <td>
-                <button class="btn-action" onclick="phanLoai('DH001')">Phân Loại</button>
-                <button class="btn-warning" onclick="baoCao('DH001')">Báo Cáo Vi Phạm</button>
-            </td>
-        </tr>
-        <tr>
-            <td>DH002</td>
-            <td>Hàng Đông Lạnh</td>
-            <td>Lưu trữ -20°C</td>
-            <td>06/05/2025</td>
-            <td>Ưu tiên cao</td>
-            <td>
-                <button class="btn-action" onclick="phanLoai('DH002')">Chỉnh Sửa</button>
-                <button class="btn-warning" onclick="baoCao('DH002')">Báo Cáo Vi Phạm</button>
-            </td>
-        </tr>
+        @foreach (var donHang in Model)
+        {
+            <tr>
+                <td>@donHang.MaDonHang</td>
+                <td>@donHang.LoaiHangHoa</td>
+                <td>@donHang.ThoiGianLuuTru</td>
+                <td>@donHang.NgayXuatHang.ToString("dd/MM/yyyy")</td>
+                <td>@donHang.TrangThaiPhanLoai</td>
+                <td class="trangThaiGui">@donHang.TrangThaiDonHang</td>
+                <td>
+                    <button class="btn-action" onclick="phanLoai('@donHang.MaDonHang')">Phân Loại</button>
+                    <button class="btn-warning" onclick="baoCao('@donHang.MaDonHang')">Báo Cáo Vi Phạm</button>
+                    <button class="btn-duyet" onclick="duyetGuiHang(this)">Duyệt Gửi</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -153,6 +149,21 @@
         width: 100%;
         margin-bottom: 10px;
     }
+
+    .btn-duyet {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        margin: 2px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+        .btn-duyet:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 </style>
 
 <script>
@@ -178,5 +189,18 @@
     function guiBaoCao() {
         alert("Đã gửi báo cáo vi phạm!");
         dongModal("modalBaoCao");
+    }
+
+    function duyetGuiHang(button) {
+        if (confirm("Bạn có chắc chắn muốn duyệt gửi hàng đơn này không?")) {
+            let row = button.closest("tr");
+            let cellTrangThai = row.querySelector(".trangThaiGui");
+            cellTrangThai.innerText = "Đã duyệt";
+
+            button.disabled = true;
+            button.innerText = "Đã Duyệt";
+
+            alert("Đã duyệt gửi hàng thành công.");
+        }
     }
 </script>
