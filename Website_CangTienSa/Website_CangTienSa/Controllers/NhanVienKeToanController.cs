@@ -17,7 +17,8 @@ namespace Website_CangTienSa.Controllers
                 .Select(d => new DonHangViewModel
                 {
                     MaDonHang = d.maDonHang,
-                    TenKhachHang = d.khachHang.tenCongTy,
+                    TenKhachHang = d.khachHang.tenKhachHang,
+                    TenCongTy = d.khachHang.tenCongTy,
                     NgayTaoDon = d.ngayTaoDonHang,
                     TongTien = (float)d.tongTien,
                     TrangThai = d.trangThaiThanhToan,

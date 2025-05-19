@@ -13,6 +13,7 @@ namespace Website_CangTienSa.Models
 
         public string MaDonHang { get; set; }
         public string TenKhachHang { get; set; }
+        public string TenCongTy { get; set; }
         public DateTime NgayTaoDon { get; set; }
         public float TongTien { get; set; }
         public string TrangThai { get; set; }  // "Đã thanh toán" hoặc "Chưa thanh toán"
