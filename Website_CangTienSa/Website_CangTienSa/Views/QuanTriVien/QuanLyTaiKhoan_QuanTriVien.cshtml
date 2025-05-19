@@ -9,41 +9,47 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: #333;
         background-color: #ffffff; /* Màu nền trang nhạt */
-
     }
 
     .filter-status {
-        margin: 0px 0px 20px 0px;
+        margin: 0px 0px 30px 0px; /* Tăng margin bottom */
         display: flex;
-        justify-content: start;
+        justify-content: start; /* Đẩy tiêu đề và bộ lọc/nút sang hai bên */
         align-items: center;
+        padding: 20px 0; /* Giảm padding trên dưới */
     }
 
         .filter-status h2 {
             margin: 0;
-            font-size: 26px;
+            font-size: 28px; /* Tăng kích thước tiêu đề */
             font-weight: bold;
             color: #141d26;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
         }
+
+    .filter-controls {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Giảm gap giữa bộ lọc và nút */
+    }
 
     .filter-control {
         display: flex;
         align-items: center;
-        gap: 25px;
-        margin-left: 12px;
+        gap: 15px; /* Giảm gap trong bộ lọc */
+        margin: 0; /* Loại bỏ margin riêng của bộ lọc */
     }
 
         .filter-control label {
             font-size: 16px;
-            color: #fff;
+            color: #555; /* Màu chữ nhạt hơn */
             font-weight: 500;
         }
 
         .filter-control select {
-            padding: 12px 18px;
+            padding: 10px 15px; /* Giảm padding select */
             border: 1px solid #ccc;
-            border-radius: 6px;
+            border-radius: 5px; /* Bo tròn ít hơn */
             font-size: 15px;
             background-color: #fff;
             color: #333;
@@ -54,7 +60,7 @@
 
             .filter-control select:focus {
                 border-color: #141d26;
-                box-shadow: 0 0 6px rgba(20, 29, 38, 0.4);
+                box-shadow: 0 0 6px rgba(20, 29, 38, 0.2); /* Hiệu ứng focus nhẹ hơn */
             }
 
     .table-responsive {
@@ -77,10 +83,10 @@
         .table-khach-hang th,
         .table-khach-hang td {
             border: 1px solid #e0e0e0;
-            padding: 15px;
+            padding: 12px 15px; /* Giảm padding ô bảng */
             text-align: left;
             white-space: nowrap;
-            font-size: 15px;
+            font-size: 14px; /* Giảm kích thước font chữ bảng */
             color: #444;
         }
 
@@ -89,7 +95,7 @@
             color: #fff;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px; /* Giảm letter spacing */
         }
 
         .table-khach-hang tbody tr:nth-child(even) {
@@ -103,71 +109,91 @@
 
         .table-khach-hang .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px; /* Giảm gap nút hành động */
             justify-content: center;
         }
 
         .table-khach-hang .action-button {
-            padding: 10px 16px;
+            padding: 8px 12px; /* Giảm padding nút hành động */
             border: none;
-            border-radius: 6px;
+            border-radius: 4px; /* Bo tròn ít hơn nút hành động */
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px; /* Giảm kích thước font chữ nút hành động */
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             outline: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Bóng đổ nhẹ hơn */
         }
 
         .table-khach-hang .view-details {
-            background-color: #4CAF50;
+            background-color: #5cb85c;
             color: #fff;
         }
 
             .table-khach-hang .view-details:hover {
-                background-color: #45a049;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+                background-color: #4cae4c;
+                transform: translateY(-1px); /* Hiệu ứng hover nhẹ hơn */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bóng đổ hover nhẹ hơn */
             }
 
         .table-khach-hang .lock-account {
-            background-color: #f44336;
+            background-color: #d9534f;
             color: #fff;
         }
 
             .table-khach-hang .lock-account:hover {
-                background-color: #d32f2f;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+                background-color: #d43f3a;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
         .table-khach-hang img {
-            width: 50px;
-            height: 50px;
+            width: 40px; /* Giảm kích thước ảnh */
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ddd; /* Viền mỏng hơn */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Bóng đổ nhẹ hơn */
             transition: transform 0.2s ease-in-out;
         }
 
             .table-khach-hang img:hover {
-                transform: scale(1.05);
+                transform: scale(1.02); /* Hiệu ứng hover nhẹ hơn */
             }
+
+    .button-add-TK {
+        display: inline-block; /* Để căn chỉnh dễ hơn */
+        padding: 10px 18px; /* Giảm padding nút thêm */
+        background-color: #5cb85c;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-in-out;
+        font-size: 15px; /* Giảm kích thước font chữ nút thêm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .button-add-TK:hover {
+            background-color: #4cae4c;
+            color: #ffffff;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px); /* Hiệu ứng hover nhẹ */
+        }
 </style>
 
-
-
 <div class="table-responsive" style="padding:30px;">
-    
+
     <div class="filter-status">
-        <h2 >Danh Sách Khách Hàng</h2>
-        <div class="filter-control">
-            <select id="status-filter">
-                <option value="">Tất cả tài khoản</option>
-                <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
-                <option value="Đang khóa">Tài khoản đang khóa</option>
-                <option value="Đã duyệt">Tài khoản đã duyệt</option>
-            </select>
+        <h2 style="margin-right: 16px;">Danh Sách Khách Hàng</h2>
+        <div class="filter-controls">
+            <div class="filter-control">
+                <select id="status-filter">
+                    <option value="">Tất cả tài khoản</option>
+                    <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
+                    <option value="Đang khóa">Tài khoản đang khóa</option>
+                    <option value="Đã duyệt">Tài khoản đã duyệt</option>
+                </select>
+            </div>
+            <a href="@Url.Action("TaoTaoKhoan_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản</a>
         </div>
     </div>
     <table class="table-khach-hang">
