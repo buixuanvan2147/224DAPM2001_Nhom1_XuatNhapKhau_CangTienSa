@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Website_CangTienSa.Models;
+using System.Data.Entity;
+using System.Linq.Dynamic;
+using System.Dynamic;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -38,23 +41,28 @@ namespace Website_CangTienSa.Controllers
 
         public ActionResult QuanLyTaiKhoan_QuanTriVien()
         {
-            ViewBag.Title = "QuanLyTaiKhoan_QuanTriVien";
-            ViewBag.ActiveSidebar = "QuanLyTaiKhoan";
-            return View();
+            ViewBag.Title = "Quản Lý Tài Khoản Khách Hàng";
+            ViewBag.ActiveSidebar = "Quản Lý Tài Khoản";
+
+            var allKhachHang = db.khachHangs.ToList();
+
+            return View( allKhachHang);
         }
-        
+
         public ActionResult QuanLyDonHang_QuanTriVien()
         {
             ViewBag.Title = "QuanLyDonHang_QuanTriVien";
             ViewBag.ActiveSidebar = "QuanLyDonHang";
             return View();
         }
+
         public ActionResult ThongKeBaoCao_QuanTriVien()
         {
             ViewBag.Title = "ThongKeBaoCao_QuanTriVien";
             ViewBag.ActiveSidebar = "ThongKeBaoCao";
             return View();
         }
+
         public ActionResult TrangCaNhan_QuanTriVien()
         {
             ViewBag.Title = "TrangCaNhan_QuanTriVien";
@@ -95,6 +103,7 @@ namespace Website_CangTienSa.Controllers
 
             return View(quanTriVienViewModel);
         }
+
         public ActionResult DangXuat_QuanTriVien()
         {
             FormsAuthentication.SignOut(); // Xóa cookie xác thực

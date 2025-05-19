@@ -1,8 +1,253 @@
-﻿
-@{
-    ViewBag.Title = "QuanLyTaiKhoan_QuanTriVien";
+﻿@{
+    ViewBag.Title = "Quản Lý Tài Khoản Khách Hàng";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
-<h2>QuanLyTaiKhoan_QuanTriVienn</h2>
+<style>
+    /* Màu chủ đạo: #FF4800 */
+    .table-khach-hang {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
 
+        .table-khach-hang th,
+        .table-khach-hang td {
+            border: 1px solid #e0e0e0;
+            padding: 14px;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .table-khach-hang th {
+            background-color: #FF4800;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-khach-hang tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        .table-khach-hang tbody tr:hover {
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-khach-hang .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .table-khach-hang .action-button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .table-khach-hang .view-details {
+            background-color: #388e3c;
+            color: #ffffff;
+        }
+
+            .table-khach-hang .view-details:hover {
+                background-color: #2e7d32;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
+            }
+
+        .table-khach-hang .lock-account {
+            background-color: #c62828;
+            color: #ffffff;
+        }
+
+            .table-khach-hang .lock-account:hover {
+                background-color: #b21b1b;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
+            }
+
+    .filter-status {
+        margin-top: 6px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: #FF4800;
+        border-radius: 10px;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+        .filter-status h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+    .filter-control {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+        .filter-control label {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .filter-control select {
+            padding: 12px 16px;
+            height: auto;
+            border: 1px solid #b0bec5;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+            .filter-control select:focus {
+                border-color: #3498db;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+    .table-responsive {
+        margin-bottom: 70px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-khach-hang img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+        .table-khach-hang img:hover {
+            transform: scale(1.1);
+        }
+</style>
+
+<div class="filter-status">
+    <h2 style="color:#fff">Danh Sách Khách Hàng</h2>
+    <div class="filter-control">
+        <label style="color:#fff" for="status-filter">Lọc theo trạng thái:</label>
+        <select id="status-filter">
+            <option value="">Tất cả tài khoản</option>
+            <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
+            <option value="Đang khóa">Tài khoản đang khóa</option>
+            <option value="Đã duyệt">Tài khoản đã duyệt</option>
+        </select>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table-khach-hang">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh Đại Diện</th>
+                <th>Mã Khách Hàng</th>
+                <th>Tên Đăng Nhập</th>
+                <th>Mật Khẩu</th>
+                <th>Tên Khách Hàng</th>
+                <th>Tên Công Ty</th>
+                <th>Mã Số Thuế</th>
+                <th>Ngày Đăng Ký</th>
+                <th>CCCD</th>
+                <th>Địa Chỉ Liên Lạc</th>
+                <th>SĐT Khách Hàng</th>
+                <th>Email</th>
+                <th>Trạng Thái Tài Khoản</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var khachHang in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        <img src="~/Content/img/@(string.IsNullOrEmpty(khachHang.anhDaiDienKhachHangUrl) ? "default_user_image.png" : khachHang.anhDaiDienKhachHangUrl)"
+                             alt="Ảnh đại diện">
+                    </td>
+                    <td>@khachHang.maKhachHang</td>
+                    <td>@khachHang.tenDangNhap</td>
+                    <td>@khachHang.matKhau</td>
+                    <td>@khachHang.tenKhachHang</td>
+                    <td>@khachHang.tenCongTy</td>
+                    <td>@khachHang.maSoThueCongTy</td>
+                    <td>@khachHang.ngayDangKy.ToString("dd/MM/yyyy")</td>
+                    <td>@khachHang.cccd</td>
+                    <td>@khachHang.diaChiLienLac</td>
+                    <td>@khachHang.sdtKhachHang</td>
+                    <td>@khachHang.email</td>
+                    <td>@khachHang.trangThaiTaiKhoanKhachHang</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-button view-details">Xem chi tiết</button>
+                            <button class="action-button lock-account">Khóa</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusFilter = document.getElementById('status-filter');
+        const tableRows = document.querySelectorAll('.table-khach-hang tbody tr');
+
+        function updateSerialNumbers() {
+            let visibleRows = Array.from(tableRows).filter(row => row.style.display !== 'none');
+            visibleRows.forEach((row, index) => {
+                row.querySelector('td:first-child').textContent = index + 1;
+            });
+        }
+
+        statusFilter.addEventListener('change', function () {
+            const selectedStatus = this.value;
+
+            tableRows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(14)'); // Trạng Thái Tài Khoản
+
+                if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            updateSerialNumbers();
+        });
+
+        updateSerialNumbers();
+    });
+</script>
