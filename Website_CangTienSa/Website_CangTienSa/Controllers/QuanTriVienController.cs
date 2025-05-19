@@ -42,22 +42,48 @@ namespace Website_CangTienSa.Controllers
 
         public ActionResult QuanLyTaiKhoan_QuanTriVien()
         {
-            ViewBag.Title = "Quản Lý Tài Khoản Khách Hàng";
+            ViewBag.Title = "Quản Lý Tài Khoản";
             ViewBag.ActiveSidebar = "Quản Lý Tài Khoản";
 
+            // Lấy danh sách khách hàng (không thay đổi)
             var allKhachHang = db.khachHangs.ToList();
+            ViewBag.KhachHangs = allKhachHang;
 
-            return View( allKhachHang);
+            // Lấy danh sách vai trò nhân viên (không thay đổi)
+            var allVaiTroNhanVien = db.vaiTroNhanViens.Select(vt => vt.tenLoaiNhanVien).Distinct().ToList();
+            ViewBag.Roles = allVaiTroNhanVien;
+
+            // Lấy danh sách nhân viên sử dụng NhanVienViewModel
+            var allNhanVien = db.nhanViens
+                .Include(nv => nv.vaiTroNhanVien)
+                .Select(nv => new QTV_QLTK_NhanVienViewModel // Sử dụng QTV_QLTK_NhanVienViewModel tự tạo
+                {
+                    MaNhanVien = nv.maNhanVien,
+                    AnhDaiDienNhanVienUrl = nv.anhDaiDienNhanVienUrl, // Đảm bảo tên thuộc tính khớp
+                    TenDangNhap = nv.tenDangNhap,
+                    MatKhau = nv.matKhau,
+                    TenHienThi = nv.tenHienThi,
+                    SdtNhanVien = nv.sdtNhanVien,
+                    DiaChi = nv.diaChi,
+                    Email = nv.email,
+                    TrangThaiTaiKhoanNhanVien = nv.trangThaiTaiKhoanNhanVien,
+                    ThoiGianDangNhapGanNhat = nv.thoiGianDangNhapGanNhat,
+                    TenLoaiNhanVien = nv.vaiTroNhanVien.tenLoaiNhanVien
+                })
+                .ToList();
+            ViewBag.NhanViens = allNhanVien;
+
+            return View();
         }
 
-        public ActionResult TaoTaoKhoan_QuanTriVien()
+        public ActionResult TaoTaoKhoanNhanVien_QuanTriVien()
         {
             ViewBag.vaiTroNhanVienList = new SelectList(db.vaiTroNhanViens, "maVaiTroNhanVien", "tenLoaiNhanVien");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TaoTaoKhoan_QuanTriVien(nhanVien model, HttpPostedFileBase anhDaiDienNhanVienUrl)
+        public ActionResult TaoTaoKhoanNhanVien_QuanTriVien(nhanVien model, HttpPostedFileBase anhDaiDienNhanVienUrl)
         {
             if (ModelState.IsValid)
             {

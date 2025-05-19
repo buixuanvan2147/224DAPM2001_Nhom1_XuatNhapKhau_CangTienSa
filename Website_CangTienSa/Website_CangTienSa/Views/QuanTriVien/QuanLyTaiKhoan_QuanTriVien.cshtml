@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Quản Lý Tài Khoản Khách Hàng";
+    ViewBag.Title = "Quản Lý Tài Khoản";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
@@ -8,20 +8,20 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: #333;
-        background-color: #ffffff; /* Màu nền trang nhạt */
+        background-color: #ffffff;
     }
 
     .filter-status {
-        margin: 0px 0px 30px 0px; /* Tăng margin bottom */
         display: flex;
-        justify-content: start; /* Đẩy tiêu đề và bộ lọc/nút sang hai bên */
+        justify-content: space-between;
         align-items: center;
-        padding: 20px 0; /* Giảm padding trên dưới */
+        padding: 10px 0;
+        margin-bottom: 20px;
     }
 
         .filter-status h2 {
             margin: 0;
-            font-size: 28px; /* Tăng kích thước tiêu đề */
+            font-size: 28px;
             font-weight: bold;
             color: #141d26;
             letter-spacing: 0.5px;
@@ -30,26 +30,25 @@
     .filter-controls {
         display: flex;
         align-items: center;
-        gap: 20px; /* Giảm gap giữa bộ lọc và nút */
+        gap: 20px;
     }
 
     .filter-control {
         display: flex;
         align-items: center;
-        gap: 15px; /* Giảm gap trong bộ lọc */
-        margin: 0; /* Loại bỏ margin riêng của bộ lọc */
+        gap: 15px;
     }
 
         .filter-control label {
             font-size: 16px;
-            color: #555; /* Màu chữ nhạt hơn */
+            color: #555;
             font-weight: 500;
         }
 
         .filter-control select {
-            padding: 10px 15px; /* Giảm padding select */
+            padding: 10px 15px;
             border: 1px solid #ccc;
-            border-radius: 5px; /* Bo tròn ít hơn */
+            border-radius: 5px;
             font-size: 15px;
             background-color: #fff;
             color: #333;
@@ -60,7 +59,7 @@
 
             .filter-control select:focus {
                 border-color: #141d26;
-                box-shadow: 0 0 6px rgba(20, 29, 38, 0.2); /* Hiệu ứng focus nhẹ hơn */
+                box-shadow: 0 0 6px rgba(20, 29, 38, 0.2);
             }
 
     .table-responsive {
@@ -69,6 +68,7 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
         margin-bottom: 30px;
         background-color: #ffffff;
+        padding: 30px;
     }
 
     .table-khach-hang {
@@ -83,10 +83,10 @@
         .table-khach-hang th,
         .table-khach-hang td {
             border: 1px solid #e0e0e0;
-            padding: 12px 15px; /* Giảm padding ô bảng */
+            padding: 12px 15px;
             text-align: left;
             white-space: nowrap;
-            font-size: 14px; /* Giảm kích thước font chữ bảng */
+            font-size: 14px;
             color: #444;
         }
 
@@ -95,7 +95,7 @@
             color: #fff;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.5px; /* Giảm letter spacing */
+            letter-spacing: 0.5px;
         }
 
         .table-khach-hang tbody tr:nth-child(even) {
@@ -109,30 +109,30 @@
 
         .table-khach-hang .action-buttons {
             display: flex;
-            gap: 8px; /* Giảm gap nút hành động */
+            gap: 8px;
             justify-content: center;
         }
 
         .table-khach-hang .action-button {
-            padding: 8px 12px; /* Giảm padding nút hành động */
+            padding: 8px 12px;
             border: none;
-            border-radius: 4px; /* Bo tròn ít hơn nút hành động */
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 13px; /* Giảm kích thước font chữ nút hành động */
+            font-size: 13px;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             outline: none;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Bóng đổ nhẹ hơn */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
-        .table-khach-hang .view-details {
-            background-color: #5cb85c;
+        .table-khach-hang .delete-btn {
+            background-color: #FF4800;
             color: #fff;
         }
 
-            .table-khach-hang .view-details:hover {
-                background-color: #4cae4c;
-                transform: translateY(-1px); /* Hiệu ứng hover nhẹ hơn */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bóng đổ hover nhẹ hơn */
+            .table-khach-hang .delete-btn:hover {
+                background-color: #dc3545;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
         .table-khach-hang .lock-account {
@@ -140,35 +140,44 @@
             color: #fff;
         }
 
-            .table-khach-hang .lock-account:hover {
+        .table-khach-hang .role-account,
+        .table-khach-hang .view-details {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+            .table-khach-hang .view-details:hover,
+            .table-khach-hang .lock-account:hover,
+            .table-khach-hang .role-account:hover {
                 background-color: #d43f3a;
                 transform: translateY(-1px);
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-decoration: underline;
             }
 
         .table-khach-hang img {
-            width: 40px; /* Giảm kích thước ảnh */
+            width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid #ddd; /* Viền mỏng hơn */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Bóng đổ nhẹ hơn */
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease-in-out;
         }
 
             .table-khach-hang img:hover {
-                transform: scale(1.02); /* Hiệu ứng hover nhẹ hơn */
+                transform: scale(1.02);
             }
 
     .button-add-TK {
-        display: inline-block; /* Để căn chỉnh dễ hơn */
-        padding: 10px 18px; /* Giảm padding nút thêm */
+        display: inline-block;
+        padding: 10px 18px;
         background-color: #5cb85c;
         color: white;
         text-decoration: none;
         border-radius: 5px;
         transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-in-out;
-        font-size: 15px; /* Giảm kích thước font chữ nút thêm */
+        font-size: 15px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
@@ -176,34 +185,57 @@
             background-color: #4cae4c;
             color: #ffffff;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
-            transform: translateY(-1px); /* Hiệu ứng hover nhẹ */
+            transform: translateY(-1px);
         }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .filter-status {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .table-responsive {
+            padding: 15px;
+        }
+
+        .table-khach-hang th,
+        .table-khach-hang td {
+            font-size: 13px;
+            padding: 10px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
 </style>
 
-<div class="table-responsive" style="padding:30px;">
-
+<div class="table-responsive">
     <div class="filter-status">
-        <h2 style="margin-right: 16px;">Danh Sách Khách Hàng</h2>
+        <h2>Danh Sách Khách Hàng</h2>
         <div class="filter-controls">
             <div class="filter-control">
-                <select id="status-filter">
+                <label for="status-filter-khach-hang">Lọc trạng thái:</label>
+                <select id="status-filter-khach-hang">
                     <option value="">Tất cả tài khoản</option>
                     <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
                     <option value="Đang khóa">Tài khoản đang khóa</option>
                     <option value="Đã duyệt">Tài khoản đã duyệt</option>
                 </select>
             </div>
-            <a href="@Url.Action("TaoTaoKhoan_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản</a>
+            <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Khách Hàng</a>
         </div>
     </div>
-    <table class="table-khach-hang">
+    <table class="table-khach-hang" id="table-khach-hang">
         <thead>
             <tr>
                 <th>STT</th>
                 <th>Ảnh Đại Diện</th>
                 <th>Mã Khách Hàng</th>
                 <th>Tên Đăng Nhập</th>
-                <th>Mật Khẩu</th>
                 <th>Tên Khách Hàng</th>
                 <th>Tên Công Ty</th>
                 <th>Mã Số Thuế</th>
@@ -217,64 +249,232 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var khachHang in Model)
+            @if (ViewBag.KhachHangs != null && ViewBag.KhachHangs.Count > 0)
+            {
+                int sttKhachHang = 1;
+                foreach (var khachHang in ViewBag.KhachHangs)
+                {
+                    <tr>
+                        <td>@sttKhachHang</td>
+                        <td>
+                            <img src="~/Content/img/@(string.IsNullOrEmpty(khachHang.anhDaiDienKhachHangUrl) ? "default_user_image.png" : khachHang.anhDaiDienKhachHangUrl)"
+                                 alt="Ảnh đại diện">
+                        </td>
+                        <td>@khachHang.maKhachHang</td>
+                        <td>@khachHang.tenDangNhap</td>
+                        <td>@khachHang.tenKhachHang</td>
+                        <td>@khachHang.tenCongTy</td>
+                        <td>@khachHang.maSoThueCongTy</td>
+                        <td>@khachHang.ngayDangKy.ToString("dd/MM/yyyy")</td>
+                        <td>@khachHang.cccd</td>
+                        <td>@khachHang.diaChiLienLac</td>
+                        <td>@khachHang.sdtKhachHang</td>
+                        <td>@khachHang.email</td>
+                        <td>@khachHang.trangThaiTaiKhoanKhachHang</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button view-details" data-id="@khachHang.maKhachHang">Xem chi tiết</button>
+                                <button class="action-button lock-account" data-id="@khachHang.maKhachHang">Khóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                    sttKhachHang++;
+                }
+            }
+            else
             {
                 <tr>
-                    <td></td>
-                    <td>
-                        <img src="~/Content/img/@(string.IsNullOrEmpty(khachHang.anhDaiDienKhachHangUrl) ? "default_user_image.png" : khachHang.anhDaiDienKhachHangUrl)"
-                             alt="Ảnh đại diện">
-                    </td>
-                    <td>@khachHang.maKhachHang</td>
-                    <td>@khachHang.tenDangNhap</td>
-                    <td>@khachHang.matKhau</td>
-                    <td>@khachHang.tenKhachHang</td>
-                    <td>@khachHang.tenCongTy</td>
-                    <td>@khachHang.maSoThueCongTy</td>
-                    <td>@khachHang.ngayDangKy.ToString("dd/MM/yyyy")</td>
-                    <td>@khachHang.cccd</td>
-                    <td>@khachHang.diaChiLienLac</td>
-                    <td>@khachHang.sdtKhachHang</td>
-                    <td>@khachHang.email</td>
-                    <td>@khachHang.trangThaiTaiKhoanKhachHang</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-button view-details">Xem chi tiết</button>
-                            <button class="action-button lock-account">Khóa</button>
-                        </div>
+                    <td colspan="14" style="text-align: center;">
+                        Không có dữ liệu khách hàng.
+                        <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien")">Tạo mới</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<div class="table-responsive" style="margin-bottom:70px;">
+    <div class="filter-status">
+        <h2>Danh Sách Nhân Viên</h2>
+        <div class="filter-controls">
+            <div class="filter-control">
+                <label for="status-filter-nhan-vien">Lọc vai trò:</label>
+                <select id="status-filter-nhan-vien">
+                    <option value="">Tất cả nhân viên</option>
+                    @foreach (var role in ViewBag.Roles)
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+            </div>
+            <a href="@Url.Action("TaoTaoKhoanNhanVien_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Nhân Viên</a>
+        </div>
+    </div>
+    <table class="table-khach-hang" id="table-nhan-vien">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh Đại Diện</th>
+                <th>Mã Nhân Viên</th>
+                <th>Vai Trò</th>
+                <th>Tên Đăng Nhập</th>
+                <th>Mật Khẩu</th>
+                <th>Tên Hiển Thị</th>
+                <th>SĐT Nhân Viên</th>
+                <th>Địa Chỉ Liên Lạc</th>
+                <th>Email</th>
+                <th>Trạng Thái Tài Khoản</th>
+                <th>Đăng Nhập Gần Nhất</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.NhanViens != null)
+            {
+                int sttNhanVien = 1;
+                foreach (var nhanVien in ViewBag.NhanViens)
+                {
+                    <tr>
+                        <td>@sttNhanVien</td>
+                        <td>
+                            <img src="~/Content/img/@(string.IsNullOrEmpty(nhanVien.AnhDaiDienNhanVienUrl) ? "default_user_image.png" : nhanVien.AnhDaiDienNhanVienUrl)" alt="Ảnh đại diện" />
+
+                        </td>
+                        <td>@nhanVien.MaNhanVien</td>
+                        <td>@nhanVien.TenLoaiNhanVien</td>
+                        <td>@nhanVien.TenDangNhap</td>
+                        <td>@nhanVien.MatKhau</td>
+                        <td>@nhanVien.TenHienThi</td>
+                        <td>@nhanVien.SdtNhanVien</td>
+                        <td>@nhanVien.DiaChi</td>
+                        <td>@nhanVien.Email</td>
+                        <td>@nhanVien.TrangThaiTaiKhoanNhanVien</td>
+                        <td>@(nhanVien.ThoiGianDangNhapGanNhat.ToString("dd/MM/yyyy HH:mm:ss") ?? "Chưa đăng nhập")</td>
+                        <td>
+                            <div class="action-buttons">
+                                @Html.ActionLink("Phân Quyền", "PhanQuyenNhanVien_QuanTriVien", new { id = nhanVien.MaNhanVien }, new { @class = "action-button role-account" })
+                                @Html.ActionLink("Xóa", "XemChiTietNhanVien_QuanTriVien", new { id = nhanVien.MaNhanVien }, new { @class = "action-button delete-btn" })
+                                <button class="action-button lock-account" data-id="@nhanVien.MaNhanVien">Khóa</button>
+                            </div>
+                        </td>
+                    </tr>
+                    sttNhanVien++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="13" style="text-align: center;">
+                        Không có dữ liệu nhân viên.
+                        <a href="@Url.Action("TaoTaoKhoanNhanVien_QuanTriVien", "QuanTriVien")">Tạo mới</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const statusFilter = document.getElementById('status-filter');
-        const tableRows = document.querySelectorAll('.table-khach-hang tbody tr');
+        // Lọc cho bảng Khách Hàng
+        const statusFilterKhachHang = document.getElementById('status-filter-khach-hang');
+        const tableKhachHang = document.getElementById('table-khach-hang');
+        const tableKhachHangBody = tableKhachHang.querySelector('tbody');
+        const tableKhachHangRows = Array.from(tableKhachHangBody.querySelectorAll('tr'));
 
-        function updateSerialNumbers() {
-            let visibleRows = Array.from(tableRows).filter(row => row.style.display !== 'none');
-            visibleRows.forEach((row, index) => {
-                row.querySelector('td:first-child').textContent = index + 1;
-            });
+        function updateSerialNumbersKhachHang() {
+            const visibleRows = tableKhachHangRows.filter(row => row.style.display !== 'none');
+            if (visibleRows.length === 0) {
+                const emptyRow = tableKhachHangBody.querySelector('tr td[colspan]');
+                if (emptyRow) emptyRow.style.display = '';
+            } else {
+                visibleRows.forEach((row, index) => {
+                    const firstCell = row.querySelector('td:first-child');
+                    if (firstCell) {
+                        firstCell.textContent = index + 1;
+                    }
+                });
+            }
         }
 
-        statusFilter.addEventListener('change', function () {
+        statusFilterKhachHang.addEventListener('change', function () {
             const selectedStatus = this.value;
-
-            tableRows.forEach(row => {
-                const statusCell = row.querySelector('td:nth-child(14)'); // Trạng Thái Tài Khoản
-
-                if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+            tableKhachHangRows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(13)');
+                if (statusCell) {
+                    if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
                 }
             });
-            updateSerialNumbers();
+            updateSerialNumbersKhachHang();
         });
 
-        updateSerialNumbers();
+        // Lọc cho bảng Nhân Viên
+        const statusFilterNhanVien = document.getElementById('status-filter-nhan-vien');
+        const tableNhanVien = document.getElementById('table-nhan-vien');
+        const tableNhanVienBody = tableNhanVien.querySelector('tbody');
+        const tableNhanVienRows = Array.from(tableNhanVienBody.querySelectorAll('tr'));
+
+        function updateSerialNumbersNhanVien() {
+            const visibleRows = tableNhanVienRows.filter(row => row.style.display !== 'none');
+            if (visibleRows.length === 0) {
+                const emptyRow = tableNhanVienBody.querySelector('tr td[colspan]');
+                if (emptyRow) emptyRow.style.display = '';
+            } else {
+                visibleRows.forEach((row, index) => {
+                    const firstCell = row.querySelector('td:first-child');
+                    if (firstCell) {
+                        firstCell.textContent = index + 1;
+                    }
+                });
+            }
+        }
+
+        statusFilterNhanVien.addEventListener('change', function () {
+            const selectedRole = this.value;
+            tableNhanVienRows.forEach(row => {
+                const roleCell = row.querySelector('td:nth-child(4)');
+                if (roleCell) {
+                    if (selectedRole === '' || roleCell.textContent.trim() === selectedRole) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+            updateSerialNumbersNhanVien();
+        });
+
+        // Xử lý nút "Khóa" tài khoản khách hàng
+        document.querySelectorAll('#table-khach-hang .lock-account').forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                if (confirm(`Xác nhận khóa tài khoản khách hàng ID: ${id}?`)) {
+                    // TODO: Gọi AJAX để khóa tài khoản khách hàng với ID
+                    alert(`Đã yêu cầu khóa tài khoản khách hàng ID: ${id}`);
+                    // Sau khi khóa thành công (trong AJAX callback), có thể cập nhật lại giao diện
+                }
+            });
+        });
+
+        // Xử lý nút "Khóa" tài khoản nhân viên
+        document.querySelectorAll('#table-nhan-vien .lock-account').forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                if (confirm(`Xác nhận khóa tài khoản nhân viên ID: ${id}?`)) {
+                    // TODO: Gọi AJAX để khóa tài khoản nhân viên với ID
+                    alert(`Đã yêu cầu khóa tài khoản nhân viên ID: ${id}`);
+                    // Sau khi khóa thành công (trong AJAX callback), có thể cập nhật lại giao diện
+                }
+            });
+        });
+
+        // Khởi tạo STT
+        updateSerialNumbersKhachHang();
+        updateSerialNumbersNhanVien();
     });
 </script>

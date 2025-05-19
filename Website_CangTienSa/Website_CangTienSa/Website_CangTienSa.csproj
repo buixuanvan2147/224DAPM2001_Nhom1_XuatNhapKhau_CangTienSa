@@ -188,6 +188,7 @@
     <Compile Include="Models\danhMucHangHoa.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QTV_QLTK_NhanVienViewModel.cs" />
     <Compile Include="Models\PhieuXuatKhoViewModel.cs" />
     <Compile Include="Models\DonHangChiTietViewModel.cs" />
     <Compile Include="Models\DonHangViewModel.cs" />
@@ -475,7 +476,7 @@
     <Content Include="Views\NhanVienKhoBai\ChiTietDonHang.cshtml" />
     <Content Include="Views\NhanVienXuatKho\XuatPhieuXuatKho.cshtml" />
     <Content Include="Views\Home\KhachVangLai_TraCuuDonHang.cshtml" />
-    <Content Include="Views\QuanTriVien\TaoTaoKhoan_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien\TaoTaoKhoanNhanVien_QuanTriVien.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
