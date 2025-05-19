@@ -6,15 +6,17 @@
 <style>
     /* Màu chủ đạo: #141d26 (từ ảnh) */
     /* Loại bỏ style cho body vì nó được quản lý bởi layout */
-    body {
-        color: #333;
-        /* Các thuộc tính background, margin, padding có thể gây xung đột với layout */
+    .report-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 70px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm margin để tạo khoảng cách với các phần khác của layout */
     }
 
     .page-container {
-        margin-bottom:70px;
         padding: 0px; /* Thêm padding cho nội dung trang */
-        background-color: #f4f6f8; /* Màu nền nhạt cho vùng nội dung */
+        background-color: #ffffff; /* Màu nền nhạt cho vùng nội dung */
         border-radius: 8px; /* Bo tròn góc cho vùng nội dung */
     }
 
@@ -64,7 +66,8 @@
     }
 
         .button-add:hover {
-            background-color: #4cae4c;
+            background-color: #141d26;
+            color: #ffffff;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ khi hover */
         }
 
@@ -127,224 +130,225 @@
     }
 </style>
 
-<div class="page-container">
-    <div class="header-container">
-        <h2>Quản Lý Đơn Hàng Tổng Hợp</h2>
-        <select id="section-selector">
-            <option value="container">Quản Lý Container</option>
-            <option value="phieunhap">Quản Lý Phiếu Nhập</option>
-            <option value="phieuxuat">Quản Lý Phiếu Xuất</option>
-            <option value="donhang">Quản Lý Đơn Hàng</option>
-            <option value="chitietdonhang">Chi Tiết Đơn Hàng</option>
-        </select>
+<div class="report-container">
+    <div class="page-container">
+        <div class="header-container">
+            <h2>Quản Lý Đơn Hàng Tổng Hợp</h2>
+            <select id="section-selector">
+                <option value="container">Quản Lý Container</option>
+                <option value="phieunhap">Quản Lý Phiếu Nhập</option>
+                <option value="phieuxuat">Quản Lý Phiếu Xuất</option>
+                <option value="donhang">Quản Lý Đơn Hàng</option>
+                <option value="chitietdonhang">Chi Tiết Đơn Hàng</option>
+            </select>
+        </div>
+
+        <section id="container">
+            <h3 class="section-title">Quản Lý Container</h3>
+            <p>
+                <a href="#" class="button-add">Thêm Mới Container</a>
+            </p>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Container</th>
+                            <th>Danh Mục</th>
+                            <th>Chi Tiết Kho</th>
+                            <th>Số Hiệu</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                            <th>Ngày Mua</th>
+                            <th>Trọng Tải</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONT001</td>
+                            <td>20 feet</td>
+                            <td>DETAIL001</td>
+                            <td>ABC1234</td>
+                            <td>Đang lưu kho</td>
+                            <td>A1-2</td>
+                            <td>2024-01-15</td>
+                            <td>20.0</td>
+                            <td class="action-links">
+                                <a href="#">Sửa</a> |
+                                <a href="#" class="details-link">Chi tiết</a> |
+                                <a href="#" class="delete-link">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="phieunhap">
+            <h3 class="section-title">Quản Lý Phiếu Nhập</h3>
+            <p>
+                <a href="#" class="button-add">Thêm Mới Phiếu Nhập</a>
+            </p>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Phiếu Nhập</th>
+                            <th>Mã Đơn Hàng</th>
+                            <th>Mô tả</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PN001</td>
+                            <td>DH001</td>
+                            <td>Nhập hàng lô A</td>
+                            <td class="action-links">
+                                <a href="#">Sửa</a> |
+                                <a href="#" class="details-link">Chi tiết</a> |
+                                <a href="#" class="delete-link">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="phieuxuat">
+            <h3 class="section-title">Quản Lý Phiếu Xuất</h3>
+            <p>
+                <a href="#" class="button-add">Thêm Mới Phiếu Xuất</a>
+            </p>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Phiếu Xuất</th>
+                            <th>Mã Đơn Hàng</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Xuất</th>
+                            <th>Mô tả</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PX001</td>
+                            <td>DH002</td>
+                            <td>Đã xuất kho</td>
+                            <td>2024-05-20</td>
+                            <td>Xuất hàng theo yêu cầu</td>
+                            <td class="action-links">
+                                <a href="#">Sửa</a> |
+                                <a href="#" class="details-link">Chi tiết</a> |
+                                <a href="#" class="delete-link">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="donhang">
+            <h3 class="section-title">Quản Lý Đơn Hàng</h3>
+            <p>
+                <a href="#" class="button-add">Thêm Mới Đơn Hàng</a>
+            </p>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Đơn Hàng</th>
+                            <th>Mã Khách Hàng</th>
+                            <th>Mã Nhân Viên</th>
+                            <th>Người Gửi</th>
+                            <th>Người Nhận</th>
+                            <th>Cảng Đến</th>
+                            <th>Ngày Tạo</th>
+                            <th>Trạng Thái</th>
+                            <th>Thanh Toán</th>
+                            <th>Tổng Tiền</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>DH001</td>
+                            <td>KH001</td>
+                            <td>NV001</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>Trần Thị B</td>
+                            <td>Cảng Sài Gòn</td>
+                            <td>2024-05-15</td>
+                            <td>Đang xử lý</td>
+                            <td>Chưa thanh toán</td>
+                            <td>1,500,000</td>
+                            <td class="action-links">
+                                <a href="#">Sửa</a> |
+                                <a href="#" class="details-link">Chi tiết</a> |
+                                <a href="#" class="delete-link">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="chitietdonhang">
+            <h3 class="section-title">Chi Tiết Đơn Hàng (Mã Đơn Hàng: DH001)</h3>
+            <p>
+                <a href="#" class="button-add">Thêm Mới Chi Tiết</a>
+            </p>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Chi Tiết</th>
+                            <th>Mã Hàng Hóa</th>
+                            <th>Số Lượng</th>
+                            <th>Đơn Vị</th>
+                            <th>Chất Lượng</th>
+                            <th>Đơn Giá</th>
+                            <th>Tiền Lưu Kho</th>
+                            <th>Mô tả</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CTDH001</td>
+                            <td>HH001</td>
+                            <td>10</td>
+                            <td>Thùng</td>
+                            <td>Mới</td>
+                            <td>150,000</td>
+                            <td>50,000</td>
+                            <td>Hàng dễ vỡ</td>
+                            <td class="action-links">
+                                <a href="#">Sửa</a> |
+                                <a href="#" class="details-link">Chi tiết</a> |
+                                <a href="#" class="delete-link">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
-
-    <section id="container">
-        <h3 class="section-title">Quản Lý Container</h3>
-        <p>
-            <a href="#" class="button-add">Thêm mới Container</a>
-        </p>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mã Container</th>
-                        <th>Danh Mục</th>
-                        <th>Chi Tiết Kho</th>
-                        <th>Số Hiệu</th>
-                        <th>Trạng Thái</th>
-                        <th>Vị Trí</th>
-                        <th>Ngày Mua</th>
-                        <th>Trọng Tải</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CONT001</td>
-                        <td>20 feet</td>
-                        <td>DETAIL001</td>
-                        <td>ABC1234</td>
-                        <td>Đang lưu kho</td>
-                        <td>A1-2</td>
-                        <td>2024-01-15</td>
-                        <td>20.0</td>
-                        <td class="action-links">
-                            <a href="#">Sửa</a> |
-                            <a href="#" class="details-link">Chi tiết</a> |
-                            <a href="#" class="delete-link">Xóa</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="phieunhap">
-        <h3 class="section-title">Quản Lý Phiếu Nhập</h3>
-        <p>
-            <a href="#" class="button-add">Thêm mới Phiếu Nhập</a>
-        </p>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mã Phiếu Nhập</th>
-                        <th>Mã Đơn Hàng</th>
-                        <th>Mô tả</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>PN001</td>
-                        <td>DH001</td>
-                        <td>Nhập hàng lô A</td>
-                        <td class="action-links">
-                            <a href="#">Sửa</a> |
-                            <a href="#" class="details-link">Chi tiết</a> |
-                            <a href="#" class="delete-link">Xóa</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="phieuxuat">
-        <h3 class="section-title">Quản Lý Phiếu Xuất</h3>
-        <p>
-            <a href="#" class="button-add">Thêm mới Phiếu Xuất</a>
-        </p>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mã Phiếu Xuất</th>
-                        <th>Mã Đơn Hàng</th>
-                        <th>Trạng Thái</th>
-                        <th>Ngày Xuất</th>
-                        <th>Mô tả</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>PX001</td>
-                        <td>DH002</td>
-                        <td>Đã xuất kho</td>
-                        <td>2024-05-20</td>
-                        <td>Xuất hàng theo yêu cầu</td>
-                        <td class="action-links">
-                            <a href="#">Sửa</a> |
-                            <a href="#" class="details-link">Chi tiết</a> |
-                            <a href="#" class="delete-link">Xóa</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="donhang">
-        <h3 class="section-title">Quản Lý Đơn Hàng</h3>
-        <p>
-            <a href="#" class="button-add">Thêm mới Đơn Hàng</a>
-        </p>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mã Đơn Hàng</th>
-                        <th>Mã Khách Hàng</th>
-                        <th>Mã Nhân Viên</th>
-                        <th>Người Gửi</th>
-                        <th>Người Nhận</th>
-                        <th>Cảng Đến</th>
-                        <th>Ngày Tạo</th>
-                        <th>Trạng Thái</th>
-                        <th>Thanh Toán</th>
-                        <th>Tổng Tiền</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>DH001</td>
-                        <td>KH001</td>
-                        <td>NV001</td>
-                        <td>Nguyễn Văn A</td>
-                        <td>Trần Thị B</td>
-                        <td>Cảng Sài Gòn</td>
-                        <td>2024-05-15</td>
-                        <td>Đang xử lý</td>
-                        <td>Chưa thanh toán</td>
-                        <td>1,500,000</td>
-                        <td class="action-links">
-                            <a href="#">Sửa</a> |
-                            <a href="#" class="details-link">Chi tiết</a> |
-                            <a href="#" class="delete-link">Xóa</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="chitietdonhang">
-        <h3 class="section-title">Chi Tiết Đơn Hàng (Mã Đơn Hàng: DH001)</h3>
-        <p>
-            <a href="#" class="button-add">Thêm mới Chi Tiết</a>
-        </p>
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mã Chi Tiết</th>
-                        <th>Mã Hàng Hóa</th>
-                        <th>Số Lượng</th>
-                        <th>Đơn Vị</th>
-                        <th>Chất Lượng</th>
-                        <th>Đơn Giá</th>
-                        <th>Tiền Lưu Kho</th>
-                        <th>Mô tả</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CTDH001</td>
-                        <td>HH001</td>
-                        <td>10</td>
-                        <td>Thùng</td>
-                        <td>Mới</td>
-                        <td>150,000</td>
-                        <td>50,000</td>
-                        <td>Hàng dễ vỡ</td>
-                        <td class="action-links">
-                            <a href="#">Sửa</a> |
-                            <a href="#" class="details-link">Chi tiết</a> |
-                            <a href="#" class="delete-link">Xóa</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
 </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sectionSelector = document.getElementById('section-selector');
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sectionSelector = document.getElementById('section-selector');
+            sectionSelector.addEventListener('change', function () {
+                const selectedSectionId = this.value;
+                const targetSection = document.getElementById(selectedSectionId);
 
-        sectionSelector.addEventListener('change', function () {
-            const selectedSectionId = this.value;
-            const targetSection = document.getElementById(selectedSectionId);
-
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         });
-    });
-</script>
+    </script>
 

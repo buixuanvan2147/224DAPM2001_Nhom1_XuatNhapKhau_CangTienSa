@@ -4,13 +4,72 @@
 }
 
 <style>
-    /* Màu chủ đạo: #FF4800 */
+    /* Màu chủ đạo: #141d26 */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        background-color: #ffffff; /* Màu nền trang nhạt */
+
+    }
+
+    .filter-status {
+        margin: 0px 0px 20px 0px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+
+        .filter-status h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #141d26;
+            letter-spacing: 0.8px;
+        }
+
+    .filter-control {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        margin-left: 12px;
+    }
+
+        .filter-control label {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .filter-control select {
+            padding: 12px 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+            .filter-control select:focus {
+                border-color: #141d26;
+                box-shadow: 0 0 6px rgba(20, 29, 38, 0.4);
+            }
+
+    .table-responsive {
+        overflow-x: auto;
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        background-color: #ffffff;
+    }
+
     .table-khach-hang {
         border-collapse: collapse;
         width: 100%;
         background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
         overflow: hidden;
         border: 1px solid #e0e0e0;
     }
@@ -18,157 +77,99 @@
         .table-khach-hang th,
         .table-khach-hang td {
             border: 1px solid #e0e0e0;
-            padding: 14px;
+            padding: 15px;
             text-align: left;
             white-space: nowrap;
-            font-size: 14px;
-            color: #555;
+            font-size: 15px;
+            color: #444;
         }
 
         .table-khach-hang th {
-            background-color: #FF4800;
+            background-color: #141d26;
             color: #fff;
-            font-weight: 600;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.6px;
         }
 
         .table-khach-hang tbody tr:nth-child(even) {
-            background-color: #f8f8f8;
+            background-color: #f9f9f9;
         }
 
         .table-khach-hang tbody tr:hover {
             background-color: #f0f0f0;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
         }
 
         .table-khach-hang .action-buttons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
         }
 
         .table-khach-hang .action-button {
-            padding: 10px 18px;
+            padding: 10px 16px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             outline: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
         }
 
         .table-khach-hang .view-details {
-            background-color: #388e3c;
-            color: #ffffff;
+            background-color: #4CAF50;
+            color: #fff;
         }
 
             .table-khach-hang .view-details:hover {
-                background-color: #2e7d32;
+                background-color: #45a049;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
             }
 
         .table-khach-hang .lock-account {
-            background-color: #c62828;
-            color: #ffffff;
+            background-color: #f44336;
+            color: #fff;
         }
 
             .table-khach-hang .lock-account:hover {
-                background-color: #b21b1b;
+                background-color: #d32f2f;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
             }
 
-    .filter-status {
-        margin-top: 6px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background-color: #FF4800;
-        border-radius: 10px;
-        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e0e0e0;
-    }
-
-        .filter-status h2 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: 0.5px;
+        .table-khach-hang img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
         }
 
-    .filter-control {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-        .filter-control label {
-            display: flex;
-            align-items: center;
-            font-size: 15px;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .filter-control select {
-            padding: 12px 16px;
-            height: auto;
-            border: 1px solid #b0bec5;
-            border-radius: 6px;
-            font-size: 14px;
-            background-color: #ffffff;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-            outline: none;
-        }
-
-            .filter-control select:focus {
-                border-color: #3498db;
-                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            .table-khach-hang img:hover {
+                transform: scale(1.05);
             }
-
-    .table-responsive {
-        margin-bottom: 70px;
-        overflow-x: auto;
-        border-radius: 10px;
-        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .table-khach-hang img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #ddd;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
-    }
-
-        .table-khach-hang img:hover {
-            transform: scale(1.1);
-        }
 </style>
 
-<div class="filter-status">
-    <h2 style="color:#fff">Danh Sách Khách Hàng</h2>
-    <div class="filter-control">
-        <label style="color:#fff" for="status-filter">Lọc theo trạng thái:</label>
-        <select id="status-filter">
-            <option value="">Tất cả tài khoản</option>
-            <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
-            <option value="Đang khóa">Tài khoản đang khóa</option>
-            <option value="Đã duyệt">Tài khoản đã duyệt</option>
-        </select>
+
+
+<div class="table-responsive" style="padding:30px;">
+    
+    <div class="filter-status">
+        <h2 >Danh Sách Khách Hàng</h2>
+        <div class="filter-control">
+            <select id="status-filter">
+                <option value="">Tất cả tài khoản</option>
+                <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
+                <option value="Đang khóa">Tài khoản đang khóa</option>
+                <option value="Đã duyệt">Tài khoản đã duyệt</option>
+            </select>
+        </div>
     </div>
-</div>
-<div class="table-responsive">
     <table class="table-khach-hang">
         <thead>
             <tr>
