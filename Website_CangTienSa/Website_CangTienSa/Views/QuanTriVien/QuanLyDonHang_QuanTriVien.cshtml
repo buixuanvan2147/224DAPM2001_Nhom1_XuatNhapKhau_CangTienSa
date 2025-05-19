@@ -3,6 +3,348 @@
     ViewBag.Title = "QuanLyDonHang_QuanTriVien";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
+<style>
+    /* Màu chủ đạo: #141d26 (từ ảnh) */
+    /* Loại bỏ style cho body vì nó được quản lý bởi layout */
+    body {
+        color: #333;
+        /* Các thuộc tính background, margin, padding có thể gây xung đột với layout */
+    }
 
-<h2>QuanLyDonHang_QuanTriVien</h2>
+    .page-container {
+        margin-bottom:70px;
+        padding: 0px; /* Thêm padding cho nội dung trang */
+        background-color: #f4f6f8; /* Màu nền nhạt cho vùng nội dung */
+        border-radius: 8px; /* Bo tròn góc cho vùng nội dung */
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #141d26; /* Đường kẻ đậm hơn */
+    }
+
+    h2 {
+        color: #141d26;
+        margin: 0; /* Loại bỏ margin mặc định */
+        font-size: 24px; /* Điều chỉnh kích thước font chữ */
+    }
+
+    #section-selector {
+        padding: 10px 15px; /* Tăng padding cho dễ nhìn và thao tác */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px; /* Tăng kích thước font chữ */
+        cursor: pointer; /* Thêm con trỏ chuột khi hover */
+    }
+
+    .section-title {
+        color: #141d26;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 8px; /* Tăng padding bottom */
+        font-size: 20px; /* Điều chỉnh kích thước font chữ */
+    }
+
+    .button-add {
+        display: inline-block;
+        padding: 12px 20px; /* Tăng padding */
+        background-color: #5cb85c;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        transition: background-color 0.3s ease;
+        font-size: 16px; /* Tăng kích thước font chữ */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
+    }
+
+        .button-add:hover {
+            background-color: #4cae4c;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ khi hover */
+        }
+
+    .table-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        margin-bottom: 20px;
+        border: 1px solid #ddd; /* Thêm viền nhẹ cho container */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px; /* Tăng kích thước font chữ trong bảng */
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 12px; /* Tăng padding trong ô bảng */
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table th {
+            background-color: #141d26;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase; /* In hoa tiêu đề cột */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0f7fa;
+        }
+
+    .action-links a {
+        display: inline-block;
+        margin-right: 10px; /* Tăng khoảng cách giữa các link */
+        text-decoration: none;
+        color: #007bff;
+        transition: color 0.3s ease;
+        font-weight: 500; /* Thêm đậm cho link */
+    }
+
+        .action-links a:hover {
+            color: #0056b3;
+        }
+
+    .details-link {
+        color: #28a745;
+    }
+
+    .delete-link {
+        color: #dc3545;
+    }
+</style>
+
+<div class="page-container">
+    <div class="header-container">
+        <h2>Quản Lý Đơn Hàng Tổng Hợp</h2>
+        <select id="section-selector">
+            <option value="container">Quản Lý Container</option>
+            <option value="phieunhap">Quản Lý Phiếu Nhập</option>
+            <option value="phieuxuat">Quản Lý Phiếu Xuất</option>
+            <option value="donhang">Quản Lý Đơn Hàng</option>
+            <option value="chitietdonhang">Chi Tiết Đơn Hàng</option>
+        </select>
+    </div>
+
+    <section id="container">
+        <h3 class="section-title">Quản Lý Container</h3>
+        <p>
+            <a href="#" class="button-add">Thêm mới Container</a>
+        </p>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Container</th>
+                        <th>Danh Mục</th>
+                        <th>Chi Tiết Kho</th>
+                        <th>Số Hiệu</th>
+                        <th>Trạng Thái</th>
+                        <th>Vị Trí</th>
+                        <th>Ngày Mua</th>
+                        <th>Trọng Tải</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CONT001</td>
+                        <td>20 feet</td>
+                        <td>DETAIL001</td>
+                        <td>ABC1234</td>
+                        <td>Đang lưu kho</td>
+                        <td>A1-2</td>
+                        <td>2024-01-15</td>
+                        <td>20.0</td>
+                        <td class="action-links">
+                            <a href="#">Sửa</a> |
+                            <a href="#" class="details-link">Chi tiết</a> |
+                            <a href="#" class="delete-link">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="phieunhap">
+        <h3 class="section-title">Quản Lý Phiếu Nhập</h3>
+        <p>
+            <a href="#" class="button-add">Thêm mới Phiếu Nhập</a>
+        </p>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Phiếu Nhập</th>
+                        <th>Mã Đơn Hàng</th>
+                        <th>Mô tả</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PN001</td>
+                        <td>DH001</td>
+                        <td>Nhập hàng lô A</td>
+                        <td class="action-links">
+                            <a href="#">Sửa</a> |
+                            <a href="#" class="details-link">Chi tiết</a> |
+                            <a href="#" class="delete-link">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="phieuxuat">
+        <h3 class="section-title">Quản Lý Phiếu Xuất</h3>
+        <p>
+            <a href="#" class="button-add">Thêm mới Phiếu Xuất</a>
+        </p>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Phiếu Xuất</th>
+                        <th>Mã Đơn Hàng</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Xuất</th>
+                        <th>Mô tả</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PX001</td>
+                        <td>DH002</td>
+                        <td>Đã xuất kho</td>
+                        <td>2024-05-20</td>
+                        <td>Xuất hàng theo yêu cầu</td>
+                        <td class="action-links">
+                            <a href="#">Sửa</a> |
+                            <a href="#" class="details-link">Chi tiết</a> |
+                            <a href="#" class="delete-link">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="donhang">
+        <h3 class="section-title">Quản Lý Đơn Hàng</h3>
+        <p>
+            <a href="#" class="button-add">Thêm mới Đơn Hàng</a>
+        </p>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Đơn Hàng</th>
+                        <th>Mã Khách Hàng</th>
+                        <th>Mã Nhân Viên</th>
+                        <th>Người Gửi</th>
+                        <th>Người Nhận</th>
+                        <th>Cảng Đến</th>
+                        <th>Ngày Tạo</th>
+                        <th>Trạng Thái</th>
+                        <th>Thanh Toán</th>
+                        <th>Tổng Tiền</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DH001</td>
+                        <td>KH001</td>
+                        <td>NV001</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>Trần Thị B</td>
+                        <td>Cảng Sài Gòn</td>
+                        <td>2024-05-15</td>
+                        <td>Đang xử lý</td>
+                        <td>Chưa thanh toán</td>
+                        <td>1,500,000</td>
+                        <td class="action-links">
+                            <a href="#">Sửa</a> |
+                            <a href="#" class="details-link">Chi tiết</a> |
+                            <a href="#" class="delete-link">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="chitietdonhang">
+        <h3 class="section-title">Chi Tiết Đơn Hàng (Mã Đơn Hàng: DH001)</h3>
+        <p>
+            <a href="#" class="button-add">Thêm mới Chi Tiết</a>
+        </p>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Chi Tiết</th>
+                        <th>Mã Hàng Hóa</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Vị</th>
+                        <th>Chất Lượng</th>
+                        <th>Đơn Giá</th>
+                        <th>Tiền Lưu Kho</th>
+                        <th>Mô tả</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CTDH001</td>
+                        <td>HH001</td>
+                        <td>10</td>
+                        <td>Thùng</td>
+                        <td>Mới</td>
+                        <td>150,000</td>
+                        <td>50,000</td>
+                        <td>Hàng dễ vỡ</td>
+                        <td class="action-links">
+                            <a href="#">Sửa</a> |
+                            <a href="#" class="details-link">Chi tiết</a> |
+                            <a href="#" class="delete-link">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionSelector = document.getElementById('section-selector');
+
+        sectionSelector.addEventListener('change', function () {
+            const selectedSectionId = this.value;
+            const targetSection = document.getElementById(selectedSectionId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
 
