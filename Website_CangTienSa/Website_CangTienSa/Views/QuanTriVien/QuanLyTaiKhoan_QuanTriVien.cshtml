@@ -107,52 +107,98 @@
             transition: background-color 0.3s ease;
         }
 
+        /* CSS cho các nút hành động */
         .table-khach-hang .action-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
+            display: flex; /* Sử dụng flexbox để các nút nằm trên một hàng */
+            flex-wrap: nowrap; /* Ngăn không cho các nút xuống dòng */
+            gap: 8px; /* Khoảng cách giữa các nút */
+            justify-content: flex-start; /* Căn chỉnh các nút về bên trái */
+            align-items: stretch; /* Đảm bảo các nút có cùng chiều cao */
         }
 
         .table-khach-hang .action-button {
+            flex-grow: 1; /* Cho phép các nút phát triển để chiếm không gian có sẵn */
+            flex-basis: 0; /* Đặt cơ sở linh hoạt bằng 0 để phân phối không gian đều */
             padding: 8px 12px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease; /* Thêm transition cho màu nền */
             outline: none;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            text-align: center; /* Căn giữa chữ trong nút */
+            white-space: nowrap; /* Ngăn chữ trong nút bị xuống dòng */
         }
 
+        /* Màu sắc cụ thể cho từng loại nút hành động */
         .table-khach-hang .delete-btn {
-            background-color: #FF4800;
+            background-color: #dc3545; /* Đỏ */
             color: #fff;
         }
 
             .table-khach-hang .delete-btn:hover {
-                background-color: #dc3545;
+                background-color: #c82333; /* Đỏ đậm hơn khi hover */
                 transform: translateY(-1px);
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
         .table-khach-hang .lock-account {
-            background-color: #d9534f;
+            background-color: #6c757d; /* Xám để khóa */
             color: #fff;
         }
 
+            .table-khach-hang .lock-account:hover {
+                background-color: #5a6268; /* Xám đậm hơn khi hover */
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+        .table-khach-hang .unlock-account {
+            background-color: #007bff; /* Xanh dương để mở khóa */
+            color: #fff;
+        }
+
+            .table-khach-hang .unlock-account:hover {
+                background-color: #0056b3; /* Xanh dương đậm hơn khi hover */
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+        .table-khach-hang .approve-account {
+            background-color: #28a745; /* Xanh lá cây để duyệt */
+            color: #fff;
+        }
+
+            .table-khach-hang .approve-account:hover {
+                background-color: #218838; /* Xanh lá cây đậm hơn khi hover */
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+        .table-khach-hang .reject-account {
+            background-color: #ffc107; /* Vàng cam để từ chối */
+            color: #333; /* Màu chữ đen hoặc đậm để dễ đọc trên nền vàng */
+        }
+
+            .table-khach-hang .reject-account:hover {
+                background-color: #e0a800; /* Vàng cam đậm hơn khi hover */
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
         .table-khach-hang .role-account,
         .table-khach-hang .view-details {
-            background-color: #28a745;
+            background-color: #17a2b8; /* Màu xanh teal để xem chi tiết/phân quyền */
             color: #fff;
         }
 
             .table-khach-hang .view-details:hover,
-            .table-khach-hang .lock-account:hover,
             .table-khach-hang .role-account:hover {
-                background-color: #d43f3a;
+                background-color: #138496; /* Xanh teal đậm hơn khi hover */
                 transform: translateY(-1px);
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-decoration: underline;
+                text-decoration: none; /* Bỏ gạch chân cho consistency */
             }
 
         .table-khach-hang img {
@@ -207,8 +253,13 @@
         }
 
         .action-buttons {
-            flex-direction: column;
+            flex-direction: column; /* Trên màn hình nhỏ, cho phép các nút xuống dòng */
             gap: 5px;
+        }
+
+        .table-khach-hang .action-button {
+            flex-basis: auto; /* Reset flex-basis trên màn hình nhỏ */
+            width: 100%; /* Các nút chiếm toàn bộ chiều rộng có thể */
         }
     }
 </style>
@@ -222,8 +273,9 @@
                 <select id="status-filter-khach-hang">
                     <option value="">Tất cả tài khoản</option>
                     <option value="Chờ duyệt">Tài khoản chờ duyệt</option>
-                    <option value="Đang khóa">Tài khoản đang khóa</option>
+                    <option value="Đang bị khóa">Tài khoản đang khóa</option>
                     <option value="Đã duyệt">Tài khoản đã duyệt</option>
+                    <option value="Đã từ chối">Tài khoản đã từ chối</option>
                 </select>
             </div>
             <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Khách Hàng</a>
@@ -270,11 +322,29 @@
                         <td>@khachHang.diaChiLienLac</td>
                         <td>@khachHang.sdtKhachHang</td>
                         <td>@khachHang.email</td>
-                        <td>@khachHang.trangThaiTaiKhoanKhachHang</td>
+                        <td class="status-cell">@khachHang.trangThaiTaiKhoanKhachHang</td>
                         <td>
                             <div class="action-buttons">
+                                @if (khachHang.trangThaiTaiKhoanKhachHang == "Chờ duyệt")
+                                {
+                                    <button class="action-button approve-account" data-id="@khachHang.maKhachHang" data-action="approve">Duyệt</button>
+                                    <button class="action-button reject-account" data-id="@khachHang.maKhachHang" data-action="reject">Từ Chối</button>
+                                }
+                                else if (khachHang.trangThaiTaiKhoanKhachHang == "Đã duyệt")
+                                {
+                                    <button class="action-button lock-account" data-id="@khachHang.maKhachHang" data-action="lock">Khóa</button>
+                                }
+                                else if (khachHang.trangThaiTaiKhoanKhachHang == "Đã từ chối")
+                                {
+                                    <button class="action-button approve-account" data-id="@khachHang.maKhachHang" data-action="approve">Duyệt</button>
+                                    <button class="action-button delete-btn" data-id="@khachHang.maKhachHang" data-action="delete">Xóa</button>
+                                }
+                                else if (khachHang.trangThaiTaiKhoanKhachHang == "Đang bị khóa")
+                                {
+                                    <button class="action-button unlock-account" data-id="@khachHang.maKhachHang" data-action="unlock">Mở Khóa</button>
+                                    <button class="action-button delete-btn" data-id="@khachHang.maKhachHang" data-action="delete">Xóa</button>
+                                }
                                 <button class="action-button view-details" data-id="@khachHang.maKhachHang">Xem chi tiết</button>
-                                <button class="action-button lock-account" data-id="@khachHang.maKhachHang">Khóa</button>
                             </div>
                         </td>
                     </tr>
@@ -308,7 +378,7 @@
                     }
                 </select>
             </div>
-            <a href="@Url.Action("TaoTaoKhoanNhanVien_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Nhân Viên</a>
+            <a href="@Url.Action("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Nhân Viên</a>
         </div>
     </div>
     <table class="table-khach-hang" id="table-nhan-vien">
@@ -349,13 +419,11 @@
                         <td>@nhanVien.SdtNhanVien</td>
                         <td>@nhanVien.DiaChi</td>
                         <td>@nhanVien.Email</td>
-                        <td>@nhanVien.TrangThaiTaiKhoanNhanVien</td>
+                        <td class="status-cell-nhan-vien">@nhanVien.TrangThaiTaiKhoanNhanVien</td>
                         <td>@(nhanVien.ThoiGianDangNhapGanNhat.ToString("dd/MM/yyyy HH:mm:ss") ?? "Chưa đăng nhập")</td>
                         <td>
-                            <div class="action-buttons">
-                                @Html.ActionLink("Phân Quyền", "PhanQuyenNhanVien_QuanTriVien", new { id = nhanVien.MaNhanVien }, new { @class = "action-button role-account" })
-                                @Html.ActionLink("Xóa", "XemChiTietNhanVien_QuanTriVien", new { id = nhanVien.MaNhanVien }, new { @class = "action-button delete-btn" })
-                                <button class="action-button lock-account" data-id="@nhanVien.MaNhanVien">Khóa</button>
+                            <div class="action-buttons" data-nhanvien-id="@nhanVien.MaNhanVien" data-nhanvien-status="@nhanVien.TrangThaiTaiKhoanNhanVien">
+                                @* Các nút sẽ được render bởi JavaScript dựa trên trạng thái của nhân viên *@
                             </div>
                         </td>
                     </tr>
@@ -377,54 +445,46 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Lọc cho bảng Khách Hàng
+        // --- Khai báo biến và phần tử DOM chung ---
+        // Đối với bảng Khách Hàng
         const statusFilterKhachHang = document.getElementById('status-filter-khach-hang');
         const tableKhachHang = document.getElementById('table-khach-hang');
-        const tableKhachHangBody = tableKhachHang.querySelector('tbody');
-        const tableKhachHangRows = Array.from(tableKhachHangBody.querySelectorAll('tr'));
+        let tableKhachHangBody; // Khai báo let vì nó có thể được gán lại nếu bảng thay đổi động
+        let tableKhachHangRows = []; // Khai báo let vì có thể thay đổi sau khi xóa
 
-        function updateSerialNumbersKhachHang() {
-            const visibleRows = tableKhachHangRows.filter(row => row.style.display !== 'none');
-            if (visibleRows.length === 0) {
-                const emptyRow = tableKhachHangBody.querySelector('tr td[colspan]');
-                if (emptyRow) emptyRow.style.display = '';
-            } else {
-                visibleRows.forEach((row, index) => {
-                    const firstCell = row.querySelector('td:first-child');
-                    if (firstCell) {
-                        firstCell.textContent = index + 1;
-                    }
-                });
-            }
+        if (tableKhachHang) { // Đảm bảo bảng tồn tại trước khi truy cập
+            tableKhachHangBody = tableKhachHang.querySelector('tbody');
+            tableKhachHangRows = Array.from(tableKhachHangBody.querySelectorAll('tr'));
         }
 
-        statusFilterKhachHang.addEventListener('change', function () {
-            const selectedStatus = this.value;
-            tableKhachHangRows.forEach(row => {
-                const statusCell = row.querySelector('td:nth-child(13)');
-                if (statusCell) {
-                    if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                }
-            });
-            updateSerialNumbersKhachHang();
-        });
-
-        // Lọc cho bảng Nhân Viên
+        // Đối với bảng Nhân Viên
         const statusFilterNhanVien = document.getElementById('status-filter-nhan-vien');
         const tableNhanVien = document.getElementById('table-nhan-vien');
-        const tableNhanVienBody = tableNhanVien.querySelector('tbody');
-        const tableNhanVienRows = Array.from(tableNhanVienBody.querySelectorAll('tr'));
+        let tableNhanVienBody; // Khai báo let
+        let tableNhanVienRows = []; // Khai báo let
 
-        function updateSerialNumbersNhanVien() {
-            const visibleRows = tableNhanVienRows.filter(row => row.style.display !== 'none');
+        if (tableNhanVien) { // Đảm bảo bảng tồn tại trước khi truy cập
+            tableNhanVienBody = tableNhanVien.querySelector('tbody');
+            tableNhanVienRows = Array.from(tableNhanVienBody.querySelectorAll('tr'));
+        }
+
+
+        // --- Hàm chung để cập nhật STT và xử lý hàng trống ---
+        function updateSerialNumbers(tableBody, rows, colspanValue) {
+            const visibleRows = rows.filter(row => row.style.display !== 'none');
+            const emptyRow = tableBody.querySelector(`tr td[colspan="${colspanValue}"]`);
+
             if (visibleRows.length === 0) {
-                const emptyRow = tableNhanVienBody.querySelector('tr td[colspan]');
-                if (emptyRow) emptyRow.style.display = '';
+                // Nếu không có hàng hiển thị, hiển thị hàng trống nếu nó tồn tại
+                if (emptyRow) {
+                    emptyRow.closest('tr').style.display = '';
+                }
             } else {
+                // Ẩn hàng trống nếu có hàng hiển thị
+                if (emptyRow) {
+                    emptyRow.closest('tr').style.display = 'none';
+                }
+                // Cập nhật STT cho các hàng hiển thị
                 visibleRows.forEach((row, index) => {
                     const firstCell = row.querySelector('td:first-child');
                     if (firstCell) {
@@ -434,47 +494,321 @@
             }
         }
 
-        statusFilterNhanVien.addEventListener('change', function () {
-            const selectedRole = this.value;
-            tableNhanVienRows.forEach(row => {
-                const roleCell = row.querySelector('td:nth-child(4)');
-                if (roleCell) {
-                    if (selectedRole === '' || roleCell.textContent.trim() === selectedRole) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
+        // --- Lọc và cập nhật STT cho bảng Khách Hàng ---
+        function updateSerialNumbersKhachHang() {
+            // Cần cập nhật lại tableKhachHangRows sau khi có thể đã xóa hàng
+            if (tableKhachHangBody) {
+                tableKhachHangRows = Array.from(tableKhachHangBody.querySelectorAll('tr'));
+            }
+            updateSerialNumbers(tableKhachHangBody, tableKhachHangRows, 14); // 14 là colspan của hàng trống khách hàng
+        }
+
+        if (statusFilterKhachHang) {
+            statusFilterKhachHang.addEventListener('change', function () {
+                const selectedStatus = this.value;
+                tableKhachHangRows.forEach(row => {
+                    const statusCell = row.querySelector('.status-cell'); // Chọn theo class để đảm bảo ổn định
+                    if (statusCell) {
+                        if (selectedStatus === '' || statusCell.textContent.trim() === selectedStatus) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
                     }
-                }
+                });
+                updateSerialNumbersKhachHang();
             });
+        }
+
+
+        // --- Lọc và cập nhật STT cho bảng Nhân Viên ---
+        function updateSerialNumbersNhanVien() {
+            // Cần cập nhật lại tableNhanVienRows sau khi có thể đã xóa hàng
+            if (tableNhanVienBody) {
+                tableNhanVienRows = Array.from(tableNhanVienBody.querySelectorAll('tr'));
+            }
+            updateSerialNumbers(tableNhanVienBody, tableNhanVienRows, 13); // 13 là colspan của hàng trống nhân viên
+        }
+
+        if (statusFilterNhanVien) {
+            statusFilterNhanVien.addEventListener('change', function () {
+                const selectedRole = this.value;
+                tableNhanVienRows.forEach(row => {
+                    const roleCell = row.querySelector('td:nth-child(4)'); // Ô chứa vai trò nhân viên (thứ 4)
+                    if (roleCell) {
+                        if (selectedRole === '' || roleCell.textContent.trim() === selectedRole) {
+                            row.style.display = ''; // Hiển thị hàng nếu trùng khớp hoặc chọn "Tất cả"
+                        } else {
+                            row.style.display = 'none'; // Ẩn hàng nếu không trùng khớp
+                        }
+                    }
+                });
+                updateSerialNumbersNhanVien(); // Cập nhật lại STT sau khi lọc
+            });
+        }
+
+
+        // --- Xử lý hành động tài khoản Khách Hàng ---
+        function sendCustomerAction(id, actionType, button) {
+            let url = '';
+            let confirmMessage = '';
+            let newStatus = '';
+
+            switch (actionType) {
+                case 'approve':
+                    url = '@Url.Action("ApproveCustomerAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận duyệt tài khoản khách hàng ID: ${id}?`;
+                    newStatus = 'Đã duyệt';
+                    break;
+                case 'reject':
+                    url = '@Url.Action("RejectCustomerAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận từ chối tài khoản khách hàng ID: ${id}?`;
+                    newStatus = 'Đã từ chối';
+                    break;
+                case 'lock':
+                    url = '@Url.Action("LockCustomerAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận khóa tài khoản khách hàng ID: ${id}?`;
+                    newStatus = 'Đang bị khóa';
+                    break;
+                case 'unlock':
+                    url = '@Url.Action("UnlockCustomerAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận mở khóa tài khoản khách hàng ID: ${id}?`;
+                    newStatus = 'Đã duyệt';
+                    break;
+                case 'delete':
+                    url = '@Url.Action("DeleteCustomerAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận xóa tài khoản khách hàng ID: ${id}? Thao tác này không thể hoàn tác.`;
+                    break;
+                default:
+                    console.warn('Hành động không xác định cho khách hàng:', actionType);
+                    return;
+            }
+
+            if (confirm(confirmMessage)) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            const row = button.closest('tr');
+                            if (row) {
+                                if (actionType === 'delete') {
+                                    row.remove(); // Xóa hàng khỏi DOM
+                                    updateSerialNumbersKhachHang(); // Cập nhật STT sau khi xóa
+                                } else {
+                                    const statusCell = row.querySelector('.status-cell');
+                                    if (statusCell && newStatus) {
+                                        statusCell.textContent = newStatus; // Cập nhật văn bản trạng thái
+                                    }
+                                    // Render lại các nút hành động dựa trên trạng thái mới
+                                    const actionButtonsContainer = row.querySelector('.action-buttons');
+                                    if (actionButtonsContainer) {
+                                        actionButtonsContainer.innerHTML = getCustomerActionButtonsHtml(newStatus, id);
+                                        attachCustomerAccountButtonListeners(); // Gắn lại trình lắng nghe cho các nút mới
+                                    }
+                                }
+                            }
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Đã xảy ra lỗi khi thực hiện hành động: ' + error);
+                        console.error('AJAX Error:', status, error, xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        // Hàm trợ giúp để tạo HTML cho các nút hành động của khách hàng dựa trên trạng thái
+        function getCustomerActionButtonsHtml(status, id) {
+            let html = `<button class="action-button view-details" data-id="${id}">Xem chi tiết</button>`;
+            if (status === "Chờ duyệt") {
+                html = `<button class="action-button approve-account" data-id="${id}" data-action="approve">Duyệt</button>
+                                <button class="action-button reject-account" data-id="${id}" data-action="reject">Từ Chối</button>` + html;
+            } else if (status === "Đã duyệt") {
+                html = `<button class="action-button lock-account" data-id="${id}" data-action="lock">Khóa</button>` + html;
+            } else if (status === "Đã từ chối") {
+                html = `<button class="action-button approve-account" data-id="${id}" data-action="approve">Duyệt</button>
+                                <button class="action-button delete-btn" data-id="${id}" data-action="delete">Xóa</button>` + html;
+            } else if (status === "Đang bị khóa") {
+                html = `<button class="action-button unlock-account" data-id="${id}" data-action="unlock">Mở Khóa</button>
+                                <button class="action-button delete-btn" data-id="${id}" data-action="delete">Xóa</button>` + html;
+            }
+            return html;
+        }
+
+        // Gắn các trình lắng nghe sự kiện cho các nút hành động của tài khoản khách hàng
+        function attachCustomerAccountButtonListeners() {
+            document.querySelectorAll('#table-khach-hang .action-buttons button[data-action]').forEach(button => {
+                // Xóa trình lắng nghe cũ để tránh trùng lặp
+                button.removeEventListener('click', customerAccountButtonHandler);
+                // Gắn trình lắng nghe mới
+                button.addEventListener('click', customerAccountButtonHandler);
+            });
+        }
+
+        // Hàm xử lý sự kiện click cho các nút hành động của khách hàng
+        function customerAccountButtonHandler() {
+            const id = this.getAttribute('data-id');
+            const action = this.getAttribute('data-action');
+            sendCustomerAction(id, action, this);
+        }
+
+        // Gắn trình lắng nghe sự kiện ban đầu cho các nút hành động của tài khoản khách hàng
+        attachCustomerAccountButtonListeners();
+
+
+        // --- Xử lý hành động tài khoản Nhân Viên ---
+        function sendNhanVienAction(id, actionType, button) {
+            let url = '';
+            let confirmMessage = '';
+            let newStatus = '';
+
+            switch (actionType) {
+                case 'edit':
+                    // Chuyển hướng đến trang sửa (không cần AJAX cho hành động này)
+                    window.location.href = `@Url.Action("SuaNhanVien_QuanTriVien", "QuanTriVien")?id=${id}`;
+                    return; // Thoát khỏi hàm vì không cần gửi AJAX
+                case 'delete':
+                    url = '@Url.Action("DeleteNhanVienAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận xóa tài khoản nhân viên ID: ${id}? Thao tác này không thể hoàn tác.`;
+                    break;
+                case 'lock':
+                    url = '@Url.Action("LockNhanVienAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận khóa tài khoản nhân viên ID: ${id}?`;
+                    newStatus = 'Đang bị khóa';
+                    break;
+                case 'unlock':
+                    url = '@Url.Action("UnlockNhanVienAccount", "QuanTriVien")';
+                    confirmMessage = `Xác nhận mở khóa tài khoản nhân viên ID: ${id}?`;
+                    newStatus = 'Đang hoạt động';
+                    break;
+                default:
+                    console.warn('Hành động không xác định cho nhân viên:', actionType);
+                    return;
+            }
+
+            if (confirm(confirmMessage)) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            const row = button.closest('tr');
+                            if (row) {
+                                if (actionType === 'delete') {
+                                    row.remove(); // Xóa hàng khỏi bảng
+                                    updateSerialNumbersNhanVien(); // Cập nhật lại STT
+                                } else {
+                                    const statusCell = row.querySelector('.status-cell-nhan-vien'); // Đảm bảo selector đúng
+                                    if (statusCell && newStatus) { // Chỉ cập nhật trạng thái nếu có newStatus
+                                        statusCell.textContent = newStatus;
+                                    }
+                                    const actionButtonsContainer = row.querySelector('.action-buttons');
+                                    if (actionButtonsContainer) {
+                                        // Cập nhật trạng thái mới cho container để tái tạo nút đúng
+                                        actionButtonsContainer.dataset.nhanvienStatus = newStatus || statusCell.textContent.trim();
+                                        actionButtonsContainer.innerHTML = getNhanVienActionButtonsHtml(newStatus || statusCell.textContent.trim(), id);
+                                        attachNhanVienAccountButtonListeners(); // Gắn lại trình lắng nghe cho các nút mới
+                                    }
+                                }
+                            }
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Đã xảy ra lỗi khi thực hiện hành động: ' + error);
+                        console.error('AJAX Error:', status, error, xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        // Hàm trợ giúp để tạo HTML cho các nút hành động của nhân viên dựa trên trạng thái
+        function getNhanVienActionButtonsHtml(status, id) {
+            let html = ``;
+            // Nút Sửa: luôn hiển thị (chuyển hướng trang)
+            html += `<a href="@Url.Action("SuaNhanVien_QuanTriVien", "QuanTriVien")?id=${id}"
+                 class="action-button edit-btn"
+                 data-action="edit"
+                 style="background-color: #3498db; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;"
+                 onmouseover="this.style.backgroundColor='#2c80b4'"
+                 onmouseout="this.style.backgroundColor='#3498db'">
+                 Sửa
+                 </a>`;
+
+            // Nút Xóa: luôn hiển thị
+            html += `<button class="action-button delete-btn" data-id="${id}" data-action="delete"
+                 style="background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px;"
+                 onmouseover="this.style.backgroundColor='#c0392b'"
+                 onmouseout="this.style.backgroundColor='#e74c3c'">
+                 Xóa
+                 </button>`;
+
+
+            // Nút Khóa/Mở Khóa: hiển thị tùy thuộc vào trạng thái
+            if (status === "Đang hoạt động") {
+                html += `<button class="action-button lock-account" data-id="${id}" data-action="lock">Khóa</button>`;
+            } else if (status === "Đang bị khóa") {
+                html += `<button class="action-button unlock-account" data-id="${id}" data-action="unlock">Mở Khóa</button>`;
+            }
+            // Nút Phân Quyền: luôn hiển thị. Sử dụng biến đã định nghĩa
+            const phanQuyenNhanVienUrl = '@Url.Action("PhanQuyenNhanVien_QuanTriVien", "QuanTriVien")';
+            html += `<a href="${phanQuyenNhanVienUrl}?id=${id}" class="action-button role-account">Phân Quyền</a>`;
+
+            return html;
+        }
+
+        // Gắn các trình lắng nghe sự kiện cho các nút hành động của tài khoản nhân viên
+        function attachNhanVienAccountButtonListeners() {
+            // Lắng nghe sự kiện click trên các nút và liên kết có data-action trong bảng nhân viên
+            document.querySelectorAll('#table-nhan-vien .action-buttons button[data-action], #table-nhan-vien .action-buttons a[data-action]').forEach(element => {
+                // Xóa trình lắng nghe cũ để tránh trùng lặp, quan trọng khi nội dung được tạo lại
+                element.removeEventListener('click', nhanVienAccountButtonHandler);
+                // Gắn trình lắng nghe mới
+                element.addEventListener('click', nhanVienAccountButtonHandler);
+            });
+        }
+
+        // Hàm xử lý sự kiện click cho các nút hành động của nhân viên
+        function nhanVienAccountButtonHandler(event) {
+            // Ngăn chặn hành vi mặc định của thẻ <a> (chuyển hướng) nếu đó là một nút hành động AJAX
+            // Tuy nhiên, đối với "Sửa" và "Phân quyền", chúng ta muốn nó chuyển hướng,
+            // nên ta chỉ ngăn chặn khi có 'data-action' và không phải 'edit'
+            if (this.tagName === 'BUTTON' || (this.tagName === 'A' && this.getAttribute('data-action') !== 'edit')) {
+                event.preventDefault(); // Ngăn chặn chuyển hướng mặc định của <a> nếu nó có data-action và không phải edit
+            }
+
+            const id = this.getAttribute('data-id');
+            const action = this.getAttribute('data-action');
+            sendNhanVienAction(id, action, this);
+        }
+
+
+        // --- Khởi tạo khi DOM được tải ---
+        // Khởi tạo STT khi trang tải lần đầu và gắn listener cho các nút ban đầu
+        if (tableKhachHang && tableKhachHangBody) {
+            updateSerialNumbersKhachHang();
+            attachCustomerAccountButtonListeners();
+        }
+
+        if (tableNhanVien && tableNhanVienBody) {
             updateSerialNumbersNhanVien();
-        });
-
-        // Xử lý nút "Khóa" tài khoản khách hàng
-        document.querySelectorAll('#table-khach-hang .lock-account').forEach(button => {
-            button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                if (confirm(`Xác nhận khóa tài khoản khách hàng ID: ${id}?`)) {
-                    // TODO: Gọi AJAX để khóa tài khoản khách hàng với ID
-                    alert(`Đã yêu cầu khóa tài khoản khách hàng ID: ${id}`);
-                    // Sau khi khóa thành công (trong AJAX callback), có thể cập nhật lại giao diện
+            // Render ban đầu các nút cho các hàng hiện có trong bảng nhân viên
+            document.querySelectorAll('#table-nhan-vien .action-buttons').forEach(container => {
+                const id = container.dataset.nhanvienId;
+                const status = container.dataset.nhanvienStatus;
+                if (id && status) {
+                    container.innerHTML = getNhanVienActionButtonsHtml(status, id);
                 }
             });
-        });
-
-        // Xử lý nút "Khóa" tài khoản nhân viên
-        document.querySelectorAll('#table-nhan-vien .lock-account').forEach(button => {
-            button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                if (confirm(`Xác nhận khóa tài khoản nhân viên ID: ${id}?`)) {
-                    // TODO: Gọi AJAX để khóa tài khoản nhân viên với ID
-                    alert(`Đã yêu cầu khóa tài khoản nhân viên ID: ${id}`);
-                    // Sau khi khóa thành công (trong AJAX callback), có thể cập nhật lại giao diện
-                }
-            });
-        });
-
-        // Khởi tạo STT
-        updateSerialNumbersKhachHang();
-        updateSerialNumbersNhanVien();
+            attachNhanVienAccountButtonListeners();
+        }
     });
 </script>

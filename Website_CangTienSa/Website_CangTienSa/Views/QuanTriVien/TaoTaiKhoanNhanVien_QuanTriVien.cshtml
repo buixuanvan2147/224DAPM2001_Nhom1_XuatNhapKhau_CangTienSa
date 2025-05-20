@@ -217,15 +217,15 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.trangThaiTaiKhoanNhanVien, "Trạng Thái Tài Khoản")
+                @Html.LabelFor(model => model.trangThaiTaiKhoanNhanVien, "Trạng Thái Tài Khoản Sau Khi Tạo")
                 @Html.DropDownListFor(model => model.trangThaiTaiKhoanNhanVien, new List<SelectListItem>
                 {
-                    new SelectListItem { Text = "Mở", Value = "Mở" },
-                    new SelectListItem { Text = "Khóa", Value = "Khóa" }
+                    new SelectListItem { Text = "Mở sẵn", Value = "Đang hoạt động" },
+                    new SelectListItem { Text = "Khóa", Value = "Đang bị khóa" }
                 }, "Chọn trạng thái", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.trangThaiTaiKhoanNhanVien, "", new { @class = "error-message" })
             </div>
-            @using (Html.BeginForm("TaoTaoKhoan_QuanTriVien", "QuanTriVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "error-message" })

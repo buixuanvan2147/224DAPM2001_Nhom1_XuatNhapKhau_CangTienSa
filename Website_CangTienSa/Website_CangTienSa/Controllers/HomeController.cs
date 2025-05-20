@@ -247,7 +247,7 @@ namespace Website_CangTienSa.Controllers
 
             // 2. Kiểm tra thông tin đăng nhập của nhân viên
             var nhanVien = db.nhanViens.FirstOrDefault(nv =>
-                nv.tenDangNhap == username && nv.matKhau == password && nv.trangThaiTaiKhoanNhanVien == "Mở");
+                nv.tenDangNhap == username && nv.matKhau == password && nv.trangThaiTaiKhoanNhanVien == "Đang hoạt động");
 
             if (nhanVien != null)
             {

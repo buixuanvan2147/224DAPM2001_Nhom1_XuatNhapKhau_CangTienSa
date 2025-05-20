@@ -192,7 +192,7 @@ VALUES
 ('KH00000003', 'khachhang3', 'password789', N'Lê Văn Cường', NULL, NULL, '2024-03-01', '123456789003', N'789 Đường Trần Phú, Đà Nẵng', '0905123458', 'cuong.le@email.com', N'Chờ duyệt', NULL),
 ('KH00000004', 'khachhang4', 'pass123456', N'Phạm Thị Dung', N'Công ty TNHH Gamma', '01012345678903', '2024-04-01', '123456789004', N'101 Đường Hùng Vương, Đà Nẵng', '0905123459', 'dung.pham@email.com', N'Đã duyệt', NULL),
 ('KH00000005', 'khachhang5', 'pass789123', N'Hoàng Văn Em', NULL, NULL, '2024-05-01', '123456789005', N'202 Đường Phạm Văn Đồng, Đà Nẵng', '0905123460', 'em.hoang@email.com', N'Đã duyệt', NULL),
-('KH00000006', 'khachhang6', 'password321', N'Ngô Thị Phượng', N'Công ty CP Delta', '01012345678904', '2024-06-01', '123456789006', N'303 Đường Nguyễn Văn Linh, Đà Nẵng', '0905123461', 'phuong.ngo@email.com', N'Đang khóa', NULL),
+('KH00000006', 'khachhang6', 'password321', N'Ngô Thị Phượng', N'Công ty CP Delta', '01012345678904', '2024-06-01', '123456789006', N'303 Đường Nguyễn Văn Linh, Đà Nẵng', '0905123461', 'phuong.ngo@email.com', N'Đang bị khóa', NULL),
 ('KH00000007', 'khachhang7', 'pass654321', N'Vũ Văn Giang', NULL, NULL, '2024-07-01', '123456789007', N'404 Đường Lê Duẩn, Đà Nẵng', '0905123462', 'giang.vu@email.com', N'Đã duyệt', NULL),
 ('KH00000008', 'khachhang8', 'password987', N'Đỗ Thị Hà', N'Công ty TNHH Epsilon', '01012345678905', '2024-08-01', '123456789008', N'505 Đường Nguyễn Tất Thành, Đà Nẵng', '0905123463', 'ha.do@email.com', N'Chờ duyệt', NULL),
 ('KH00000009', 'khachhang9', 'pass123789', N'Bùi Văn Hùng', NULL, NULL, '2024-09-01', '123456789009', N'606 Đường Tôn Đức Thắng, Đà Nẵng', '0905123464', 'hung.bui@email.com', N'Đã duyệt', NULL),
@@ -211,16 +211,16 @@ VALUES
 --3 Insert dữ liệu cho bảng nhanVien
 INSERT INTO nhanVien (maNhanVien, maLoaiNhanVien, tenDangNhap, matKhau, tenHienThi, sdtNhanVien, diaChi, email, trangThaiTaiKhoanNhanVien, thoiGianDangNhapGanNhat, anhDaiDienNhanVienUrl)
 VALUES 
-('NV00000001', 'VTNV000001', 'admin1', 'admin123', N'Nguyễn Văn Admin', '0912345678', N'123 Đường Admin, Đà Nẵng', 'admin1.le@email.com', N'Mở', '2025-05-01 08:00:00', NULL),
-('NV00000002', 'VTNV000002', 'nhapkho1', 'nhapkho123', N'Trần Thị Nhập', '0912345679', N'456 Đường Nhập Kho, Đà Nẵng', 'nhap1.le@email.com', N'Mở', '2025-05-02 09:00:00', NULL),
-('NV00000003', 'VTNV000003', 'xuatkho1', 'xuatkho123', N'Lê Văn Xuất', '0912345680', N'789 Đường Xuất Kho, Đà Nẵng', 'xuat1.le@email.com', N'Mở', '2025-05-03 10:00:00', NULL),
-('NV00000004', 'VTNV000004', 'khobai1', 'khobai123', N'Phạm Thị Kho', '0912345681', N'101 Đường Kho Bãi, Đà Nẵng', 'khobai1.le@email.com', N'Mở', '2025-05-04 11:00:00', NULL),
-('NV00000005', 'VTNV000005', 'haiquan1', 'haiquan123', N'Hoàng Văn Hải', '0912345682', N'202 Đường Hải Quan, Đà Nẵng', 'haiquan1.le@email.com', N'Mở', '2025-05-05 12:00:00', NULL),
-('NV00000006', 'VTNV000006', 'ketoan1', 'ketoan123', N'Ngô Thị Kế', '0912345683', N'303 Đường Kế Toán, Đà Nẵng', 'ketoan1.le@email.com', N'Mở', '2025-05-06 13:00:00', NULL),
-('NV00000007', 'VTNV000001', 'admin2', 'admin456', N'Vũ Văn Admin', '0912345684', N'404 Đường Admin, Đà Nẵng', 'admin2.le@email.com', N'Mở', '2025-05-07 14:00:00', NULL),
-('NV00000008', 'VTNV000002', 'nhapkho2', 'nhapkho456', N'Đỗ Thị Nhập', '0912345685', N'505 Đường Nhập Kho, Đà Nẵng', 'nhapkho2.le@email.com', N'Mở', '2025-05-08 15:00:00', NULL),
-('NV00000009', 'VTNV000003', 'xuatkho2', 'xuatkho456', N'Bùi Văn Xuất', '0912345686', N'606 Đường Xuất Kho, Đà Nẵng', 'xuatkho2.le@email.com', N'Mở', '2025-05-09 16:00:00', NULL),
-('NV00000010', 'VTNV000004', 'khobai2', 'khobai456', N'Nguyễn Thị Kho', '0912345687', N'707 Đường Kho Bãi, Đà Nẵng', 'khobai2.le@email.com', N'Mở', '2025-05-10 17:00:00', NULL);
+('NV00000001', 'VTNV000001', 'admin1', 'admin123', N'Nguyễn Văn Admin', '0912345678', N'123 Đường Admin, Đà Nẵng', 'admin1.le@email.com', N'Đang hoạt động', '2025-05-01 08:00:00', NULL),
+('NV00000002', 'VTNV000002', 'nhapkho1', 'nhapkho123', N'Trần Thị Nhập', '0912345679', N'456 Đường Nhập Kho, Đà Nẵng', 'nhap1.le@email.com', N'Đang hoạt động', '2025-05-02 09:00:00', NULL),
+('NV00000003', 'VTNV000003', 'xuatkho1', 'xuatkho123', N'Lê Văn Xuất', '0912345680', N'789 Đường Xuất Kho, Đà Nẵng', 'xuat1.le@email.com', N'Đang hoạt động', '2025-05-03 10:00:00', NULL),
+('NV00000004', 'VTNV000004', 'khobai1', 'khobai123', N'Phạm Thị Kho', '0912345681', N'101 Đường Kho Bãi, Đà Nẵng', 'khobai1.le@email.com', N'Đang hoạt động', '2025-05-04 11:00:00', NULL),
+('NV00000005', 'VTNV000005', 'haiquan1', 'haiquan123', N'Hoàng Văn Hải', '0912345682', N'202 Đường Hải Quan, Đà Nẵng', 'haiquan1.le@email.com', N'Đang hoạt động', '2025-05-05 12:00:00', NULL),
+('NV00000006', 'VTNV000006', 'ketoan1', 'ketoan123', N'Ngô Thị Kế', '0912345683', N'303 Đường Kế Toán, Đà Nẵng', 'ketoan1.le@email.com', N'Đang hoạt động', '2025-05-06 13:00:00', NULL),
+('NV00000007', 'VTNV000001', 'admin2', 'admin456', N'Vũ Văn Admin', '0912345684', N'404 Đường Admin, Đà Nẵng', 'admin2.le@email.com', N'Đang hoạt động', '2025-05-07 14:00:00', NULL),
+('NV00000008', 'VTNV000002', 'nhapkho2', 'nhapkho456', N'Đỗ Thị Nhập', '0912345685', N'505 Đường Nhập Kho, Đà Nẵng', 'nhapkho2.le@email.com', N'Đang hoạt động', '2025-05-08 15:00:00', NULL),
+('NV00000009', 'VTNV000003', 'xuatkho2', 'xuatkho456', N'Bùi Văn Xuất', '0912345686', N'606 Đường Xuất Kho, Đà Nẵng', 'xuatkho2.le@email.com', N'Đang hoạt động', '2025-05-09 16:00:00', NULL),
+('NV00000010', 'VTNV000004', 'khobai2', 'khobai456', N'Nguyễn Thị Kho', '0912345687', N'707 Đường Kho Bãi, Đà Nẵng', 'khobai2.le@email.com', N'Đang hoạt động', '2025-05-10 17:00:00', NULL);
 
 --4 Insert dữ liệu cho bảng donHang
 INSERT INTO donHang (maDonHang, maKhachHang, maNhanVien, tenNguoiGui, tenNguoiNhan, cangDichDen, ngayTaoDonHang, thoiGianLuuTru, ngayXuatCang, ngayNhapCang, trangThaiDonHang, trangThaiThanhToan, tongTien, moTa)
@@ -369,3 +369,4 @@ VALUES
 ('CTPN000008', 'PN00000008', 'CONT000008', N'Container chứa cá đông lạnh bổ sung'),
 ('CTPN000009', 'PN00000009', 'CONT000009', N'Container chứa xi măng bổ sung'),
 ('CTPN000010', 'PN00000010', 'CONT000010', N'Container chứa nước mắm bổ sung');
+
