@@ -9,7 +9,7 @@ namespace Website_CangTienSa.Models
         [Key]
         public string LoaiHangHoa { get; set; }
         public int ThoiGianLuuTru { get; set; }
-        public DateTime NgayXuatHang { get; set; }
+        public DateTime NgayNhapHang { get; set; }
         public string TrangThaiPhanLoai { get; set; }
         public string TrangThaiDonHang { get; set; }
 

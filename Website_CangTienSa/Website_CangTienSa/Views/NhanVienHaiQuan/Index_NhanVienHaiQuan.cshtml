@@ -1,206 +1,268 @@
 ﻿@Model IEnumerable<Website_CangTienSa.Models.DonHangModel>
-@{
-   
-    Layout = "~/Views/Shared/_LayoutNhanVienHaiQuan.cshtml";
-}
+    @{
 
-<h2 style="margin-top: 40px">Bảng Điều Khiển Nhân Viên Hải Quan - Quản Lý Đơn Hàng</h2>
+        Layout = "~/Views/Shared/_LayoutNhanVienHaiQuan.cshtml";
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>Mã Đơn Hàng</th>
-            <th>Loại Hàng Hóa</th>
-            <th>Thời Gian Lưu Trữ</th>
-            <th>Ngày Giao Hàng</th>
-            <th>Trạng Thái Phân Loại</th>
-            <th>Trạng Thái Gửi Hàng</th>
-            <th>Hành Động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var donHang in Model)
-        {
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px;">
+        <h2>Bảng Điều Khiển Nhân Viên Hải Quan - Quản Lý Đơn Hàng</h2>
+        <input type="text" id="timKiemMaDonHang" placeholder="Tìm theo mã đơn hàng..." onkeyup="timKiem()" style="padding: 6px; width: 250px; border-radius: 4px; border: 1px solid #ccc; margin-right:80px;">
+    </div>
+
+    <table>
+        <thead>
             <tr>
-                <td>@donHang.MaDonHang</td>
-                <td>@donHang.LoaiHangHoa</td>
-                <td>@donHang.ThoiGianLuuTru</td>
-                <td>@donHang.NgayXuatHang.ToString("dd/MM/yyyy")</td>
-                <td>@donHang.TrangThaiPhanLoai</td>
-                <td class="trangThaiGui">@donHang.TrangThaiDonHang</td>
-                <td>
-                    <button class="btn-action" onclick="phanLoai('@donHang.MaDonHang')">Phân Loại</button>
-                    <button class="btn-warning" onclick="baoCao('@donHang.MaDonHang')">Báo Cáo Vi Phạm</button>
-                    <button class="btn-duyet" onclick="duyetGuiHang(this)">Duyệt Gửi</button>
-                </td>
+                <th>Mã Đơn Hàng</th>
+                <th>Loại Hàng Hóa</th>
+                <th>Thời Gian Lưu Trữ</th>
+                <th>Ngày Nhập Hàng</th>
+                <th>Trạng Thái Phân Loại</th>
+                <th>Trạng Thái Gửi Hàng</th>
+                <th>Hành Động</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var donHang in Model)
+            {
+                <tr>
+                    <td>@donHang.MaDonHang</td>
+                    <td>@donHang.LoaiHangHoa</td>
+                    <td>@donHang.ThoiGianLuuTru (Ngày)</td>
+                    <td>@donHang.NgayNhapHang.ToString("dd/MM/yyyy")</td>
+                    <td>@donHang.TrangThaiPhanLoai</td>
+                    <td class="trangThaiGui">@donHang.TrangThaiDonHang</td>
+                    <td>
+                        <button class="btn-action" onclick="phanLoai('@donHang.MaDonHang')">Phân Loại</button>
+                        <button class="btn-warning" onclick="baoCao('@donHang.MaDonHang')">Báo Cáo Vi Phạm</button>
+                        @if (donHang.TrangThaiDonHang == "Hoàn thành" || donHang.TrangThaiDonHang == "Đang vận chuyển")
+                        {
+                            <button class="btn-duyet" disabled>Đã Duyệt</button>
+                        }
+                        else
+                        {
+                            <button class="btn-duyet" onclick="duyetGuiHang(this)">Duyệt Gửi</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<!-- Modal phân loại đơn hàng -->
-<div id="modalPhanLoai" class="modal">
-    <div class="modal-content">
-        <h3>Phân Loại Đơn Hàng</h3>
-        <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHang"></span></p>
+    <!-- Modal phân loại đơn hàng -->
+    <div id="modalPhanLoai" class="modal">
+        <div class="modal-content">
+            <h3>Phân Loại Đơn Hàng</h3>
+            <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHang"></span></p>
 
-        <label>Loại Hàng Hóa:</label>
-        <select>
-            <option>Hàng thông thường</option>
-            <option>Hàng dễ hỏng</option>
-            <option>Hàng nguy hiểm</option>
-        </select>
+            <label>Loại Hàng Hóa:</label>
+            <select>
+                <option>Hàng thông thường</option>
+                <option>Hàng dễ hỏng</option>
+                <option>Hàng nguy hiểm</option>
+            </select>
 
-        <label>Mức độ ưu tiên:</label>
-        <select>
-            <option>Bình thường</option>
-            <option>Ưu tiên cao</option>
-        </select>
+            <label>Mức độ ưu tiên:</label>
+            <select>
+                <option>Bình thường</option>
+                <option>Ưu tiên cao</option>
+            </select>
 
-        <button class="btn-action" onclick="luuPhanLoai()">Lưu</button>
-        <button onclick="dongModal('modalPhanLoai')">Hủy</button>
+            <button class="btn-action" onclick="luuPhanLoai()">Lưu</button>
+            <button onclick="dongModal('modalPhanLoai')">Hủy</button>
+        </div>
     </div>
-</div>
 
-<!-- Modal báo cáo vi phạm -->
-<div id="modalBaoCao" class="modal">
-    <div class="modal-content">
-        <h3>Báo Cáo Vi Phạm</h3>
-        <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHangBC"></span></p>
+    <!-- Modal báo cáo vi phạm -->
+    <div id="modalBaoCao" class="modal">
+        <div class="modal-content">
+            <h3>Báo Cáo Vi Phạm</h3>
+            <p><strong>Mã Đơn Hàng:</strong> <span id="maDonHangBC"></span></p>
 
-        <label>Loại Vi Phạm:</label>
-        <select>
-            <option>Hư hỏng</option>
-            <option>Thiếu số lượng</option>
-            <option>Thiếu giấy tờ</option>
-        </select>
+            <label>Loại Vi Phạm:</label>
+            <select>
+                <option>Hư hỏng</option>
+                <option>Thiếu số lượng</option>
+                <option>Thiếu giấy tờ</option>
+            </select>
 
-        <label>Mô Tả Chi Tiết:</label>
-        <textarea rows="4" cols="50"></textarea>
+            <label>Mô Tả Chi Tiết:</label>
+            <textarea rows="4" cols="50"></textarea>
 
-        <label>Hình Ảnh Minh Họa (tùy chọn):</label>
-        <input type="file">
+            <label>Hình Ảnh Minh Họa (tùy chọn):</label>
+            <input type="file">
 
-        <button class="btn-warning" onclick="guiBaoCao()">Gửi Báo Cáo</button>
-        <button onclick="dongModal('modalBaoCao')">Hủy</button>
+            <button class="btn-warning" onclick="guiBaoCao()">Gửi Báo Cáo</button>
+            <button onclick="dongModal('modalBaoCao')">Hủy</button>
+        </div>
     </div>
-</div>
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-
-    h2, h3 {
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
-
-    .btn-action {
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        padding: 6px 10px;
-        margin: 2px;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .btn-warning {
-        background-color: #FF5722;
-        color: white;
-        border: none;
-        padding: 6px 10px;
-        margin: 2px;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 10%;
-        left: 25%;
-        width: 50%;
-        background: white;
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-        z-index: 1000;
-    }
-
-    .modal-content {
-        padding: 20px;
-    }
-
-    textarea, select, input[type="file"] {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .btn-duyet {
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 6px 10px;
-        margin: 2px;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-        .btn-duyet:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
         }
-</style>
 
-<script>
-    function phanLoai(maDonHang) {
-        document.getElementById("maDonHang").innerText = maDonHang;
-        document.getElementById("modalPhanLoai").style.display = "block";
-    }
-
-    function baoCao(maDonHang) {
-        document.getElementById("maDonHangBC").innerText = maDonHang;
-        document.getElementById("modalBaoCao").style.display = "block";
-    }
-
-    function dongModal(id) {
-        document.getElementById(id).style.display = "none";
-    }
-
-    function luuPhanLoai() {
-        alert("Đã lưu phân loại đơn hàng!");
-        dongModal("modalPhanLoai");
-    }
-
-    function guiBaoCao() {
-        alert("Đã gửi báo cáo vi phạm!");
-        dongModal("modalBaoCao");
-    }
-
-    function duyetGuiHang(button) {
-        if (confirm("Bạn có chắc chắn muốn duyệt gửi hàng đơn này không?")) {
-            let row = button.closest("tr");
-            let cellTrangThai = row.querySelector(".trangThaiGui");
-            cellTrangThai.innerText = "Đã duyệt";
-
-            button.disabled = true;
-            button.innerText = "Đã Duyệt";
-
-            alert("Đã duyệt gửi hàng thành công.");
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-    }
-</script>
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        h2, h3 {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .btn-action {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            margin: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-warning {
+            background-color: #FF5722;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            margin: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 25%;
+            width: 50%;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        textarea, select, input[type="file"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn-duyet {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            margin: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+            .btn-duyet:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+    </style>
+
+    <script>
+        function phanLoai(maDonHang) {
+            document.getElementById("maDonHang").innerText = maDonHang;
+            document.getElementById("modalPhanLoai").style.display = "block";
+        }
+
+        function baoCao(maDonHang) {
+            document.getElementById("maDonHangBC").innerText = maDonHang;
+            document.getElementById("modalBaoCao").style.display = "block";
+        }
+
+        function dongModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        function luuPhanLoai() {
+            alert("Đã lưu phân loại đơn hàng!");
+            dongModal("modalPhanLoai");
+        }
+
+        function guiBaoCao() {
+            alert("Đã gửi báo cáo vi phạm!");
+            dongModal("modalBaoCao");
+        }
+
+        /* function duyetGuiHang(button) {
+             if (confirm("Bạn có chắc chắn muốn duyệt gửi hàng đơn này không?")) {
+                 let row = button.closest("tr");
+                 let cellTrangThai = row.querySelector(".trangThaiGui");
+                 cellTrangThai.innerText = "Đã duyệt";
+
+                 button.disabled = true;
+                 button.innerText = "Đã Duyệt";
+
+                 alert("Đã duyệt gửi hàng thành công.");
+             }
+         }*/
+
+        function duyetGuiHang(button) {
+            const row = button.closest("tr");
+            const maDonHang = row.querySelector("td").innerText;
+            const trangThaiCell = row.querySelector(".trangThaiGui");
+            const trangThaiHienTai = trangThaiCell.innerText.trim();
+
+            if (trangThaiHienTai === "Đang vận chuyển") {
+                alert("Đơn hàng đang vận chuyển. Không thể duyệt.");
+                return;
+            }
+
+            if (trangThaiHienTai === "Hoàn thành") {
+                alert("Đơn hàng đã hoàn thành trước đó.");
+                return;
+            }
+
+            // Gửi yêu cầu cập nhật trạng thái đến Controller
+            fetch(`/NhanVienHaiQuan/DuyetDonHang?maDonHang=${maDonHang}`, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Duyệt gửi thành công!");
+                        trangThaiCell.innerText = "Hoàn thành"; // cập nhật giao diện
+                        button.disabled = true;
+                    } else {
+                        alert("Có lỗi xảy ra khi duyệt đơn hàng.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi:", error);
+                    alert("Không thể kết nối đến máy chủ.");
+                });
+        }
+
+            function timKiem() {
+            const input = document.getElementById("timKiemMaDonHang").value.toUpperCase();
+            const table = document.querySelector("table tbody");
+            const rows = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const maDonHangCell = rows[i].getElementsByTagName("td")[0];
+            if (maDonHangCell) {
+                    const textValue = maDonHangCell.textContent || maDonHangCell.innerText;
+                    rows[i].style.display = textValue.toUpperCase().indexOf(input) > -1 ? "" : "none";
+                }
+            }
+        }
+
+
+    </script>

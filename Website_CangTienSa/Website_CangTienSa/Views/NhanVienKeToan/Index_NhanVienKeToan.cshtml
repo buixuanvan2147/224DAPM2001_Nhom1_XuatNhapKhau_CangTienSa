@@ -2,7 +2,6 @@
 @{
     Layout = "~/Views/Shared/_LayoutNhanVienKeToan.cshtml";
 }
-
 <h2 style="margin-top: 40px; font-family: Arial;">Bảng Điều Khiển Nhân Viên Kế Toán</h2>
 
 <div class="tab-container">
@@ -11,7 +10,12 @@
 </div>
 
 <div class="tab-content" id="tab1">
-    <h3>Cập Nhật Trạng Thái Đơn Hàng</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin: 0;">Cập Nhật Trạng Thái Đơn Hàng</h3>
+        <input type="text" class="tim-kiem" placeholder="Tìm mã đơn hàng..." onkeyup="timKiem(this)"
+               style="padding: 6px; width: 250px; border-radius: 4px; border: 1px solid #ccc; margin-right: 100px;">
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -51,7 +55,12 @@
 </div>
 
 <div class="tab-content" id="tab3" style="display:none">
-    <h3>Xuất Biên Lai Thanh Toán</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin: 0;">Xuất Biên Lai Thanh Toán</h3>
+        <input type="text" class="tim-kiem" placeholder="Tìm mã đơn hàng..." onkeyup="timKiem(this)"
+               style="padding: 6px; width: 250px; border-radius: 4px; border: 1px solid #ccc;margin-right:100px;">
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -129,6 +138,22 @@
         function xuatBienLai(maDH) {
             alert("Biên lai cho đơn hàng " + maDH + " đã được tạo và gửi.");
         }
+
+        function timKiem(input) {
+            const keyword = input.value.toLowerCase();
+            const table = input.closest('.tab-content').querySelector('table');
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const maDonHang = row.querySelector('td')?.textContent?.toLowerCase();
+                if (maDonHang && maDonHang.includes(keyword)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
 
         console.log("Section Scripts đã được render!");
     </script>

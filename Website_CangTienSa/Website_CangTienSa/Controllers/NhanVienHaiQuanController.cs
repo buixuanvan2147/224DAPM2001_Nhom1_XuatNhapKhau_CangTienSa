@@ -25,7 +25,7 @@ namespace Website_CangTienSa.Controllers
                 .ToList()
             ),
                     ThoiGianLuuTru = d.thoiGianLuuTru ,
-                    NgayXuatHang = d.ngayXuatCang ?? DateTime.MinValue, // tránh lỗi null
+                    NgayNhapHang = d.ngayNhapCang ?? DateTime.MinValue, // tránh lỗi null
                     TrangThaiPhanLoai = d.moTa ?? "Chưa phân loại",
                     TrangThaiDonHang = d.trangThaiDonHang ?? "Chưa gửi"
                 }).ToList();
@@ -33,5 +33,27 @@ namespace Website_CangTienSa.Controllers
 
             return View(listDH);
         }
+        [HttpPost]
+        public ActionResult DuyetDonHang(string maDonHang)
+        {
+            var donHang = db.donHangs.FirstOrDefault(d => d.maDonHang == maDonHang);
+
+            if (donHang == null)
+            {
+                return HttpNotFound("Không tìm thấy đơn hàng.");
+            }
+
+            // Chỉ cập nhật nếu không phải "Đang vận chuyển"
+            if (donHang.trangThaiDonHang != "Đang vận chuyển")
+            {
+                donHang.trangThaiDonHang = "Hoàn thành";
+                db.SaveChanges();
+                return Json(new { success = true, message = "Đơn hàng đã được duyệt thành Hoàn thành." });
+            }
+
+            return Json(new { success = false, message = "Đơn hàng đang vận chuyển không thể duyệt." });
+        }
+
+
     }
 }
