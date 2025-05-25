@@ -5,5 +5,7 @@
         public string MaContainer { get; set; }
         public string ViTriTrongKho { get; set; }
         public string KichThuoc { get; set; }
+        public string TenKho { get; set; }
+        public string TenLoaiKho { get; set; }
     }
 }
