@@ -1,4 +1,9 @@
-﻿CREATE DATABASE  XuatNhapHangTaiCangTienSa
+﻿USE master;
+ALTER DATABASE XuatNhapHangTaiCangTienSa SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+DROP DATABASE XuatNhapHangTaiCangTienSa;
+
+CREATE DATABASE  XuatNhapHangTaiCangTienSa
 GO
 
 USE XuatNhapHangTaiCangTienSa
@@ -369,4 +374,49 @@ VALUES
 ('CTPN000008', 'PN00000008', 'CONT000008', N'Container chứa cá đông lạnh bổ sung'),
 ('CTPN000009', 'PN00000009', 'CONT000009', N'Container chứa xi măng bổ sung'),
 ('CTPN000010', 'PN00000010', 'CONT000010', N'Container chứa nước mắm bổ sung');
+GO
+CREATE TRIGGER CapNhatGiaTienChiTietDonHang
+ON chiTietDonHang
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Cập nhật donGia theo danh mục hàng hóa
+    UPDATE ctdh
+    SET donGia = 
+        CASE hh.maDanhMucHangHoa
+            WHEN 'DMHH000001' THEN 90000   -- Hàng điện tử
+            WHEN 'DMHH000002' THEN 60000   -- Hàng thực phẩm
+            WHEN 'DMHH000003' THEN 30000   -- Hàng may mặc
+            WHEN 'DMHH000004' THEN 70000   -- Hàng công nghiệp
+            ELSE 10000                     -- Mặc định
+        END
+    FROM chiTietDonHang ctdh
+    INNER JOIN inserted i ON ctdh.maChiTietDonHang = i.maChiTietDonHang
+    INNER JOIN hangHoa hh ON ctdh.maHangHoa = hh.maHangHoa;
+
+    -- Cập nhật tienLuuKho theo quy tắc
+    UPDATE ctdh
+    SET tienLuuKho =
+        CASE 
+            WHEN i.soLuong <= 10 THEN hh.chiPhiLuuKhoToiThieu
+            ELSE hh.chiPhiLuuKhoToiThieu + hh.chiPhiLuuKhoToiThieu * FLOOR((i.soLuong - 10) / 20)
+        END
+    FROM chiTietDonHang ctdh
+    INNER JOIN inserted i ON ctdh.maChiTietDonHang = i.maChiTietDonHang
+    INNER JOIN hangHoa hh ON ctdh.maHangHoa = hh.maHangHoa;
+
+    -- Cập nhật tongTien trong donHang
+    UPDATE dh
+    SET tongTien = (
+        SELECT SUM(ct.soLuong * ct.donGia + ISNULL(ct.tienLuuKho, 0))
+        FROM chiTietDonHang ct
+        WHERE ct.maDonHang = dh.maDonHang
+    )
+    FROM donHang dh
+    WHERE dh.maDonHang IN (
+        SELECT maDonHang FROM inserted
+    );
+END;
 

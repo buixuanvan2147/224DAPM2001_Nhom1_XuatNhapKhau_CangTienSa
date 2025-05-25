@@ -477,6 +477,7 @@
     <Content Include="Views\NhanVienXuatKho\XuatPhieuXuatKho.cshtml" />
     <Content Include="Views\Home\KhachVangLai_TraCuuDonHang.cshtml" />
     <Content Include="Views\QuanTriVien\TaoTaiKhoanNhanVien_QuanTriVien.cshtml" />
+    <Content Include="Views\KhachHang\XemChiTietDonHang.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

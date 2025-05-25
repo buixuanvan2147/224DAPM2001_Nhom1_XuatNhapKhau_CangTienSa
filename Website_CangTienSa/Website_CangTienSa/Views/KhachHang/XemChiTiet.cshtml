@@ -3,70 +3,106 @@
     Layout = "~/Views/Shared/_LayoutKhachHang.cshtml";
 }
 
-<h2>Chi tiết đơn hàng cá nhân</h2>
+<h2 class="mt-4">Chi tiết đơn hàng cá nhân</h2>
 
-<h4>Đơn hàng đã chuyển thành công</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Mã Đơn</th>
-            <th>Ngày gửi</th>
-            <th>Trạng thái</th>
-            <th>Chi tiết</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>DH001</td>
-            <td>01/04/2025</td>
-            <td>Đã chuyển thành công</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
-        </tr>
-        <tr>
-            <td>DH002</td>
-            <td>03/04/2025</td>
-            <td>Đã chuyển thành công</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
-        </tr>
-    </tbody>
-</table>
+<hr />
 
-<h4>Đơn hàng đã duyệt</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Mã Đơn</th>
-            <th>Ngày gửi</th>
-            <th>Trạng thái</th>
-            <th>Chi tiết</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>DH003</td>
-            <td>05/04/2025</td>
-            <td>Đã duyệt</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
-        </tr>
-    </tbody>
-</table>
+<!-- Đơn hàng đã chuyển thành công -->
+<h4 class="mt-4 text-success">Đơn hàng đã chuyển thành công</h4>
+@if (ViewBag.DaChuyenThanhCong != null && ViewBag.DaChuyenThanhCong.Count > 0)
+{
+    <table class="table table-bordered mb-5">
+        <thead class="table-success">
+            <tr>
+                <th>Mã Đơn</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var don in ViewBag.DaChuyenThanhCong)
+            {
+                <tr>
+                    <td>@don.maDonHang</td>
+                    <td>@((DateTime)don.ngayTaoDonHang)</td>
+                    <td>Đã chuyển thành công</td>
+                    <td>
+                        <a href="@Url.Action("XemChiTietDonHang", "KhachHang", new { maDonHang = don.maDonHang })" class="btn btn-sm btn-outline-primary">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted mb-5">Không có đơn hàng nào đã chuyển thành công.</p>
+}
 
-<h4>Đơn hàng chưa duyệt</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Mã Đơn</th>
-            <th>Ngày gửi</th>
-            <th>Trạng thái</th>
-            <th>Chi tiết</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>DH004</td>
-            <td>07/04/2025</td>
-            <td>Chưa duyệt</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
-        </tr>
-    </tbody>
-</table>
+<!-- Đơn hàng đã duyệt -->
+<h4 class="mt-4 text-primary">Đơn hàng đã duyệt</h4>
+@if (ViewBag.DaDuyet != null && ViewBag.DaDuyet.Count > 0)
+{
+    <table class="table table-bordered mb-5">
+        <thead class="table-primary">
+            <tr>
+                <th>Mã Đơn</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var don in ViewBag.DaDuyet)
+            {
+                <tr>
+                    <td>@don.maDonHang</td>
+                    <td>@((DateTime)don.ngayTaoDonHang)</td>
+                    <td>Đã duyệt</td>
+                    <td>
+                        <a href="@Url.Action("XemChiTietDonHang", "KhachHang", new { maDonHang = don.maDonHang })" class="btn btn-sm btn-outline-primary">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted mb-5">Không có đơn hàng nào đã duyệt.</p>
+}
+
+<!-- Đơn hàng chưa duyệt -->
+<h4 class="mt-4 text-warning">Đơn hàng chưa duyệt</h4>
+@if (ViewBag.ChuaDuyet != null && ViewBag.ChuaDuyet.Count > 0)
+{
+    <table class="table table-bordered" style="margin-bottom: 80px;">
+
+        <thead class="table-warning">
+            <tr>
+                <th>Mã Đơn</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var don in ViewBag.ChuaDuyet)
+            {
+                <tr>
+                    <td>@don.maDonHang</td>
+                    <td>@((DateTime)don.ngayTaoDonHang)</td>
+                    <td>Chưa duyệt</td>
+                    <td>
+                        <a href="@Url.Action("XemChiTietDonHang", "KhachHang", new { maDonHang = don.maDonHang })" class="btn btn-sm btn-outline-primary">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted mb-5">Không có đơn hàng nào chưa duyệt.</p>
+}
