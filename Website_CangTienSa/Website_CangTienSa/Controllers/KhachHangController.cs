@@ -167,7 +167,7 @@ namespace Website_CangTienSa.Controllers
                 cangDichDen = CangDichDen,
                 ngayTaoDonHang = DateTime.Now,
                 thoiGianLuuTru = thoiGianLuuTru,
-                trangThaiDonHang = "Đang xử lý",
+                trangThaiDonHang = "Đang yêu cầu",
                 trangThaiThanhToan = "Chưa thanh toán",
                 tongTien = 0,
                 moTa = LoaiDonHang

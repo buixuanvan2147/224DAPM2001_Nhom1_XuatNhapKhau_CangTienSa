@@ -111,9 +111,7 @@ namespace Website_CangTienSa.Controllers
                 return HttpNotFound();
 
             // Cập nhật trạng thái
-            donHang.trangThaiDonHang = "Đang gửi yêu cầu";
-
-            // Gán nhân viên kho bãi 
+            donHang.trangThaiDonHang = "Đang vận chuyển";
 
             db.SaveChanges();
 
