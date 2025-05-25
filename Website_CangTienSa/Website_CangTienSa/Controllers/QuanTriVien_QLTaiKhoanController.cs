@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Website_CangTienSa.Models;
 using System.Dynamic;
 using System.IO;
+using System.Data.Entity.Validation;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -14,9 +15,144 @@ namespace Website_CangTienSa.Controllers
     {
         private readonly XuatNhapHangTaiCangTienSaEntities db = new XuatNhapHangTaiCangTienSaEntities();
 
+        // GET: Hiển thị form tạo tài khoản khách hàng
         public ActionResult TaoTaiKhoanKhachHang_QuanTriVien()
         {
-            return View();
+            // Truyền danh sách trạng thái tài khoản để hiển thị trong dropdown
+            ViewBag.TrangThaiList = new SelectList(new[] { "Chờ duyệt", "Đang bị khóa", "Đã duyệt" }, "Chờ duyệt");
+
+            // Luôn truyền một đối tượng model mới để tránh lỗi NullReferenceException khi View render lần đầu
+            return View(new khachHang());
+        }
+
+        // POST: Xử lý tạo tài khoản khách hàng
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TaoTaiKhoanKhachHang_QuanTriVien(khachHang model, HttpPostedFileBase imageFile)
+        {
+            // Truyền lại danh sách trạng thái tài khoản để hiển thị dropdown khi có lỗi
+            ViewBag.TrangThaiList = new SelectList(new[] { "Chờ duyệt", "Đang bị khóa", "Đã duyệt" }, model.trangThaiTaiKhoanKhachHang);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Kiểm tra các trường UNIQUE trong cơ sở dữ liệu
+                    if (db.khachHangs.Any(kh => kh.tenDangNhap == model.tenDangNhap))
+                    {
+                        ModelState.AddModelError("tenDangNhap", "Tên đăng nhập đã tồn tại.");
+                        TempData["ErrorMessage"] = "Tên đăng nhập đã tồn tại."; // Sử dụng TempData
+                        return View(model);
+                    }
+                    if (db.khachHangs.Any(kh => kh.email == model.email))
+                    {
+                        ModelState.AddModelError("email", "Email đã được sử dụng.");
+                        TempData["ErrorMessage"] = "Email đã được sử dụng."; // Sử dụng TempData
+                        return View(model);
+                    }
+                    if (!string.IsNullOrEmpty(model.cccd) && db.khachHangs.Any(kh => kh.cccd == model.cccd))
+                    {
+                        ModelState.AddModelError("cccd", "Số CCCD đã tồn tại.");
+                        TempData["ErrorMessage"] = "Số CCCD đã tồn tại."; // Sử dụng TempData
+                        return View(model);
+                    }
+                    if (db.khachHangs.Any(kh => kh.sdtKhachHang == model.sdtKhachHang))
+                    {
+                        ModelState.AddModelError("sdtKhachHang", "Số điện thoại đã được sử dụng.");
+                        TempData["ErrorMessage"] = "Số điện thoại đã được sử dụng."; // Sử dụng TempData
+                        return View(model);
+                    }
+
+                    // Tạo mã khách hàng mới (KHxxxxxxxx)
+                    int newNumber = 1;
+                    string newMaKH = "KH" + newNumber.ToString("D8"); // KH00000001
+
+                    while (db.khachHangs.Any(kh => kh.maKhachHang == newMaKH))
+                    {
+                        newNumber++;
+                        newMaKH = "KH" + newNumber.ToString("D8");
+                    }
+                    model.maKhachHang = newMaKH;
+
+                    // Xử lý ảnh đại diện
+                    if (imageFile != null && imageFile.ContentLength > 0)
+                    {
+                        // Kiểm tra định dạng file
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var extension = Path.GetExtension(imageFile.FileName)?.ToLower();
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("imageFile", "Chỉ hỗ trợ file JPG, PNG hoặc GIF.");
+                            TempData["ErrorMessage"] = "Chỉ hỗ trợ file JPG, PNG hoặc GIF."; // Sử dụng TempData
+                            return View(model);
+                        }
+
+                        // Kiểm tra kích thước file (tối đa 5MB)
+                        if (imageFile.ContentLength > 5 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("imageFile", "Kích thước file không được vượt quá 5MB.");
+                            TempData["ErrorMessage"] = "Kích thước file không được vượt quá 5MB."; // Sử dụng TempData
+                            return View(model);
+                        }
+
+                        // Lưu file vào thư mục ~/Content/img/KhachHangUrl/
+                        string fileName = Guid.NewGuid().ToString() + extension;
+                        string folderPath = Server.MapPath("~/Content/img/KhachHangUrl/");
+                        Directory.CreateDirectory(folderPath); // Tạo thư mục nếu chưa tồn tại
+                        string filePath = Path.Combine(folderPath, fileName);
+
+                        imageFile.SaveAs(filePath);
+                        model.anhDaiDienKhachHangUrl = fileName; // Lưu tên file vào DB
+                    }
+                    else
+                    {
+                        // Nếu không có ảnh, gán ảnh mặc định
+                        model.anhDaiDienKhachHangUrl = "default_user_image.png"; // Lưu tên file mặc định vào DB
+                    }
+
+                    // Mã hóa mật khẩu trước khi lưu (Giả định BCrypt.Net đã được cài đặt)
+                    // if (model.matKhau != null) // Kiểm tra null để tránh lỗi nếu matKhau không được gửi
+                    // {
+                    //     model.matKhau = BCrypt.Net.BCrypt.HashPassword(model.matKhau);
+                    // }
+                    // Bỏ comment dòng trên nếu bạn đã cài BCrypt.Net và muốn mã hóa mật khẩu
+
+                    // Gán ngày đăng ký
+                    model.ngayDangKy = DateTime.Now;
+
+                    // Kiểm tra trạng thái tài khoản hợp lệ (mặc dù đã có DropDownList, nhưng vẫn nên kiểm tra ở backend)
+                    var validStatuses = new[] { "Chờ duyệt", "Đang bị khóa", "Đã duyệt" };
+                    if (!validStatuses.Contains(model.trangThaiTaiKhoanKhachHang))
+                    {
+                        ModelState.AddModelError("trangThaiTaiKhoanKhachHang", "Trạng thái tài khoản không hợp lệ.");
+                        TempData["ErrorMessage"] = "Trạng thái tài khoản không hợp lệ."; // Sử dụng TempData
+                        return View(model);
+                    }
+
+                    // Thêm vào cơ sở dữ liệu
+                    db.khachHangs.Add(model);
+                    db.SaveChanges();
+
+                    // Thông báo thành công và chuyển hướng
+                    TempData["SuccessMessage"] = "Tạo tài khoản khách hàng thành công!"; // Sử dụng TempData
+                    return RedirectToAction("TaoTaiKhoanKhachHang_QuanTriVien");
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi (nên sử dụng logging framework như Serilog hoặc NLog trong ứng dụng thực tế)
+                    System.Diagnostics.Debug.WriteLine("Lỗi khi tạo tài khoản: " + ex.Message);
+                    ModelState.AddModelError("", "Có lỗi xảy ra khi tạo tài khoản: " + ex.Message);
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi tạo tài khoản: " + ex.Message; // Sử dụng TempData
+                }
+            }
+            else
+            {
+                // Nếu ModelState không hợp lệ, hiển thị lỗi chung
+                TempData["ErrorMessage"] = "Vui lòng kiểm tra lại thông tin nhập."; // Sử dụng TempData
+            }
+
+            // Trả về View với model hiện tại để hiển thị lỗi và dữ liệu đã nhập
+            return View(model);
         }
 
         public ActionResult TaoTaiKhoanNhanVien_QuanTriVien()
@@ -33,61 +169,168 @@ namespace Website_CangTienSa.Controllers
             {
                 try
                 {
-                    // Tạo mã nhân viên mới (VD: NV00000001)
+                    // Kiểm tra các trường bắt buộc
+                    if (string.IsNullOrWhiteSpace(model.maLoaiNhanVien))
+                    {
+                        ModelState.AddModelError("maLoaiNhanVien", "Vai trò là bắt buộc.");
+                    }
+                    if (string.IsNullOrWhiteSpace(model.tenDangNhap))
+                    {
+                        ModelState.AddModelError("tenDangNhap", "Tên đăng nhập là bắt buộc.");
+                    }
+                    else if (db.nhanViens.Any(nv => nv.tenDangNhap == model.tenDangNhap))
+                    {
+                        ModelState.AddModelError("tenDangNhap", "Tên đăng nhập đã tồn tại.");
+                    }
+                    if (string.IsNullOrWhiteSpace(model.matKhau))
+                    {
+                        ModelState.AddModelError("matKhau", "Mật khẩu là bắt buộc.");
+                    }
+                    if (string.IsNullOrWhiteSpace(model.email))
+                    {
+                        ModelState.AddModelError("email", "Email là bắt buộc.");
+                    }
+                    else if (db.nhanViens.Any(nv => nv.email == model.email))
+                    {
+                        ModelState.AddModelError("email", "Email đã tồn tại.");
+                    }
+                    if (string.IsNullOrWhiteSpace(model.trangThaiTaiKhoanNhanVien))
+                    {
+                        ModelState.AddModelError("trangThaiTaiKhoanNhanVien", "Trạng thái tài khoản là bắt buộc.");
+                    }
+                    if (!string.IsNullOrWhiteSpace(model.sdtNhanVien) && db.nhanViens.Any(nv => nv.sdtNhanVien == model.sdtNhanVien))
+                    {
+                        ModelState.AddModelError("sdtNhanVien", "Số điện thoại đã tồn tại.");
+                    }
+                    if (!string.IsNullOrWhiteSpace(model.diaChi) && db.nhanViens.Any(nv => nv.diaChi == model.diaChi))
+                    {
+                        ModelState.AddModelError("diaChi", "Địa chỉ đã tồn tại.");
+                    }
+
+                    // Kiểm tra khóa ngoại
+                    if (!string.IsNullOrWhiteSpace(model.maLoaiNhanVien) && !db.vaiTroNhanViens.Any(v => v.maVaiTroNhanVien == model.maLoaiNhanVien))
+                    {
+                        ModelState.AddModelError("maLoaiNhanVien", "Vai trò không hợp lệ.");
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        ViewBag.vaiTroNhanVienList = new SelectList(db.vaiTroNhanViens, "maVaiTroNhanVien", "tenLoaiNhanVien", model.maLoaiNhanVien);
+                        return View(model);
+                    }
+
+                    // Tạo mã nhân viên mới
                     string lastMaNV = db.nhanViens
                                         .OrderByDescending(nv => nv.maNhanVien)
                                         .FirstOrDefault()?.maNhanVien;
 
                     int newNumber = 1;
-                    string newMaNV = "NV00000001"; // Mặc định
+                    string newMaNV = "NV00000001";
 
                     if (!string.IsNullOrEmpty(lastMaNV))
                     {
-                        string numberPart = lastMaNV.Substring(2); // Bỏ "NV"
+                        string numberPart = lastMaNV.Substring(2);
                         if (int.TryParse(numberPart, out int lastNumber))
                         {
                             newNumber = lastNumber + 1;
                         }
                     }
 
-                    newMaNV = "NV" + newNumber.ToString("D8"); // Tạo mã: NV + 8 chữ số → tổng cộng 10 ký tự
+                    newMaNV = "NV" + newNumber.ToString("D8");
 
-                    // Đảm bảo không bị trùng mã nhân viên
                     while (db.nhanViens.Any(nv => nv.maNhanVien == newMaNV))
                     {
                         newNumber++;
                         newMaNV = "NV" + newNumber.ToString("D8");
                     }
 
-                    // Xử lý ảnh bìa
+                    // Xử lý ảnh
                     if (anhDaiDienNhanVienUrl != null && anhDaiDienNhanVienUrl.ContentLength > 0)
                     {
                         string fileName = Path.GetFileName(anhDaiDienNhanVienUrl.FileName);
-                        string filePath = Path.Combine(Server.MapPath("~/Content/img/"), fileName); // Đường dẫn lưu ảnh
-                        anhDaiDienNhanVienUrl.SaveAs(filePath); // Lưu ảnh vào thư mục trên server
-                        model.anhDaiDienNhanVienUrl = fileName; // Lưu đường dẫn ảnh vào cơ sở dữ liệu
+                        string filePath = Path.Combine(Server.MapPath("~/Content/img/NhanVienUrl/"), fileName);
+                        anhDaiDienNhanVienUrl.SaveAs(filePath);
+                        model.anhDaiDienNhanVienUrl = fileName;
+                    }
+                    else
+                    {
+                        model.anhDaiDienNhanVienUrl = "default_user_image.png";
                     }
 
-                    // Gán mã sách mới và thêm vào cơ sở dữ liệu
+                    // Gán các giá trị
                     model.maNhanVien = newMaNV;
                     model.thoiGianDangNhapGanNhat = DateTime.Now;
+
+                    // Thêm vào cơ sở dữ liệu
                     db.nhanViens.Add(model);
                     db.SaveChanges();
-
-                    // Chuyển hướng về trang danh sách sách
-                    //return RedirectToAction("SachList", "SellerDashboard");
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => $"{x.PropertyName}: {x.ErrorMessage}");
+                    foreach (var error in errorMessages)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                    Console.WriteLine("Validation Errors: " + string.Join(", ", errorMessages));
                 }
                 catch (Exception ex)
                 {
-                    // Ghi nhận lỗi và hiển thị thông báo
-                    Console.WriteLine("Error: " + ex.Message); // Log lỗi ra console hoặc log file
                     ModelState.AddModelError("", "Có lỗi xảy ra: " + ex.Message);
+                    Console.WriteLine("Error: " + ex.Message);
                 }
             }
 
-            // Truyền lại danh sách thể loại để hiển thị dropdown
             ViewBag.vaiTroNhanVienList = new SelectList(db.vaiTroNhanViens, "maVaiTroNhanVien", "tenLoaiNhanVien", model.maLoaiNhanVien);
             return View(model);
+        }
+
+        [HttpPost] // Chuyển sang POST để tăng bảo mật
+        public ActionResult DuyetKhachHangHangLoat_QuanTriVien()
+        {
+            try
+            {
+                var khachHangsChoDuyet = db.khachHangs
+                    .Where(k => k.trangThaiTaiKhoanKhachHang == "Chờ duyệt")
+                    .ToList();
+
+                if (khachHangsChoDuyet.Any())
+                {
+                    // Cập nhật trạng thái thành "Đã duyệt" trong một transaction để đảm bảo tính toàn vẹn
+                    using (var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            foreach (var khachHang in khachHangsChoDuyet)
+                            {
+                                khachHang.trangThaiTaiKhoanKhachHang = "Đã duyệt";
+                            }
+
+                            db.SaveChanges();
+                            transaction.Commit();
+
+                            return Json(new { success = true, message = $"Đã duyệt thành công {khachHangsChoDuyet.Count} tài khoản!" });
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw; // Ném ngoại lệ để xử lý ở catch bên ngoài
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không có tài khoản nào đang chờ duyệt." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi chi tiết (ví dụ: sử dụng log4net hoặc Serilog)
+                // Logger.LogError(ex, "Lỗi khi duyệt hàng loạt khách hàng");
+                return Json(new { success = false, message = "Có lỗi xảy ra. Vui lòng thử lại sau." });
+            }
         }
 
         // Action để Duyệt tài khoản khách hàng

@@ -272,6 +272,8 @@
     <Content Include="Content\img\default_user_image.png" />
     <Content Include="Content\img\feature.jpg" />
     <Content Include="Content\img\header.jpg" />
+    <Content Include="Content\img\KhachHangUrl\default_user_image.png" />
+    <Content Include="Content\img\NhanVienUrl\default_user_image.png" />
     <Content Include="Content\img\team-1.jpg" />
     <Content Include="Content\img\team-2.jpg" />
     <Content Include="Content\img\team-3.jpg" />
@@ -478,13 +480,12 @@
     <Content Include="Views\NhanVienKhoBai\ChiTietDonHang.cshtml" />
     <Content Include="Views\NhanVienXuatKho\XuatPhieuXuatKho.cshtml" />
     <Content Include="Views\Home\KhachVangLai_TraCuuDonHang.cshtml" />
-    <Content Include="Views\QuanTriVien\TaoTaiKhoanNhanVien_QuanTriVien.cshtml" />
-    <Content Include="Views\QuanTriVien\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanNhanVien_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
     <Content Include="Views\Home\ThongBaoDangKyThanhCong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\QuanTriVien_QLTaiKhoan\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
