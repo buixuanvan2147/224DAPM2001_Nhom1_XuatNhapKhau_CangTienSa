@@ -34,7 +34,7 @@
                 <td>
                     <button class="btn-action" onclick="xemChiTietDonHang('@donHang.MaDonHang')">Xem Chi Tiết</button>
                     <button class="btn-warning" onclick="baoCao('@donHang.MaDonHang')">Báo Cáo Vi Phạm</button>
-                    @if (donHang.TrangThaiDonHang == "Hoàn thành" || donHang.TrangThaiDonHang == "Đang vận chuyển")
+                    @if (donHang.TrangThaiDonHang == "Đang xử lý" || donHang.TrangThaiDonHang == "Đang vận chuyển")
                     {
                         <button class="btn-duyet" disabled>Đã Duyệt</button>
                     }
@@ -250,8 +250,8 @@
             alert("Đơn hàng đang vận chuyển. Không thể duyệt.");
             return;
         }
-        if (trangThai === "Hoàn thành") {
-            alert("Đơn hàng đã hoàn thành trước đó.");
+        if (trangThai === "Đang xử lý") {
+            alert("Đơn hàng đã được xử lý trước đó.");
             return;
         }
 
@@ -261,7 +261,7 @@
             .then(response => {
                 if (response.ok) {
                     alert("Duyệt gửi thành công!");
-                    trangThaiCell.innerText = "Hoàn thành";
+                    trangThaiCell.innerText = "Đang xử lý";
                     button.disabled = true;
                     button.innerText = "Đã Duyệt";
                 } else {

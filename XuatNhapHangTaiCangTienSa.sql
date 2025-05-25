@@ -1,8 +1,4 @@
-﻿USE master;
-ALTER DATABASE XuatNhapHangTaiCangTienSa SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-GO
-DROP DATABASE XuatNhapHangTaiCangTienSa;
-
+﻿
 CREATE DATABASE  XuatNhapHangTaiCangTienSa
 GO
 
@@ -419,4 +415,12 @@ BEGIN
         SELECT maDonHang FROM inserted
     );
 END;
+
+UPDATE donHang
+SET trangThaiDonHang = N'Đang yêu cầu'
+WHERE trangThaiDonHang = N'Đang xử lý';
+
+UPDATE donHang
+SET trangThaiDonHang = N'Đang xử lý'
+WHERE trangThaiDonHang = N'Hoàn thành';
 
