@@ -252,16 +252,16 @@ VALUES
 --6 Insert dữ liệu cho bảng hangHoa
 INSERT INTO hangHoa (maHangHoa, maDanhMucHangHoa, tenHangHoa, chiPhiLuuKhoToiThieu, donViTinh, moTa)
 VALUES 
-('HH00000001', 'DMHH000001', N'Tivi Samsung 55 inch', 500000, N'Cái', N'Tivi LED cao cấp'),
-('HH00000002', 'DMHH000001', N'Điện thoại iPhone 14', 300000, N'Cái', N'Điện thoại thông minh'),
-('HH00000003', 'DMHH000002', N'Gạo ST25', 100000, N'Tấn', N'Gạo chất lượng cao'),
-('HH00000004', 'DMHH000002', N'Cá đông lạnh', 200000, N'Tấn', N'Cá đông lạnh xuất khẩu'),
-('HH00000005', 'DMHH000003', N'Áo thun cotton', 50000, N'Cái', N'Áo thun thời trang'),
-('HH00000006', 'DMHH000003', N'Quần jeans', 70000, N'Cái', N'Quần jeans cao cấp'),
+('HH00000001', 'DMHH000001', N'Tivi', 500000, N'Cái', N'Tivi LED cao cấp'),
+('HH00000002', 'DMHH000001', N'Điện thoại', 300000, N'Cái', N'Điện thoại thông minh'),
+('HH00000003', 'DMHH000002', N'Gạo', 100000, N'Tấn', N'Gạo chất lượng cao'),
+('HH00000004', 'DMHH000002', N'Cá', 200000, N'Tấn', N'Cá đông lạnh xuất khẩu'),
+('HH00000005', 'DMHH000003', N'Áo', 50000, N'Cái', N'Áo thun thời trang'),
+('HH00000006', 'DMHH000003', N'Quần', 70000, N'Cái', N'Quần jeans cao cấp'),
 ('HH00000007', 'DMHH000004', N'Thép cuộn', 1000000, N'Tấn', N'Thép cuộn công nghiệp'),
 ('HH00000008', 'DMHH000004', N'Xi măng', 800000, N'Tấn', N'Xi măng xây dựng'),
-('HH00000009', 'DMHH000001', N'Máy tính Dell', 400000, N'Cái', N'Laptop doanh nghiệp'),
-('HH00000010', 'DMHH000002', N'Nước mắm Phú Quốc', 150000, N'Thùng', N'Nước mắm truyền thống');
+('HH00000009', 'DMHH000001', N'Laptop', 400000, N'Cái', N'Laptop doanh nghiệp'),
+('HH00000010', 'DMHH000002', N'Nước mắm', 150000, N'Thùng', N'Nước mắm truyền thống');
 
 --7 Insert dữ liệu cho bảng chiTietDonHang
 INSERT INTO chiTietDonHang (maChiTietDonHang, maDonHang, maHangHoa, soLuong, donViTinh, chatLuong, donGia, tienLuuKho, moTa)
