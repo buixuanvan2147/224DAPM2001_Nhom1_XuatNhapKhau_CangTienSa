@@ -8,6 +8,11 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Website_CangTienSa.Models;
 using System.Linq.Dynamic;
+using BCrypt.Net;
+using System.IO;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -328,9 +333,92 @@ namespace Website_CangTienSa.Controllers
             }
         }
 
+        // GET: DangKy
         public ActionResult DangKy()
         {
-            return View();
+            return View(new KVL_DangKyViewModel());
+        }
+
+        // POST: DangKy
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DangKy(KVL_DangKyViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra trùng lặp
+                if (db.khachHangs.Any(kh => kh.tenDangNhap.ToLower() == model.tenDangNhap.ToLower()))
+                {
+                    ModelState.AddModelError("tenDangNhap", "Tên đăng nhập này đã tồn tại.");
+                    return View(model);
+                }
+                if (db.khachHangs.Any(kh => kh.email.ToLower() == model.email.ToLower()))
+                {
+                    ModelState.AddModelError("email", "Email này đã được sử dụng.");
+                    return View(model);
+                }
+                if (db.khachHangs.Any(kh => kh.cccd == model.cccd))
+                {
+                    ModelState.AddModelError("cccd", "CCCD này đã được đăng ký.");
+                    return View(model);
+                }
+
+                // Tạo mã khách hàng
+                string lastMaKH = db.khachHangs
+                                    .OrderByDescending(kh => kh.maKhachHang)
+                                    .FirstOrDefault()?.maKhachHang;
+                int newNumber = 1;
+                string newMaKH = "KH00000001";
+                if (!string.IsNullOrEmpty(lastMaKH))
+                {
+                    string numberPart = lastMaKH.Substring(2);
+                    if (int.TryParse(numberPart, out int lastNumber))
+                    {
+                        newNumber = lastNumber + 1;
+                    }
+                }
+                newMaKH = "KH" + newNumber.ToString("D8");
+                while (db.khachHangs.Any(kh => kh.maKhachHang == newMaKH))
+                {
+                    newNumber++;
+                    newMaKH = "KH" + newNumber.ToString("D8");
+                }
+
+                // Map ViewModel sang entity khachHang
+                var khachHang = new khachHang
+                {
+                    maKhachHang = newMaKH,
+                    tenDangNhap = model.tenDangNhap,
+                    matKhau = BCrypt.Net.BCrypt.HashPassword(model.matKhau), // Use BCrypt for password hashing
+                    tenKhachHang = model.tenKhachHang,
+                    cccd = model.cccd,
+                    diaChiLienLac = model.diaChiLienLac,
+                    sdtKhachHang = model.sdtKhachHang,
+                    email = model.email,
+                    ngayDangKy = DateTime.Now,
+                    trangThaiTaiKhoanKhachHang = "Chờ duyệt",
+                    tenCongTy = string.IsNullOrWhiteSpace(model.tenCongTy) ? null : model.tenCongTy,
+                    maSoThueCongTy = string.IsNullOrWhiteSpace(model.maSoThueCongTy) ? null : model.maSoThueCongTy,
+                    anhDaiDienKhachHangUrl = null
+                };
+
+                try
+                {
+                    db.khachHangs.Add(khachHang);
+                    await db.SaveChangesAsync();         
+
+                    TempData["SuccessMessage"] = "Gửi yêu cầu đăng ký thành công. Vui lòng kiểm tra email để xem thông tin tài khoản.";
+                    return RedirectToAction("DangNhap");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Có lỗi xảy ra: {ex.Message}");
+                    return View(model); // Return KVL_DangKyViewModel
+                }
+            }
+
+            // If ModelState is invalid, return the View with the same KVL_DangKyViewModel
+            return View(model);
         }
 
         public ActionResult QuenMatKhau()

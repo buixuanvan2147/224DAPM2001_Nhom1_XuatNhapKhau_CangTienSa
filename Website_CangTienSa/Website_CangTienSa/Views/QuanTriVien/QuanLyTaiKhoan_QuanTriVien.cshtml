@@ -278,7 +278,7 @@
                     <option value="Đã từ chối">Tài khoản đã từ chối</option>
                 </select>
             </div>
-            <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Khách Hàng</a>
+            <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien_QLTaiKhoan")" class="button-add-TK">Tạo Tài Khoản Khách Hàng</a>
         </div>
     </div>
     <table class="table-khach-hang" id="table-khach-hang">
@@ -287,15 +287,8 @@
                 <th>STT</th>
                 <th>Ảnh Đại Diện</th>
                 <th>Mã Khách Hàng</th>
-                <th>Tên Đăng Nhập</th>
                 <th>Tên Khách Hàng</th>
                 <th>Tên Công Ty</th>
-                <th>Mã Số Thuế</th>
-                <th>Ngày Đăng Ký</th>
-                <th>CCCD</th>
-                <th>Địa Chỉ Liên Lạc</th>
-                <th>SĐT Khách Hàng</th>
-                <th>Email</th>
                 <th>Trạng Thái Tài Khoản</th>
                 <th>Hành động</th>
             </tr>
@@ -313,15 +306,8 @@
                                  alt="Ảnh đại diện">
                         </td>
                         <td>@khachHang.maKhachHang</td>
-                        <td>@khachHang.tenDangNhap</td>
                         <td>@khachHang.tenKhachHang</td>
                         <td>@khachHang.tenCongTy</td>
-                        <td>@khachHang.maSoThueCongTy</td>
-                        <td>@khachHang.ngayDangKy.ToString("dd/MM/yyyy")</td>
-                        <td>@khachHang.cccd</td>
-                        <td>@khachHang.diaChiLienLac</td>
-                        <td>@khachHang.sdtKhachHang</td>
-                        <td>@khachHang.email</td>
                         <td class="status-cell">@khachHang.trangThaiTaiKhoanKhachHang</td>
                         <td>
                             <div class="action-buttons">
@@ -344,7 +330,7 @@
                                     <button class="action-button unlock-account" data-id="@khachHang.maKhachHang" data-action="unlock">Mở Khóa</button>
                                     <button class="action-button delete-btn" data-id="@khachHang.maKhachHang" data-action="delete">Xóa</button>
                                 }
-                                <button class="action-button view-details" data-id="@khachHang.maKhachHang">Xem chi tiết</button>
+                                <button class="action-button view-details xemchitietkhachhang" data-id="@khachHang.maKhachHang">Xem chi tiết</button>
                             </div>
                         </td>
                     </tr>
@@ -356,7 +342,7 @@
                 <tr>
                     <td colspan="14" style="text-align: center;">
                         Không có dữ liệu khách hàng.
-                        <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien")">Tạo mới</a>
+                        <a href="@Url.Action("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien_QLTaiKhoan")">Tạo mới</a>
                     </td>
                 </tr>
             }
@@ -378,7 +364,7 @@
                     }
                 </select>
             </div>
-            <a href="@Url.Action("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien")" class="button-add-TK">Tạo Tài Khoản Nhân Viên</a>
+            <a href="@Url.Action("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")" class="button-add-TK">Tạo Tài Khoản Nhân Viên</a>
         </div>
     </div>
     <table class="table-khach-hang" id="table-nhan-vien">
@@ -388,14 +374,8 @@
                 <th>Ảnh Đại Diện</th>
                 <th>Mã Nhân Viên</th>
                 <th>Vai Trò</th>
-                <th>Tên Đăng Nhập</th>
-                <th>Mật Khẩu</th>
                 <th>Tên Hiển Thị</th>
-                <th>SĐT Nhân Viên</th>
-                <th>Địa Chỉ Liên Lạc</th>
-                <th>Email</th>
                 <th>Trạng Thái Tài Khoản</th>
-                <th>Đăng Nhập Gần Nhất</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -413,14 +393,8 @@
                         </td>
                         <td>@nhanVien.MaNhanVien</td>
                         <td>@nhanVien.TenLoaiNhanVien</td>
-                        <td>@nhanVien.TenDangNhap</td>
-                        <td>@nhanVien.MatKhau</td>
                         <td>@nhanVien.TenHienThi</td>
-                        <td>@nhanVien.SdtNhanVien</td>
-                        <td>@nhanVien.DiaChi</td>
-                        <td>@nhanVien.Email</td>
                         <td class="status-cell-nhan-vien">@nhanVien.TrangThaiTaiKhoanNhanVien</td>
-                        <td>@(nhanVien.ThoiGianDangNhapGanNhat.ToString("dd/MM/yyyy HH:mm:ss") ?? "Chưa đăng nhập")</td>
                         <td>
                             <div class="action-buttons" data-nhanvien-id="@nhanVien.MaNhanVien" data-nhanvien-status="@nhanVien.TrangThaiTaiKhoanNhanVien">
                                 @* Các nút sẽ được render bởi JavaScript dựa trên trạng thái của nhân viên *@
@@ -435,7 +409,7 @@
                 <tr>
                     <td colspan="13" style="text-align: center;">
                         Không có dữ liệu nhân viên.
-                        <a href="@Url.Action("TaoTaoKhoanNhanVien_QuanTriVien", "QuanTriVien")">Tạo mới</a>
+                        <a href="@Url.Action("TaoTaoKhoanNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")">Tạo mới</a>
                     </td>
                 </tr>
             }
@@ -556,27 +530,27 @@
 
             switch (actionType) {
                 case 'approve':
-                    url = '@Url.Action("ApproveCustomerAccount", "QuanTriVien")';
+                    url = '@Url.Action("ApproveCustomerAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận duyệt tài khoản khách hàng ID: ${id}?`;
                     newStatus = 'Đã duyệt';
                     break;
                 case 'reject':
-                    url = '@Url.Action("RejectCustomerAccount", "QuanTriVien")';
+                    url = '@Url.Action("RejectCustomerAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận từ chối tài khoản khách hàng ID: ${id}?`;
                     newStatus = 'Đã từ chối';
                     break;
                 case 'lock':
-                    url = '@Url.Action("LockCustomerAccount", "QuanTriVien")';
+                    url = '@Url.Action("LockCustomerAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận khóa tài khoản khách hàng ID: ${id}?`;
                     newStatus = 'Đang bị khóa';
                     break;
                 case 'unlock':
-                    url = '@Url.Action("UnlockCustomerAccount", "QuanTriVien")';
+                    url = '@Url.Action("UnlockCustomerAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận mở khóa tài khoản khách hàng ID: ${id}?`;
                     newStatus = 'Đã duyệt';
                     break;
                 case 'delete':
-                    url = '@Url.Action("DeleteCustomerAccount", "QuanTriVien")';
+                    url = '@Url.Action("DeleteCustomerAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận xóa tài khoản khách hàng ID: ${id}? Thao tác này không thể hoàn tác.`;
                     break;
                 default:
@@ -670,19 +644,19 @@
             switch (actionType) {
                 case 'edit':
                     // Chuyển hướng đến trang sửa (không cần AJAX cho hành động này)
-                    window.location.href = `@Url.Action("SuaNhanVien_QuanTriVien", "QuanTriVien")?id=${id}`;
+                    window.location.href = `@Url.Action("ChinhSuaNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")?id=${id}`;
                     return; // Thoát khỏi hàm vì không cần gửi AJAX
                 case 'delete':
-                    url = '@Url.Action("DeleteNhanVienAccount", "QuanTriVien")';
+                    url = '@Url.Action("DeleteNhanVienAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận xóa tài khoản nhân viên ID: ${id}? Thao tác này không thể hoàn tác.`;
                     break;
                 case 'lock':
-                    url = '@Url.Action("LockNhanVienAccount", "QuanTriVien")';
+                    url = '@Url.Action("LockNhanVienAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận khóa tài khoản nhân viên ID: ${id}?`;
                     newStatus = 'Đang bị khóa';
                     break;
                 case 'unlock':
-                    url = '@Url.Action("UnlockNhanVienAccount", "QuanTriVien")';
+                    url = '@Url.Action("UnlockNhanVienAccount", "QuanTriVien_QLTaiKhoan")';
                     confirmMessage = `Xác nhận mở khóa tài khoản nhân viên ID: ${id}?`;
                     newStatus = 'Đang hoạt động';
                     break;
@@ -734,7 +708,7 @@
         function getNhanVienActionButtonsHtml(status, id) {
             let html = ``;
             // Nút Sửa: luôn hiển thị (chuyển hướng trang)
-            html += `<a href="@Url.Action("SuaNhanVien_QuanTriVien", "QuanTriVien")?id=${id}"
+            html += `<a href="@Url.Action("ChinhSuaNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")?id=${id}"
                  class="action-button edit-btn"
                  data-action="edit"
                  style="background-color: #3498db; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;"
@@ -759,8 +733,12 @@
                 html += `<button class="action-button unlock-account" data-id="${id}" data-action="unlock">Mở Khóa</button>`;
             }
             // Nút Phân Quyền: luôn hiển thị. Sử dụng biến đã định nghĩa
-            const phanQuyenNhanVienUrl = '@Url.Action("PhanQuyenNhanVien_QuanTriVien", "QuanTriVien")';
+            const phanQuyenNhanVienUrl = '@Url.Action("PhanQuyenNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")';
             html += `<a href="${phanQuyenNhanVienUrl}?id=${id}" class="action-button role-account">Phân Quyền</a>`;
+
+            // Nút Xem chi tiết nhân viên: luôn hiển thị. Sử dụng biến đã định nghĩa
+            const xemChiTietNhanVienUrl = '@Url.Action("XemChiTietNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")';
+            html += `<a href="${xemChiTietNhanVienUrl}?id=${id}" class="action-button role-account" title="Xem chi tiết"><i class="fas fa-info"></i></a>`;
 
             return html;
         }

@@ -54,6 +54,24 @@ namespace Website_CangTienSa.Controllers
             return Json(new { success = false, message = "Đơn hàng đang vận chuyển không thể duyệt." });
         }
 
+        public JsonResult LayChiTietDonHang(string maDonHang)
+        {
+            var chiTiet = db.chiTietDonHangs
+                            .Where(c => c.maDonHang == maDonHang)
+                            .Select(c => new {
+                                c.maChiTietDonHang,
+                                c.maDonHang,
+                                c.maHangHoa,
+                                c.soLuong,
+                                c.donViTinh,
+                                c.chatLuong,
+                                c.donGia,
+                                c.tienLuuKho,
+                                c.moTa
+                            }).ToList();
+
+            return Json(chiTiet, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }
