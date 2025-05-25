@@ -46,14 +46,32 @@ namespace Website_CangTienSa.Controllers
             // Chỉ cập nhật nếu không phải "Đang vận chuyển"
             if (donHang.trangThaiDonHang != "Đang vận chuyển")
             {
-                donHang.trangThaiDonHang = "Hoàn thành";
+                donHang.trangThaiDonHang = "Đang xử lý";
                 db.SaveChanges();
-                return Json(new { success = true, message = "Đơn hàng đã được duyệt thành Hoàn thành." });
+                return Json(new { success = true, message = "Đơn hàng đã được duyệt thành Đang xử lý." });
             }
 
             return Json(new { success = false, message = "Đơn hàng đang vận chuyển không thể duyệt." });
         }
 
+        public JsonResult LayChiTietDonHang(string maDonHang)
+        {
+            var chiTiet = db.chiTietDonHangs
+                            .Where(c => c.maDonHang == maDonHang)
+                            .Select(c => new {
+                                c.maChiTietDonHang,
+                                c.maDonHang,
+                                c.maHangHoa,
+                                c.soLuong,
+                                c.donViTinh,
+                                c.chatLuong,
+                                c.donGia,
+                                c.tienLuuKho,
+                                c.moTa
+                            }).ToList();
+
+            return Json(chiTiet, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

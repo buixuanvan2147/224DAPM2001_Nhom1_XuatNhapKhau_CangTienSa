@@ -1,0 +1,76 @@
+﻿@using Website_CangTienSa.Models
+@model donHang
+
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng " + Model.maDonHang;
+    Layout = "~/Views/Shared/_LayoutKhachHang.cshtml";
+}
+
+<h2 class="mt-4">Đơn hàng: @Model.maDonHang</h2>
+
+<div style="display: flex; gap: 20px;">
+    <table class="table table-bordered" style="flex: 1;">
+        <tr><th>Người gửi</th><td>@Model.tenNguoiGui</td></tr>
+        <tr><th>Người nhận</th><td>@Model.tenNguoiNhan</td></tr>
+        <tr><th>Cảng đích đến</th><td>@Model.cangDichDen</td></tr>
+        <tr><th>Ngày tạo</th><td>@Model.ngayTaoDonHang</td></tr>
+        <tr><th>Thời gian lưu trữ</th><td>@Model.thoiGianLuuTru ngày</td></tr>
+    </table>
+
+    <table class="table table-bordered" style="flex: 1;">
+        <tr><th>Ngày xuất cảng</th><td>@Model.ngayXuatCang</td></tr>
+        <tr><th>Ngày nhập cảng</th><td>@Model.ngayNhapCang</td></tr>
+        <tr><th>Trạng thái đơn hàng</th><td>@Model.trangThaiDonHang</td></tr>
+        <tr><th>Trạng thái thanh toán</th><td>@Model.trangThaiThanhToan</td></tr>
+        <tr><th>Tổng tiền</th><td>@(Model.tongTien.HasValue ? Model.tongTien.Value.ToString("N0") : "0") VNĐ</td></tr>
+    </table>
+</div>
+
+<!-- Mô tả tách riêng -->
+<div class="mt-3">
+    <strong>Mô tả:</strong> @Model.moTa
+</div>
+
+
+<h3 class="mt-4">Chi tiết đơn hàng</h3>
+@if (ViewBag.ChiTiet != null && ViewBag.ChiTiet.Count > 0)
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Mã chi tiết</th>
+                <th>Mã hàng hóa</th>
+                <th>Số lượng</th>
+                <th>Đơn vị tính</th>
+                <th>Chất lượng</th>
+                <th>Đơn giá</th>
+                <th>Tiền lưu kho</th>
+                <th>Mô tả</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ChiTiet)
+            {
+                <tr>
+                    <td>@item.maChiTietDonHang</td>
+                    <td>@item.maHangHoa</td>
+                    <td>@item.soLuong</td>
+                    <td>@item.donViTinh</td>
+                    <td>@item.chatLuong</td>
+                    <td>@item.donGia.ToString("N0")</td>
+                    <td>@item.tienLuuKho.ToString("N0")</td>
+                    <td>@item.moTa</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">Không có chi tiết đơn hàng nào.</p>
+}
+
+<p>
+    <a href="@Url.Action("XemChiTiet", "KhachHang")" class="btn btn-secondary mt-3">Quay lại danh sách đơn hàng</a>
+</p>

@@ -16,12 +16,35 @@ namespace Website_CangTienSa.Controllers
         private readonly XuatNhapHangTaiCangTienSaEntities db = new XuatNhapHangTaiCangTienSaEntities();
 
         // GET: Trang danh sách
-        public ActionResult Index_NhanVienXuatKho()
+        public ActionResult Index_NhanVienXuatKho(string keyword, string status, DateTime? fromDate, DateTime? toDate)
         {
-            var donHangs = db.donHangs
-                .Include(d => d.khachHang)
-                .ToList();
-            return View(donHangs);
+            var donHangs = db.donHangs.Include("khachHang")
+                                      .Where(d => d.moTa != "Đơn hàng nhập khẩu");
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                donHangs = donHangs.Where(d =>
+                    d.maDonHang.Contains(keyword) ||
+                    (d.khachHang != null && d.khachHang.tenKhachHang.Contains(keyword))
+                );
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                donHangs = donHangs.Where(d => d.trangThaiDonHang == status);
+            }
+
+            if (fromDate.HasValue)
+            {
+                donHangs = donHangs.Where(d => d.ngayTaoDonHang >= fromDate.Value);
+            }
+
+            if (toDate.HasValue)
+            {
+                donHangs = donHangs.Where(d => d.ngayTaoDonHang <= toDate.Value);
+            }
+
+            return View(donHangs.ToList());
         }
 
         // GET: Chi tiết đơn hàng
@@ -88,9 +111,7 @@ namespace Website_CangTienSa.Controllers
                 return HttpNotFound();
 
             // Cập nhật trạng thái
-            donHang.trangThaiDonHang = "Đang gửi yêu cầu";
-
-            // Gán nhân viên kho bãi 
+            donHang.trangThaiDonHang = "Đang vận chuyển";
 
             db.SaveChanges();
 
