@@ -5,13 +5,24 @@
     ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_LayoutNhanVienXuatKho.cshtml";
 
+    var keyword = Request.QueryString["keyword"];
+    var status = Request.QueryString["status"];
+    var fromDate = Request.QueryString["fromDate"];
+    var toDate = Request.QueryString["toDate"];
+
     List<donHang> filteredDonHangs = new List<donHang>();
+
     if (Model != null)
     {
-        filteredDonHangs = Model
-            .Where(dh => dh.moTa != "Đơn hàng nhập khẩu")
-            .ToList();
+        foreach (var dh in Model)
+        {
+            if (dh.moTa != "Đơn hàng nhập khẩu")
+            {
+                filteredDonHangs.Add(dh);
+            }
+        }
     }
+
 }
 
 <style>
@@ -28,21 +39,50 @@
 
 <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 30px;">
-        <div style="margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between;">
-            <h3 style="font-weight: 600; color: #28a745;">
-                <i class="fas fa-clipboard-list mr-2"></i> Danh sách đơn hàng
-            </h3>
+        <h3 style="font-weight: 600; color: #28a745;">
+            <i class="fas fa-clipboard-list mr-2"></i> Danh sách đơn hàng
+        </h3>
+
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+            @using (Html.BeginForm("Index_NhanVienXuatKho", "NhanVienXuatKho", FormMethod.Get))
+            {
+                <div class="form-row align-items-end" style="flex-wrap: nowrap;">
+                    <!-- Các input lọc -->
+                    <div class="form-group" style="margin-right: 10px;">
+                        <input type="text" name="keyword" class="form-control" style="width: 200px;" value="@keyword" placeholder="Mã đơn / Tên khách" />
+                    </div>
+                    <div class="form-group" style="margin-right: 10px;">
+                        <select class="form-control" name="status" style="width: 130px;">
+                            <option value="">-- Tất cả --</option>
+                            <option value="Đang xử lý" @(status == "Đang xử lý" ? "selected" : "")>Đang xử lý</option>
+                            <option value="Đã xuất kho" @(status == "Đã xuất kho" ? "selected" : "")>Đã xuất kho</option>
+                            <option value="Hoàn thành" @(status == "Hoàn thành" ? "selected" : "")>Hoàn thành</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-right: 10px;">
+                        <input type="date" name="fromDate" class="form-control" style="width: 130px;" value="@fromDate" />
+                    </div>
+                    <div class="form-group" style="margin-right: 10px;">
+                        <input type="date" name="toDate" class="form-control" style="width: 130px;" value="@toDate" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-success">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover table-bordered" style="background-color: #fff; border-radius: 10px; overflow: hidden;">
+            <table class="table table-hover table-bordered">
                 <thead class="thead-dark">
                     <tr style="background-color: #28a745; color: white;">
-                        <th scope="col">Mã đơn hàng</th>
-                        <th scope="col">Khách hàng</th>
-                        <th scope="col">Ngày tạo</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col">Hành động</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,31 +95,29 @@
                                 <td>@(item.khachHang != null ? item.khachHang.tenKhachHang : "Không xác định")</td>
                                 <td>@item.ngayTaoDonHang.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <span class="badge @(item.trangThaiDonHang == "Đã xuất kho" ? "badge-success" : "badge-warning")">
+                                    <span class="badge @(item.trangThaiDonHang == "Đã xuất kho" ? "badge-success" :
+                                                       item.trangThaiDonHang == "Hoàn thành" ? "badge-primary" : "badge-warning")">
                                         @item.trangThaiDonHang
                                     </span>
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-sm mr-1"
-                                       href="@Url.Action("ChiTietDonHang", "NhanVienXuatKho", new { id = item.maDonHang })">
+                                    <a class="btn btn-info btn-sm mr-1" href="@Url.Action("ChiTietDonHang", "NhanVienXuatKho", new { id = item.maDonHang })">
                                         <i class="fas fa-eye"></i> Chi tiết
                                     </a>
 
                                     @if (item.trangThaiDonHang == "Đang xử lý")
                                     {
-                                        using (Html.BeginForm("XuatKho", "NhanVienXuatKho", FormMethod.Post, new { @style = "display:inline;" }))
+                                        using (Html.BeginForm("XuatKho", "NhanVienXuatKho", FormMethod.Post, new { style = "display:inline;" }))
                                         {
                                             @Html.Hidden("id", item.maDonHang)
-                                            <button type="submit" class="btn btn-success btn-sm"
-                                                    onclick="return confirm('Bạn có chắc muốn xuất kho đơn hàng này?');">
+                                            <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Bạn có chắc muốn xuất kho đơn hàng này?');">
                                                 <i class="fas fa-dolly"></i> Xuất kho
                                             </button>
                                         }
                                     }
                                     else if (item.trangThaiDonHang == "Hoàn thành")
                                     {
-                                        <a href="@Url.Action("XuatPhieuXuatKho", "NhanVienXuatKho", new { id = item.maDonHang })"
-                                           class="btn btn-primary btn-sm">
+                                        <a href="@Url.Action("XuatPhieuXuatKho", "NhanVienXuatKho", new { id = item.maDonHang })" class="btn btn-primary btn-sm">
                                             <i class="fas fa-file-invoice"></i> Xem phiếu
                                         </a>
                                     }

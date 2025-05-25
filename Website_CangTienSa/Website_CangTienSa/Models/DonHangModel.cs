@@ -23,6 +23,8 @@ namespace Website_CangTienSa.Models
         public string MaPhieuNhap { get; set; }
         public string MaHangHoa { get; set; }
         public float SoLuong { get; set; }
+        public string TenSanPham { get; set; }
+        public string DonViTinh { get; set; }
         public string TrangThai { get; set; }
         public DateTime? NgayNhapKho { get; set; }
         public string NguoiXacNhan { get; set; }

@@ -1,4 +1,5 @@
-﻿CREATE DATABASE  XuatNhapHangTaiCangTienSa
+﻿
+CREATE DATABASE  XuatNhapHangTaiCangTienSa
 GO
 
 USE XuatNhapHangTaiCangTienSa
@@ -247,16 +248,16 @@ VALUES
 --6 Insert dữ liệu cho bảng hangHoa
 INSERT INTO hangHoa (maHangHoa, maDanhMucHangHoa, tenHangHoa, chiPhiLuuKhoToiThieu, donViTinh, moTa)
 VALUES 
-('HH00000001', 'DMHH000001', N'Tivi Samsung 55 inch', 500000, N'Cái', N'Tivi LED cao cấp'),
-('HH00000002', 'DMHH000001', N'Điện thoại iPhone 14', 300000, N'Cái', N'Điện thoại thông minh'),
-('HH00000003', 'DMHH000002', N'Gạo ST25', 100000, N'Tấn', N'Gạo chất lượng cao'),
-('HH00000004', 'DMHH000002', N'Cá đông lạnh', 200000, N'Tấn', N'Cá đông lạnh xuất khẩu'),
-('HH00000005', 'DMHH000003', N'Áo thun cotton', 50000, N'Cái', N'Áo thun thời trang'),
-('HH00000006', 'DMHH000003', N'Quần jeans', 70000, N'Cái', N'Quần jeans cao cấp'),
+('HH00000001', 'DMHH000001', N'Tivi', 500000, N'Cái', N'Tivi LED cao cấp'),
+('HH00000002', 'DMHH000001', N'Điện thoại', 300000, N'Cái', N'Điện thoại thông minh'),
+('HH00000003', 'DMHH000002', N'Gạo', 100000, N'Tấn', N'Gạo chất lượng cao'),
+('HH00000004', 'DMHH000002', N'Cá', 200000, N'Tấn', N'Cá đông lạnh xuất khẩu'),
+('HH00000005', 'DMHH000003', N'Áo', 50000, N'Cái', N'Áo thun thời trang'),
+('HH00000006', 'DMHH000003', N'Quần', 70000, N'Cái', N'Quần jeans cao cấp'),
 ('HH00000007', 'DMHH000004', N'Thép cuộn', 1000000, N'Tấn', N'Thép cuộn công nghiệp'),
 ('HH00000008', 'DMHH000004', N'Xi măng', 800000, N'Tấn', N'Xi măng xây dựng'),
-('HH00000009', 'DMHH000001', N'Máy tính Dell', 400000, N'Cái', N'Laptop doanh nghiệp'),
-('HH00000010', 'DMHH000002', N'Nước mắm Phú Quốc', 150000, N'Thùng', N'Nước mắm truyền thống');
+('HH00000009', 'DMHH000001', N'Laptop', 400000, N'Cái', N'Laptop doanh nghiệp'),
+('HH00000010', 'DMHH000002', N'Nước mắm', 150000, N'Thùng', N'Nước mắm truyền thống');
 
 --7 Insert dữ liệu cho bảng chiTietDonHang
 INSERT INTO chiTietDonHang (maChiTietDonHang, maDonHang, maHangHoa, soLuong, donViTinh, chatLuong, donGia, tienLuuKho, moTa)
@@ -369,4 +370,57 @@ VALUES
 ('CTPN000008', 'PN00000008', 'CONT000008', N'Container chứa cá đông lạnh bổ sung'),
 ('CTPN000009', 'PN00000009', 'CONT000009', N'Container chứa xi măng bổ sung'),
 ('CTPN000010', 'PN00000010', 'CONT000010', N'Container chứa nước mắm bổ sung');
+GO
+CREATE TRIGGER CapNhatGiaTienChiTietDonHang
+ON chiTietDonHang
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Cập nhật donGia theo danh mục hàng hóa
+    UPDATE ctdh
+    SET donGia = 
+        CASE hh.maDanhMucHangHoa
+            WHEN 'DMHH000001' THEN 90000   -- Hàng điện tử
+            WHEN 'DMHH000002' THEN 60000   -- Hàng thực phẩm
+            WHEN 'DMHH000003' THEN 30000   -- Hàng may mặc
+            WHEN 'DMHH000004' THEN 70000   -- Hàng công nghiệp
+            ELSE 10000                     -- Mặc định
+        END
+    FROM chiTietDonHang ctdh
+    INNER JOIN inserted i ON ctdh.maChiTietDonHang = i.maChiTietDonHang
+    INNER JOIN hangHoa hh ON ctdh.maHangHoa = hh.maHangHoa;
+
+    -- Cập nhật tienLuuKho theo quy tắc
+    UPDATE ctdh
+    SET tienLuuKho =
+        CASE 
+            WHEN i.soLuong <= 10 THEN hh.chiPhiLuuKhoToiThieu
+            ELSE hh.chiPhiLuuKhoToiThieu + hh.chiPhiLuuKhoToiThieu * FLOOR((i.soLuong - 10) / 20)
+        END
+    FROM chiTietDonHang ctdh
+    INNER JOIN inserted i ON ctdh.maChiTietDonHang = i.maChiTietDonHang
+    INNER JOIN hangHoa hh ON ctdh.maHangHoa = hh.maHangHoa;
+
+    -- Cập nhật tongTien trong donHang
+    UPDATE dh
+    SET tongTien = (
+        SELECT SUM(ct.soLuong * ct.donGia + ISNULL(ct.tienLuuKho, 0))
+        FROM chiTietDonHang ct
+        WHERE ct.maDonHang = dh.maDonHang
+    )
+    FROM donHang dh
+    WHERE dh.maDonHang IN (
+        SELECT maDonHang FROM inserted
+    );
+END;
+
+UPDATE donHang
+SET trangThaiDonHang = N'Đang yêu cầu'
+WHERE trangThaiDonHang = N'Đang xử lý';
+
+UPDATE donHang
+SET trangThaiDonHang = N'Đang xử lý'
+WHERE trangThaiDonHang = N'Hoàn thành';
 
