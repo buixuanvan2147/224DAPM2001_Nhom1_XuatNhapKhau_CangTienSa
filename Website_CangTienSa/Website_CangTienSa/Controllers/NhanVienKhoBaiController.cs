@@ -36,17 +36,39 @@ namespace Website_CangTienSa.Controllers
             return View(donHangList);
         }
 
+
         [HttpPost]
-        public JsonResult ConfirmTransport(string maPhieuXuat)
+        public ActionResult ConfirmTransport(string maDonHang)
         {
-            string nguoiXacNhan = User.Identity.Name;
-            bool success = _donHangDAO.ConfirmTransport(maPhieuXuat, nguoiXacNhan);
-            return Json(new
+            try
             {
-                success,
-                message = success ? "✅ Đã xác nhận nhập kho." : "❌ Không tìm thấy đơn hàng."
-            });
+                // Validate input
+                if (string.IsNullOrEmpty(maDonHang))
+                {
+                    TempData["ErrorMessage"] = "Mã đơn hàng không hợp lệ";
+                    return RedirectToAction("Index_NhanVienKhoBai");
+                }
+
+                // Cập nhật trạng thái đơn hàng
+                bool success = _donHangDAO.UpdateTrangThaiDonHang(maDonHang, "Trong kho");
+
+                if (success)
+                {
+                    TempData["SuccessMessage"] = "Đã xác nhận đơn hàng vào kho thành công";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Xác nhận đơn hàng thất bại";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi hệ thống: {ex.Message}";
+            }
+
+            return RedirectToAction("Index_NhanVienKhoBai");
         }
+
         [HttpPost]
         public ActionResult GanDonHangVaoContainer(string maDonHang, string maContainer)
         {

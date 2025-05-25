@@ -8,7 +8,7 @@ namespace Website_CangTienSa.DAO
 {
     public class DonHangDAO
     {
-        private readonly string connectionString = "Server=DINHTHI\\DINHTHIMSSQLSV;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=MINHTOAN\\SQLEXPRESS;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
 
         public List<DonHangModel> GetDonHangDangVanChuyen()
         {
@@ -51,29 +51,6 @@ namespace Website_CangTienSa.DAO
 
             return donHangList;
         }
-
-        public bool ConfirmTransport(string maPhieuXuat, string nguoiXacNhan)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = @"
-            UPDATE donHang
-            SET trangThaiDonHang = N'Hoàn Thành', nguoiXacNhan = @NguoiXacNhan
-            FROM donHang dh
-            JOIN chiTietPhieuXuat ctpx ON dh.maDonHang = ctpx.maDonHang
-            WHERE ctpx.maPhieuXuat = @MaPhieuXuat";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@MaPhieuXuat", maPhieuXuat);
-                    command.Parameters.AddWithValue("@NguoiXacNhan", nguoiXacNhan);
-                    int rowsAffected = command.ExecuteNonQuery();
-                    return rowsAffected > 0;
-                }
-            }
-        }
-
         public DonHangModel GetChiTietDonHang(string maDonHang)
         {
             DonHangModel donHang = null;
@@ -210,24 +187,42 @@ namespace Website_CangTienSa.DAO
 
         private string GeneratePhieuNhapCode(SqlConnection connection, SqlTransaction transaction)
         {
-            // Giảm độ dài mã xuống còn 8 ký tự (2 ký tự prefix + 6 số)
-            string query = "SELECT 'PN' + RIGHT('000000' + CAST(NEXT VALUE FOR Seq_PhieuNhap AS VARCHAR(6)), 6)";
+            // Tạo mã phiếu nhập dạng PN + số tự tăng (6 chữ số)
+            string query = "SELECT COUNT(*) FROM phieuNhap";
             using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
             {
-                return cmd.ExecuteScalar()?.ToString();
+                int count = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
+                return "PN" + count.ToString("D6");
             }
         }
 
         private string GenerateChiTietPhieuNhapCode(SqlConnection connection, SqlTransaction transaction)
         {
-            // Giảm độ dài mã xuống còn 8 ký tự (4 ký tự prefix + 4 số)
-            string query = "SELECT 'CTPN' + RIGHT('0000' + CAST(NEXT VALUE FOR Seq_ChiTietPhieuNhap AS VARCHAR(4)), 4)";
+            // Tạo mã chi tiết phiếu nhập dạng CTPN + số tự tăng (6 chữ số)
+            string query = "SELECT COUNT(*) FROM chiTietPhieuNhap";
             using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
             {
-                return cmd.ExecuteScalar()?.ToString();
+                int count = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
+                return "CTPN" + count.ToString("D6");
             }
         }
+        public bool UpdateTrangThaiDonHang(string maDonHang, string trangThaiMoi)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "UPDATE donHang SET trangThaiDonHang = @TrangThai WHERE maDonHang = @MaDonHang";
 
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
+                    cmd.Parameters.AddWithValue("@MaDonHang", maDonHang);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
         private void InsertChiTietPhieuNhap(SqlConnection connection, SqlTransaction transaction, string maChiTietPhieuNhap, string maPhieuNhap, string maContainer)
         {
             string moTa = "Chi tiết nhập container " + maContainer;
