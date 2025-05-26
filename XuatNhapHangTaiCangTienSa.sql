@@ -441,14 +441,13 @@ BEGIN
 END;
 GO
 
-
 /*USE master;
 ALTER DATABASE XuatNhapHangTaiCangTienSa
 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 GO
 
 DROP DATABASE XuatNhapHangTaiCangTienSa;
---GO
+GO
 select *from phieuXuat
 select *from donHang
 
