@@ -198,6 +198,7 @@
             <h3 class="section-title">Quản Lý Container</h3>
             <div class="selectAndButton">
                 <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-container">Thêm Mới Container</a>
+                <a href="@Url.Action("QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-DMcontainer">Quản Lý Danh Mục Container</a>
                 <select id="select-container">
                     <option value="Tất cả Container">Tất cả Container</option>
                     @foreach (var dmContainer in (SelectList)ViewBag.dmContainers)

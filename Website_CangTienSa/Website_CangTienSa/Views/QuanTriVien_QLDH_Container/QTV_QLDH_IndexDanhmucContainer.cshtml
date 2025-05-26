@@ -1,0 +1,317 @@
+﻿@model IEnumerable<Website_CangTienSa.Models.danhMucContainer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Container chính cho toàn bộ nội dung */
+    .container-list {
+        padding: 30px 20px;
+        color: #E2E8F0; /* Màu chữ sáng */
+        min-height: calc(100vh - 56px); /* Đảm bảo đủ chiều cao */
+    }
+
+    /* Tiêu đề trang */
+    .page-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4FD1C5; /* Màu nhấn */
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    /* Nút "Thêm danh mục mới" */
+    .add-new-button-container {
+        text-align: right;
+        margin-bottom: 25px;
+    }
+
+    .add-new-button {
+        display: inline-flex; /* Sử dụng flex để căn chỉnh icon và text */
+        align-items: center;
+        padding: 12px 25px;
+        background: linear-gradient(45deg, #10B981, #059669); /* Màu xanh lá cây */
+        border: none;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        text-decoration: none; /* Bỏ gạch chân cho link */
+    }
+
+    .add-new-button:hover {
+        background: linear-gradient(45deg, #059669, #10B981);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .add-new-button i {
+        margin-right: 8px;
+    }
+
+    /* Bảng */
+    .table-custom {
+        width: 100%;
+        border-collapse: separate; /* Để dùng border-radius cho table */
+        border-spacing: 0;
+        background-color: #2D3748; /* Nền bảng tối */
+        border-radius: 12px;
+        overflow: hidden; /* Đảm bảo bo góc hoạt động */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        color: #E2E8F0; /* Màu chữ sáng */
+        margin-bottom: 60px; /* Khoảng cách với footer */
+        border: 1px solid #4A5568; /* Thêm border cho toàn bộ bảng */
+    }
+
+    .table-custom thead th {
+        background-color: #1A202C; /* Nền header tối hơn */
+        color: #4FD1C5; /* Màu nhấn cho chữ header */
+        font-weight: 700;
+        padding: 15px 20px;
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        border: 1px solid #4A5568; /* Thêm border cho từng ô header */
+        white-space: nowrap; /* Ngăn chữ xuống dòng */
+    }
+
+    .table-custom tbody td {
+        padding: 12px 20px;
+        border: 1px solid #4A5568; /* Thêm border cho từng ô dữ liệu */
+        font-size: 0.9rem;
+        color: #E2E8F0;
+    }
+
+    .table-custom tbody tr:last-child td {
+        /* border-bottom: none; */ /* Bỏ viền dưới cùng của hàng cuối (không cần nữa vì đã có border tổng thể) */
+    }
+
+    .table-custom tbody tr:nth-child(even) {
+        background-color: #262D3B; /* Màu nền xen kẽ */
+    }
+
+    .table-custom tbody tr:hover {
+        background-color: #3D4A5E; /* Màu nền khi hover */
+        transition: background-color 0.2s ease;
+    }
+
+    /* Cột "Hành động" */
+    .action-column {
+        text-align: center;
+        white-space: nowrap; /* Ngăn các nút xuống dòng */
+    }
+
+    .action-buttons-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px; /* Khoảng cách giữa các nút */
+    }
+
+    .action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        border: none;
+        color: #ffffff;
+    }
+
+    .action-button i {
+        margin-right: 5px;
+    }
+
+    /* Màu cho từng loại nút hành động */
+    .action-button.edit {
+        background-color: #FCD34D; /* Vàng */
+        color: #1A202C; /* Chữ tối */
+    }
+    .action-button.edit:hover {
+        background-color: #FBBF24;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-button.details {
+        background-color: #60A5FA; /* Xanh dương */
+    }
+    .action-button.details:hover {
+        background-color: #3B82F6;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-button.delete {
+        background-color: #EF4444; /* Đỏ */
+    }
+    .action-button.delete:hover {
+        background-color: #DC2626;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 991px) {
+        .table-custom {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap; /* Giữ nguyên nowrap để cuộn ngang nếu cần */
+            border: none; /* Bỏ border tổng thể trên mobile để các card riêng lẻ có border */
+        }
+
+        .table-custom thead, .table-custom tbody, .table-custom th, .table-custom td, .table-custom tr {
+            display: block;
+        }
+
+        .table-custom thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        .table-custom tr {
+            border: 1px solid #4A5568; /* Border cho từng "card" hàng */
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .table-custom td {
+            border: none; /* Bỏ border giữa các ô trong cùng một hàng trên mobile */
+            border-bottom: 1px solid #4A5568; /* Chỉ giữ border dưới */
+            position: relative;
+            padding-left: 50%;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .table-custom td:last-child {
+            border-bottom: none; /* Bỏ border dưới cùng của ô cuối cùng trong card */
+        }
+
+        .table-custom td:before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: 600;
+            color: #4FD1C5;
+        }
+
+        .action-column {
+            text-align: right;
+            padding-left: 10px;
+        }
+        .action-column:before {
+            content: "Hành động";
+            position: absolute;
+            left: 10px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: 600;
+            color: #4FD1C5;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .container-list {
+            padding: 20px 10px;
+        }
+        .page-title {
+            font-size: 1.8rem;
+        }
+        .add-new-button {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<div class="container-list">
+    <h2 class="page-title">QUẢN LÝ DANH MỤC CONTAINER</h2>
+
+    <div class="add-new-button-container">
+        <a href="@Url.Action("QTV_QLDH_ThemDanhmucContainer", "QuanTriVien_QLDH_Container")" class="add-new-button">
+            <i class="fas fa-plus-circle"></i> Thêm Danh Mục Mới
+        </a>
+        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="add-new-button">Quay Lại Quản Lý Đơn Hàng</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Tên danh mục</th>
+                    <th>Sức chứa tối đa</th>
+                    <th>Trọng tải tối đa</th>
+                    <th>Chiều dài</th>
+                    <th>Chiều rộng</th>
+                    <th>Chiều cao</th>
+                    <th>Mô tả</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td data-label="Tên danh mục">
+                            @Html.DisplayFor(modelItem => item.tenDanhMucContainer)
+                        </td>
+                        <td data-label="Sức chứa tối đa">
+                            @Html.DisplayFor(modelItem => item.sucChuaToiDa)
+                        </td>
+                        <td data-label="Trọng tải tối đa">
+                            @Html.DisplayFor(modelItem => item.trongTaiToiDa)
+                        </td>
+                        <td data-label="Chiều dài">
+                            @Html.DisplayFor(modelItem => item.chieuDai)
+                        </td>
+                        <td data-label="Chiều rộng">
+                            @Html.DisplayFor(modelItem => item.chieuRong)
+                        </td>
+                        <td data-label="Chiều cao">
+                            @Html.DisplayFor(modelItem => item.chieuCao)
+                        </td>
+                        <td data-label="Mô tả">
+                            @Html.DisplayFor(modelItem => item.moTa)
+                        </td>
+                        <td class="action-column">
+                            <div class="action-buttons-group">
+                                <a href="@Url.Action("QTV_QLDH_ChiTietDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button edit" title="Sửa">
+                                    <i class="fas fa-edit"></i> Xem
+                                </a>
+                                <a href="@Url.Action("QTV_QLDH_SuaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button details" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i> Sửa
+                                </a>
+                                <a href="@Url.Action("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button delete" title="Xóa">
+                                    <i class="fas fa-trash-alt"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

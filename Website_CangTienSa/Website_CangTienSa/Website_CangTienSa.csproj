@@ -166,6 +166,7 @@
     <Compile Include="Controllers\NhanVienNhapKhoController.cs" />
     <Compile Include="Controllers\NhanVienXuatKhoController.cs" />
     <Compile Include="Controllers\QuanTriVienController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_ContainerController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLTaiKhoanController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -485,6 +486,11 @@
     <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
     <Content Include="Views\KhachHang\XemChiTietDonHang.cshtml" />
     <Content Include="Views\Home\ThongBaoDangKyThanhCong.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ThemDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_XoaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ChiTietDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_SuaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_IndexDanhmucContainer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

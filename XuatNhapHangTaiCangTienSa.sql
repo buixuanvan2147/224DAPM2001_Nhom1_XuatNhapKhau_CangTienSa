@@ -424,3 +424,7 @@ UPDATE donHang
 SET trangThaiDonHang = N'Đang xử lý'
 WHERE trangThaiDonHang = N'Hoàn thành';
 
+select * from danhMucContainer
+select * from phieuNhap
+select * from phieuXuat
+select * from donHang
