@@ -3,67 +3,263 @@
     ViewBag.Title = "ĐoiMatKHau";
 }
 
-<main aria-labelledby="title"
-      style="font-family: Arial, sans-serif; background-color: #f4f7fa; display: flex; justify-content: center; align-items: center; padding: 20px 0 60px; margin: 0; flex: 1; ">
-    <div class="login-container"
-         style="background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 350px;">
-        <h2 id="title" style="text-align: center; margin-bottom: 20px; font-size: 28px; color: #333;">ĐỔI MẬT KHẨU</h2>
+<style>
+    /* Main Container for Change Password Page */
+    .change-password-page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Center vertically */
+        min-height: calc(100vh - 56px); /* Ensure minimum height, accounting for layout header */
+        background-color: #1A202C; /* Dark background from layout */
+        padding: 20px; /* Add some padding around the card */
+    }
 
-        <h3 style="text-align: center; color: #555;">@ViewBag.Message</h3>
+    /* Form Card Styling (reusing .login-container as a descriptive class) */
+    .form-card { /* Renamed from .login-container for consistency with other views */
+        background-color: #2D3748; /* Slightly lighter dark background for card */
+        padding: 40px; /* Increased padding */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Deeper shadow */
+        width: 100%;
+        max-width: 450px; /* Increased max-width for better form layout */
+        transition: transform 0.3s ease-in-out;
+        color: #E2E8F0; /* Light text color for general content */
+    }
+
+    .form-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Title */
+    .form-card h2 { /* Targeting h2 inside form-card */
+        text-align: center;
+        margin-bottom: 30px; /* Increased margin */
+        font-size: 2.2rem; /* Larger font size */
+        color: #4FD1C5; /* Accent color */
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+    }
+
+    /* Message (from ViewBag) */
+    .form-card .message-info { /* New class for ViewBag.Message */
+        text-align: center;
+        color: #63B3ED; /* Blue for informational messages */
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    /* Form Group Styling */
+    .form-group {
+        margin-bottom: 20px; /* Consistent margin */
+    }
+
+    /* Labels */
+    .control-label {
+        display: block;
+        font-weight: 600; /* Bolder font */
+        margin-bottom: 8px; /* Space below label */
+        color: #A0AEC0; /* Light gray for labels */
+        font-size: 0.95rem;
+    }
+
+    /* Input Fields */
+    .form-control {
+        width: 100%;
+        padding: 12px 15px; /* Increased padding */
+        border: 1px solid #4A5568; /* Darker border */
+        border-radius: 8px; /* Rounded corners */
+        font-size: 1rem;
+        box-sizing: border-box;
+        background-color: #2D3748; /* Dark background for inputs */
+        color: #FFFFFF; /* White text in inputs */
+    }
+
+    .form-control::placeholder {
+        color: rgba(226, 232, 240, 0.5); /* Lighter placeholder */
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4FD1C5; /* Accent color on focus */
+        box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.3); /* Subtle glow on focus */
+    }
+
+    /* Read-only input for TenHienThi */
+    .readonly-input {
+        padding: 12px 15px;
+        border: 1px solid #4A5568;
+        border-radius: 8px;
+        font-size: 1rem;
+        box-sizing: border-box;
+        background-color: #262D3B; /* Slightly darker for readonly */
+        color: #A0AEC0; /* Lighter text for readonly */
+        cursor: not-allowed;
+    }
+
+    /* Password Toggle Icon */
+    .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 15px; /* Adjusted right position */
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #A0AEC0; /* Light gray icon */
+        font-size: 1.1rem;
+        transition: color 0.2s ease;
+    }
+
+    .toggle-password:hover {
+        color: #4FD1C5; /* Accent color on hover */
+    }
+
+    /* Validation Messages */
+    .text-danger {
+        color: #EF4444; /* Red for errors */
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block; /* Ensure it takes its own line */
+    }
+
+    /* Submit Button */
+    .btn-submit { /* Reusing btn-submit class for consistency */
+        width: 100%;
+        padding: 14px; /* Increased padding */
+        background: linear-gradient(45deg, #4FD1C5, #38B2AC); /* Accent gradient */
+        border: none;
+        border-radius: 8px;
+        color: #1A202C; /* Dark text for contrast */
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+        margin-top: 10px; /* Add some margin above the button */
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(45deg, #38B2AC, #4FD1C5);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(79, 209, 197, 0.4);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(79, 209, 197, 0.2);
+    }
+
+    /* Forgot Password Link */
+    .forgot-password-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+    }
+
+    .forgot-password-link a {
+        color: #63B3ED; /* Blue link color */
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .forgot-password-link a:hover {
+        color: #4299E1;
+        text-decoration: underline;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 576px) {
+        .form-card {
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .form-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .form-control, .readonly-input {
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .btn-submit {
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .toggle-password {
+            right: 10px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="change-password-page-wrapper">
+    <div class="form-card">
+        @* Changed class from login-container to form-card *@
+        <h2 id="title">ĐỔI MẬT KHẨU</h2>
+
+        <h3 class="message-info">@ViewBag.Message</h3> @* Added new class for message *@
 
         @using (Html.BeginForm("DoiMatKhau", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label class="control-label" style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Tên hiển thị:</label>
-                <div style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; background-color: #eee;">
+            <div class="form-group">
+                <label class="control-label">Tên hiển thị:</label>
+                <div class="readonly-input">
+                    @* Added readonly-input class *@
                     @Model.TenHienThi
                 </div>
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.MatKhauCu, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
-                <div style="position: relative;">
-                    @Html.PasswordFor(m => m.MatKhauCu, new { @class = "form-control password-input", placeholder = "Mật khẩu cũ", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
-                    @Html.ValidationMessageFor(m => m.MatKhauCu, "", new { @class = "text-danger" })
-                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.MatKhauMoi, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
-                <div style="position: relative;">
-                    @Html.PasswordFor(m => m.MatKhauMoi, new { @class = "form-control password-input", placeholder = "Mật khẩu mới", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
-                    @Html.ValidationMessageFor(m => m.MatKhauMoi, "", new { @class = "text-danger" })
-                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 20px;">
-                @Html.LabelFor(m => m.XacNhanMatKhauMoi, new { @class = "control-label", style = "display: block; font-weight: bold; margin-bottom: 5px; color: #555;" })
-                <div style="position: relative;">
-                    @Html.PasswordFor(m => m.XacNhanMatKhauMoi, new { @class = "form-control password-input", placeholder = "Nhập lại mật khẩu mới", style = "width: 100%; padding-right: 35px; padding-left: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;" })
-                    @Html.ValidationMessageFor(m => m.XacNhanMatKhauMoi, "", new { @class = "text-danger" })
-                    <span class="toggle-password" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </div>
-            </div>
             <div class="form-group">
-                <button type="submit" class="login-button btn btn-primary" style="width: 100%; padding: 10px; background-color: #007bff; border: none; border-radius: 5px; color: white; font-size: 16px; cursor: pointer;">Đổi mật khẩu</button>
+                @Html.LabelFor(m => m.MatKhauCu, new { @class = "control-label" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.MatKhauCu, new { @class = "form-control password-input", placeholder = "Mật khẩu cũ" })
+                    @Html.ValidationMessageFor(m => m.MatKhauCu, "", new { @class = "text-danger" })
+                    <span class="toggle-password">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.MatKhauMoi, new { @class = "control-label" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.MatKhauMoi, new { @class = "form-control password-input", placeholder = "Mật khẩu mới" })
+                    @Html.ValidationMessageFor(m => m.MatKhauMoi, "", new { @class = "text-danger" })
+                    <span class="toggle-password">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.XacNhanMatKhauMoi, new { @class = "control-label" })
+                <div style="position: relative;">
+                    @Html.PasswordFor(m => m.XacNhanMatKhauMoi, new { @class = "form-control password-input", placeholder = "Nhập lại mật khẩu mới" })
+                    @Html.ValidationMessageFor(m => m.XacNhanMatKhauMoi, "", new { @class = "text-danger" })
+                    <span class="toggle-password">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn-submit">Đổi mật khẩu</button> @* Changed class to btn-submit *@
             </div>
         }
-        <div style="text-align: center; margin-top: 15px; font-size: 14px; color: #555;">
-            <a href="@Url.Action("QuenMatKhau", "Home")" style="color: #007bff; text-decoration: none;">Quên mật khẩu?</a>
+        <div class="forgot-password-link">
+            @* Added new class *@
+            <a href="@Url.Action("QuenMatKhau", "Home")">Quên mật khẩu?</a>
         </div>
     </div>
-</main>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -9,13 +9,10 @@
         <div class="col-md-4">
             <div style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center; padding: 30px 20px;">
                 <div>
-                    <img src="@Url.Content(Model.AnhDaiDienNhanVienUrl ?? "~/Content/img/testimonial-4.jpg")" alt="Ảnh đại diện" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 15px; border: 3px solid #007bff;">
+                    <img src="@Url.Content(Model.AnhDaiDienNhanVienUrl ?? "~/Content/img/NhanVienUrl/testimonial-4.jpg")" alt="Ảnh đại diện" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 15px; border: 3px solid #007bff;">
                     <h5>Quản Trị Viên</h5>
                     <p><i class="fas fa-user-tag mr-2"></i> @Model.TenDangNhap</p>
                     <p><i class="fas fa-id-card mr-2"></i> @Model.MaNhanVien</p>
-                    <button class="btn btn-primary btn-sm" style="margin-top: 10px; padding: 6px 12px; font-size: 14px;">
-                        <i class="fas fa-edit mr-2"></i> Chỉnh sửa ảnh
-                    </button>
                 </div>
             </div>
         </div>
@@ -27,19 +24,19 @@
                 <div>
                     <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
                         <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-signature mr-2"></i> Tên hiển thị:</div>
-                        <div style="color: #333; flex: 1; text-align: right;">@Model.TenHienThi <i class="fas fa-edit" style="margin-left: 10px; color: #007bff; cursor: pointer;"></i></div>
+                        <div style="color: #333; flex: 1; text-align: right;">@Model.TenHienThi </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
                         <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-envelope mr-2"></i> Email:</div>
-                        <div style="color: #333; flex: 1; text-align: right;">@Model.Email <i class="fas fa-edit" style="margin-left: 10px; color: #007bff; cursor: pointer;"></i></div>
+                        <div style="color: #333; flex: 1; text-align: right;">@Model.Email </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
                         <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-phone mr-2"></i> Số điện thoại:</div>
-                        <div style="color: #333; flex: 1; text-align: right;">@Model.SdtNhanVien <i class="fas fa-edit" style="margin-left: 10px; color: #007bff; cursor: pointer;"></i></div>
+                        <div style="color: #333; flex: 1; text-align: right;">@Model.SdtNhanVien </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
                         <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-map-marker-alt mr-2"></i> Địa chỉ:</div>
-                        <div style="color: #333; flex: 1; text-align: right;">@Model.DiaChi <i class="fas fa-edit" style="margin-left: 10px; color: #007bff; cursor: pointer;"></i></div>
+                        <div style="color: #333; flex: 1; text-align: right;">@Model.DiaChi </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; align-items: center;">
                         <div style="font-weight: 500; color: #555; width: 40%;"><i class="fas fa-calendar-alt mr-2"></i> Trạng thái tài khoản:</div>
@@ -52,10 +49,6 @@
                 </div>
             </div>
             <div style="margin-top: 30px; text-align: right;">
-                @Html.ActionLink("Đổi mật khẩu", "DoiMatKhau", "Home", null, new
-                   {
-                       @style = "display: inline-block; background-color: #007bff; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none;"
-                   })
                 @Html.ActionLink("Đăng xuất", "DangXuat_QuanTriVien", "QuanTriVien", null, new
                 {
                     @style = "display: inline-block; background-color: #dc3545; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none;"

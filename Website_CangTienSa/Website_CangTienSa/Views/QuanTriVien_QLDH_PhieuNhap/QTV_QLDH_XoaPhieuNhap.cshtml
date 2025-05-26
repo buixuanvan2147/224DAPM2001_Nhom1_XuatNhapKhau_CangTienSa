@@ -1,0 +1,136 @@
+﻿@model Website_CangTienSa.Models.phieuNhap
+@{
+    ViewBag.Title = "QTV_QLDH_XoaPhieuNhap";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    .delete-confirmation-section {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 50px auto;
+        text-align: center;
+    }
+
+        .delete-confirmation-section h2 {
+            color: #dc3545; /* Màu đỏ cho tiêu đề xóa */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .delete-confirmation-section p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .delete-confirmation-section .detail-item {
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 400px; /* Giới hạn chiều rộng cho các mục chi tiết */
+        }
+
+            .delete-confirmation-section .detail-item strong {
+                display: inline-block;
+                width: 150px;
+                color: #333;
+            }
+
+    .form-actions {
+        margin-top: 30px;
+    }
+
+    .btn-delete-confirm {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+
+        .btn-delete-confirm:hover {
+            background-color: #c82333;
+        }
+
+    .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+
+    .validation-summary-errors {
+        color: #a94442;
+        background-color: #f2dede;
+        border: 1px solid #ebccd1;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+</style>
+
+<div class="delete-confirmation-section">
+    <h2>Xác Nhận Xóa Phiếu Nhập</h2>
+
+    @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+
+    <p>Bạn có chắc chắn muốn xóa phiếu nhập này không? Thao tác này không thể hoàn tác.</p>
+
+    @if (Model != null)
+    {
+        <div class="detail-item">
+            <strong>Mã Phiếu Nhập:</strong> @Model.maPhieuNhap
+        </div>
+        <div class="detail-item">
+            <strong>Mã Đơn Hàng:</strong> @Model.maDonHang
+        </div>
+        <div class="detail-item">
+            <strong>Mô tả:</strong> @(string.IsNullOrEmpty(Model.moTa) ? "Không có mô tả" : Model.moTa)
+        </div>
+
+        if (Model.donHang != null)
+        {
+            <div class="detail-item">
+                <strong>Tên Người Gửi:</strong> @Model.donHang.tenNguoiGui
+            </div>
+            <div class="detail-item">
+                <strong>Tên Người Nhận:</strong> @Model.donHang.tenNguoiNhan
+            </div>
+            <div class="detail-item">
+                <strong>Ngày Tạo ĐH:</strong> @(Model.donHang.ngayTaoDonHang.ToString("dd/MM/yyyy HH:mm"))
+            </div>
+            @* Thêm các thông tin khác của đơn hàng nếu cần *@
+        }
+    }
+    else
+    {
+        <p>Không tìm thấy thông tin phiếu nhập để xác nhận xóa.</p>
+    }
+
+    <div class="form-actions">
+        @using (Html.BeginForm("QTV_QLDH_XoaPhieuNhap", "QuanTriVien_QLDH_PhieuNhap", new { id = Model.maPhieuNhap }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-delete-confirm">Xóa</button>
+            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="btn-cancel">Hủy</a>
+        }
+    </div>
+</div>
+

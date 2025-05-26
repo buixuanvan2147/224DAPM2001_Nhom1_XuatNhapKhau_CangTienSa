@@ -265,7 +265,6 @@
         <section id="phieunhap">
             <h3 class="section-title">Quản Lý Phiếu Nhập</h3>
             <div class="selectAndButton">
-                <a href="@Url.Action("QTV_QLDH_ThemPhieuNhap", "QuanTriVien_QLDH_PhieuNhap")" class="button-add btn-add-phieunhap">Thêm Mới Phiếu Nhập</a>
                 <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
             </div>
                 <div class="table-container">
@@ -292,7 +291,7 @@
                                         <td>@phieuNhap.moTa</td>
                                         <td class="action-links">
                                             <a href="@Url.Action("QTV_QLDH_ChiTietPhieuNhap", "QuanTriVien_QLDH_PhieuNhap", new { id = phieuNhap.maPhieuNhap })" class="details-link chitiet-phieunhap">Chi tiết</a> |
-                                            <a href="#" class="delete-link xoa-phieunhap">Xóa</a>
+                                            <a href="@Url.Action("QTV_QLDH_XoaPhieuNhap", "QuanTriVien_QLDH_PhieuNhap", new { id = phieuNhap.maPhieuNhap })" class="delete-link xoa-phieunhap" onclick="return confirm('Bạn có chắc chắn muốn xóa phiếu nhập này không?');">Xóa</a>
                                         </td>
                                     </tr>
                                     sttphieuNhap++;
@@ -315,7 +314,6 @@
         <section id="phieuxuat">
             <h3 class="section-title">Quản Lý Phiếu Xuất</h3>
             <div class="selectAndButton">
-                <a href="@Url.Action("QTV_QLDH_ThemPhieuXuat", "QuanTriVien_QLDH_PhieuXuat")" class="button-add btn-add-phieuxuat">Thêm Mới Phiếu Xuất</a>
                 <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
             </div>
                 <div class="table-container">
@@ -369,7 +367,6 @@
         <section id="donhang">
             <h3 class="section-title">Quản Lý Đơn Hàng</h3>
             <div class="selectAndButton">
-                <a href="@Url.Action("QTV_QLDH_ThemDonHang", "QuanTriVien_QLDH_DonHang")" class="button-add btn-add-donhang">Thêm Mới Đơn Hàng</a>
                 <select id="select-trangThaiDonHang">
                     <option value="Tất cả trạng thái đơn hàng">Tất cả trạng thái đơn hàng</option>
                     @foreach (var tt in (List<string>)ViewBag.trangThaiDonHangs)
