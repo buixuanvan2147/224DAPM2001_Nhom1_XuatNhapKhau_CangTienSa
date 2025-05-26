@@ -32,42 +32,16 @@ namespace Website_CangTienSa.Controllers
 
         public ActionResult Index_NhanVienKhoBai()
         {
-            var donHangList = _donHangDAO.GetDonHangDangVanChuyen();
-            return View(donHangList);
+            var donHangDangVanChuyen = _donHangDAO.GetDonHangDangVanChuyen();
+            var donHangXuatKho = _donHangDAO.GetDonHangXuatKhau();
+
+            var viewModel = new Tuple<List<DonHangModel>, List<DonHangModel>>(donHangDangVanChuyen, donHangXuatKho);
+            return View(viewModel);
         }
-
-
-        [HttpPost]
-        public ActionResult ConfirmTransport(string maDonHang)
+        public ActionResult ChiTietDonHangXuatKho(string maDonHang)
         {
-            try
-            {
-                // Validate input
-                if (string.IsNullOrEmpty(maDonHang))
-                {
-                    TempData["ErrorMessage"] = "Mã đơn hàng không hợp lệ";
-                    return RedirectToAction("Index_NhanVienKhoBai");
-                }
-
-                // Cập nhật trạng thái đơn hàng và ngày xuất cảng
-                bool success = _donHangDAO.UpdateTrangThaiVaNgayXuatCang(maDonHang, "Hoàn thành", DateTime.Now);
-
-                if (success)
-                {
-                    TempData["SuccessMessage"] = "Đã xác nhận đơn hàng vào kho thành công";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Xác nhận đơn hàng thất bại";
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = $"Lỗi hệ thống: {ex.Message}";
-                System.Diagnostics.Debug.WriteLine($"Lỗi khi xác nhận đơn hàng: {ex}");
-            }
-
-            return RedirectToAction("Index_NhanVienKhoBai");
+            var model = _donHangDAO.GetChiTietDonHang(maDonHang);
+            return View(model);
         }
 
         [HttpPost]
@@ -105,6 +79,44 @@ namespace Website_CangTienSa.Controllers
             }
 
             return RedirectToAction("ChiTietDonHang", new { maDonHang });
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmTransport(string maDonHang)
+        {
+            try
+            {
+                // Validate input
+                if (string.IsNullOrEmpty(maDonHang))
+                {
+                    TempData["ErrorMessage"] = "Mã đơn hàng không hợp lệ";
+                    return RedirectToAction("Index_NhanVienKhoBai");
+                }
+
+                // Cập nhật trạng thái đơn hàng và ngày xuất cảng
+                bool success = _donHangDAO.UpdateTrangThaiVaNgayXuatCang(maDonHang, "Hoàn thành", DateTime.Now);
+
+                if (success)
+                {
+                    TempData["SuccessMessage"] = "Đã xác nhận đơn hàng thành công";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Xác nhận đơn hàng thất bại";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi hệ thống: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi xác nhận đơn hàng: {ex}");
+            }
+
+            return RedirectToAction("Index_NhanVienKhoBai");
+        }
+        public ActionResult Index_DonHangXuatKho()
+        {
+            var donHangList = _donHangDAO.GetDonHangXuatKhau();
+            return View(donHangList);
         }
     }
 }

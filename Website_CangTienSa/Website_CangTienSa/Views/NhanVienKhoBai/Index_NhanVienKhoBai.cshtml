@@ -1,9 +1,18 @@
-﻿@model List<Website_CangTienSa.Models.DonHangModel>
+﻿@model Tuple<List<Website_CangTienSa.Models.DonHangModel>, List<Website_CangTienSa.Models.DonHangModel>>
 @{
     ViewBag.Title = "Quản lý đơn hàng - Nhân viên kho bãi";
 }
 
 <h2 class="mt-4 mb-3">Danh sách đơn hàng đang vận chuyển</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <table class="table table-bordered table-hover">
     <thead class="thead-light">
@@ -18,9 +27,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Any())
+        @if (Model.Item1 != null && Model.Item1.Any())
         {
-            foreach (var donHang in Model)
+            foreach (var donHang in Model.Item1)
             {
                 <tr>
                     <td>@donHang.MaDonHang</td>
@@ -29,9 +38,9 @@
                     <td>@donHang.SoLuong</td>
                     <td>@donHang.TrangThai</td>
                     <td>@(string.IsNullOrEmpty(donHang.NguoiXacNhan) ? "Chưa có" : donHang.NguoiXacNhan)</td>
+                    <td>@donHang.MoTa</td>
                     <td>
                         <a href="@Url.Action("ChiTietDonHang", "NhanVienKhoBai", new { maDonHang = donHang.MaDonHang })" class="btn btn-info btn-sm">Xem chi tiết</a>
-
                         @if (donHang.TrangThai != "Hoàn Thành")
                         {
                             <form action="@Url.Action("ConfirmTransport", "NhanVienKhoBai")" method="post" style="display:inline;">
@@ -48,8 +57,58 @@
         }
         else
         {
-            <tr><td colspan="7" class="text-center">Không có đơn hàng nào.</td></tr>
+            <tr><td colspan="7" class="text-center">Không có đơn hàng đang vận chuyển nào.</td></tr>
         }
     </tbody>
 </table>
 
+<h2 class="mt-4 mb-3">Danh sách đơn hàng xuất kho</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Người gửi</th>
+            <th>Ngày nhập cảng</th>
+            <th>Số lượng</th>
+            <th>Trạng thái thanh toán</th>
+            <th>Người xác nhận</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Item2 != null && Model.Item2.Any())
+        {
+            foreach (var donHang in Model.Item2)
+            {
+                <tr>
+                    <td>@donHang.MaDonHang</td>
+                    <td>@donHang.TenNguoiGui</td>
+                    <td>@(donHang.NgayNhapCang != null ? donHang.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
+                    <td>@donHang.SoLuong</td>
+                    <td>@donHang.TrangThai</td>
+                    <td>@(string.IsNullOrEmpty(donHang.NguoiXacNhan) ? "Chưa có" : donHang.NguoiXacNhan)</td>
+                    <td>@donHang.MoTa</td>
+                    <td>
+                        <a href="@Url.Action("ChiTietDonHangXuatKho", "NhanVienKhoBai", new { maDonHang = donHang.MaDonHang })" class="btn btn-info btn-sm">Xem chi tiết</a>
+                        @if (donHang.TrangThaiDonHang != "Hoàn thành")
+                        {
+                            <form action="@Url.Action("ConfirmTransport", "NhanVienKhoBai")" method="post" style="display:inline;">
+                                <input type="hidden" name="maDonHang" value="@donHang.MaDonHang" />
+                                <button type="submit" class="btn btn-success btn-sm"
+                                        onclick="return confirm('Bạn có chắc muốn xác nhận đơn hàng xuất kho @donHang.MaDonHang?');">
+                                    Xác nhận
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="8" class="text-center">Không có đơn hàng xuất kho nào.</td></tr>
+        }
+    </tbody>
+</table>
