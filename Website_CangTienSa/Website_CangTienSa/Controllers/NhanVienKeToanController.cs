@@ -52,6 +52,7 @@ namespace Website_CangTienSa.Controllers
                 if (donHang != null && donHang.trangThaiThanhToan == "Chưa thanh toán")
                 {
                     donHang.trangThaiThanhToan = "Đã thanh toán";
+                    donHang.trangThaiDonHang = "Đang vận chuyển";
                  //   donHang.ngayThanhToan = DateTime.Now;
                     db.SaveChanges();
                     return Json(new { success = true, message = "Cập nhật trạng thái thành công." });
