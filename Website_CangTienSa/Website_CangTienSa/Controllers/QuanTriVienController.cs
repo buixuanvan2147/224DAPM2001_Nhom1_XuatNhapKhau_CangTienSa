@@ -72,6 +72,14 @@ namespace Website_CangTienSa.Controllers
                 .ToList();
             ViewBag.NhanViens = allNhanVien;
 
+            // Lấy ánh xạ vai trò cho modal phân quyền
+            // Tạo ánh xạ vai trò cho modal phân quyền dưới dạng Dictionary
+            var roleMappingDict = db.vaiTroNhanViens.ToDictionary(
+                v => v.tenLoaiNhanVien,
+                v => v.maVaiTroNhanVien
+            );
+            ViewBag.RoleMapping = roleMappingDict;
+
             return View();
         }
 

@@ -19,13 +19,13 @@
         margin-bottom: 20px;
     }
 
-    .filter-status h2 {
-        margin: 0;
-        font-size: 28px;
-        font-weight: bold;
-        color: #141d26;
-        letter-spacing: 0.5px;
-    }
+        .filter-status h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+            color: #141d26;
+            letter-spacing: 0.5px;
+        }
 
     .filter-controls {
         display: flex;
@@ -39,28 +39,28 @@
         gap: 15px;
     }
 
-    .filter-control label {
-        font-size: 16px;
-        color: #555;
-        font-weight: 500;
-    }
+        .filter-control label {
+            font-size: 16px;
+            color: #555;
+            font-weight: 500;
+        }
 
-    .filter-control select {
-        padding: 10px 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 15px;
-        background-color: #fff;
-        color: #333;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        transition: border-color 0.3s ease;
-        outline: none;
-    }
+        .filter-control select {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
 
-    .filter-control select:focus {
-        border-color: #141d26;
-        box-shadow: 0 0 6px rgba(20, 29, 38, 0.2);
-    }
+            .filter-control select:focus {
+                border-color: #141d26;
+                box-shadow: 0 0 6px rgba(20, 29, 38, 0.2);
+            }
 
     .table-responsive {
         overflow-x: auto;
@@ -80,55 +80,59 @@
         border: 1px solid #e0e0e0;
     }
 
-    .table-khach-hang th,
-    .table-khach-hang td {
-        border: 1px solid #e0e0e0;
-        padding: 12px 15px;
-        text-align: left;
-        white-space: nowrap;
-        font-size: 14px;
-        color: #444;
-    }
+        .table-khach-hang th,
+        .table-khach-hang td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 14px;
+            color: #444;
+        }
 
-    .table-khach-hang th {
-        background-color: #141d26;
-        color: #fff;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+        .table-khach-hang th {
+            background-color: #141d26;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .table-khach-hang tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+        .table-khach-hang tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-    .table-khach-hang tbody tr:hover {
-        background-color: #f0f0f0;
-        transition: background-color 0.3s ease;
-    }
+        .table-khach-hang tbody tr:hover {
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
 
-    /* CSS cho các nút hành động */
-    .table-khach-hang .action-buttons {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 8px;
-        justify-content: flex-start;
-        align-items: stretch;
-    }
+        /* CSS cho các nút hành động */
+        .table-khach-hang .action-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
 
-    .table-khach-hang .action-button {
-        flex-grow: 1;
-        flex-basis: 0;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease;
-        outline: none;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        text-align: center;
-        white-space: nowrap;
+        .table-khach-hang .action-button {
+            flex-grow: 1;
+            flex-basis: 0;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease;
+            outline: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+    .action-button:hover{
+        text-decoration:underline;
     }
 
     .table-khach-hang .delete-btn {
@@ -136,81 +140,86 @@
         color: #fff;
     }
 
-    .table-khach-hang .delete-btn:hover {
-        background-color: #c82333;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+            .table-khach-hang .delete-btn:hover {
+                background-color: #c82333;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-    .table-khach-hang .lock-account {
-        background-color: #6c757d;
-        color: #fff;
-    }
+        .table-khach-hang .lock-account {
+            background-color: #6c757d;
+            color: #fff;
+        }
 
-    .table-khach-hang .lock-account:hover {
-        background-color: #5a6268;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+            .table-khach-hang .lock-account:hover {
+                background-color: #5a6268;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-    .table-khach-hang .unlock-account {
-        background-color: #007bff;
-        color: #fff;
-    }
+        .table-khach-hang .unlock-account {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-    .table-khach-hang .unlock-account:hover {
-        background-color: #0056b3;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+            .table-khach-hang .unlock-account:hover {
+                background-color: #0056b3;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-    .table-khach-hang .approve-account {
-        background-color: #28a745;
-        color: #fff;
-    }
+        .table-khach-hang .approve-account {
+            background-color: #28a745;
+            color: #fff;
+        }
 
-    .table-khach-hang .approve-account:hover {
-        background-color: #218838;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+            .table-khach-hang .approve-account:hover {
+                background-color: #218838;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-    .table-khach-hang .reject-account {
-        background-color: #ffc107;
-        color: #333;
-    }
+        .table-khach-hang .reject-account {
+            background-color: #ffc107;
+            color: #333;
+        }
 
-    .table-khach-hang .reject-account:hover {
-        background-color: #e0a800;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+            .table-khach-hang .reject-account:hover {
+                background-color: #e0a800;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        .table-khach-hang .edit-khachHang-btn:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .table-khach-hang .role-account {
-        background-color: #17a2b8;
-        color: #fff;
-    }
+        .table-khach-hang .role-account {
+            background-color: #17a2b8;
+            color: #fff;
+        }
 
-    .table-khach-hang .role-account:hover {
-        background-color: #138496;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-decoration: none;
-    }
+            .table-khach-hang .role-account:hover {
+                background-color: #138496;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-decoration: none;
+            }
 
-    .table-khach-hang img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 1px solid #ddd;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease-in-out;
-    }
+        .table-khach-hang img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+        }
 
-    .table-khach-hang img:hover {
-        transform: scale(1.02);
-    }
+            .table-khach-hang img:hover {
+                transform: scale(1.02);
+            }
 
     .button-add-TK {
         display: inline-block;
@@ -224,12 +233,12 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .button-add-TK:hover {
-        background-color: #4cae4c;
-        color: #ffffff;
-        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
-        transform: translateY(-1px);
-    }
+        .button-add-TK:hover {
+            background-color: #4cae4c;
+            color: #ffffff;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
 
     /* Responsive */
     @@media (max-width: 768px) {
@@ -350,6 +359,7 @@
                                     <button class="action-button unlock-account" data-id="@khachHang.maKhachHang" data-action="unlock">Mở Khóa</button>
                                     <button class="action-button delete-btn" data-id="@khachHang.maKhachHang" data-action="delete">Xóa</button>
                                 }
+                                <button style="background-color: #FF1493; color: #ffffff;" class="action-button edit-khachHang-btn" data-id="@khachHang.maKhachHang" data-action="edit-khachHang">Sửa</button>
                             </div>
                         </td>
                     </tr>
@@ -369,6 +379,24 @@
     </table>
 </div>
 
+<!-- Modal phân quyền -->
+<div id="roleAssignmentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 8px; width: 400px; max-width: 90%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <h3 style="margin-top: 0; color: #141d26;">Phân Quyền Nhân Viên</h3>
+        <p>Chọn vai trò cho nhân viên <span id="modalNhanVienId"></span>:</p>
+        <select id="roleSelect" style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;">
+            <option value="">Chọn vai trò</option>
+            @foreach (var role in ViewBag.Roles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button id="confirmRoleAssignment" class="action-button approve-account">Xác Nhận</button>
+            <button id="cancelRoleAssignment" class="action-button delete-btn">Hủy</button>
+        </div>
+    </div>
+</div>
 <div class="table-responsive" style="margin-bottom:70px;">
     <div class="filter-status">
         <h2>Danh Sách Nhân Viên</h2>
@@ -471,6 +499,17 @@
                 tableNhanVienBody = tableNhanVien.querySelector('tbody');
                 tableNhanVienRows = Array.from(tableNhanVienBody.querySelectorAll('tr'));
             }
+
+            // --- Modal phân quyền ---
+            const roleAssignmentModal = document.getElementById('roleAssignmentModal');
+            const roleSelect = document.getElementById('roleSelect');
+            const confirmRoleAssignment = document.getElementById('confirmRoleAssignment');
+            const cancelRoleAssignment = document.getElementById('cancelRoleAssignment');
+            const modalNhanVienId = document.getElementById('modalNhanVienId');
+            let currentNhanVienId = null;
+
+            // Ánh xạ tenLoaiNhanVien với maVaiTroNhanVien từ ViewBag.RoleMapping
+            const roleMapping = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RoleMapping ?? new Dictionary<string, string>()));
 
             // --- Hàm chung để cập nhật STT và xử lý hàng trống ---
             function updateSerialNumbers(tableBody, rows, colspanValue) {
@@ -765,8 +804,7 @@
                     html += `<button class="action-button unlock-account" data-id="${id}" data-action="unlock">Mở Khóa</button>`;
                 }
 
-                const phanQuyenNhanVienUrl = '@Url.Action("PhanQuyenNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")';
-                html += `<a href="${phanQuyenNhanVienUrl}?id=${id}" class="action-button role-account">Phân Quyền</a>`;
+                html += `<button class="action-button role-account" data-id="${id}" data-action="role">Phân Quyền</button>`;
                 return html;
             }
 
@@ -786,8 +824,67 @@
 
                 const id = this.getAttribute('data-id');
                 const action = this.getAttribute('data-action');
-                sendNhanVienAction(id, action, this);
+
+                if (action === 'role') {
+                    // Hiển thị modal phân quyền
+                    currentNhanVienId = id;
+                    modalNhanVienId.textContent = id;
+                    roleSelect.value = '';
+                    roleAssignmentModal.style.display = 'flex';
+                } else {
+                    sendNhanVienAction(id, action, this);
+                }
             }
+
+            // Xử lý xác nhận phân quyền
+            confirmRoleAssignment.addEventListener('click', function () {
+                const selectedRoleName = roleSelect.value;
+                if (!selectedRoleName) {
+                    alert('Vui lòng chọn một vai trò!');
+                    return;
+                }
+
+                const selectedRoleId = roleMapping[selectedRoleName];
+                if (!selectedRoleId) {
+                    alert('Vai trò không hợp lệ!');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("PhanQuyenNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan")',
+                    type: 'POST',
+                    data: { id: currentNhanVienId, maVaiTroNhanVien: selectedRoleId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            // Cập nhật cột Vai Trò trong bảng
+                            tableNhanVienRows.forEach(row => {
+                                const idCell = row.querySelector('td:nth-child(3)'); // Cột Mã Nhân Viên
+                                if (idCell && idCell.textContent === currentNhanVienId) {
+                                    const roleCell = row.querySelector('td:nth-child(4)'); // Cột Vai Trò
+                                    if (roleCell) {
+                                        roleCell.textContent = selectedRoleName;
+                                    }
+                                }
+                            });
+                            // Đóng modal
+                            roleAssignmentModal.style.display = 'none';
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Đã xảy ra lỗi khi phân quyền: ' + error);
+                        console.error('AJAX Error:', status, error, xhr.responseText);
+                    }
+                });
+            });
+
+            // Xử lý hủy phân quyền
+            cancelRoleAssignment.addEventListener('click', function () {
+                roleAssignmentModal.style.display = 'none';
+                currentNhanVienId = null;
+            });
 
             // --- Khởi tạo khi DOM được tải ---
             if (tableKhachHang && tableKhachHangBody) {

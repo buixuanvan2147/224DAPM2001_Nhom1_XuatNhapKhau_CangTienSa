@@ -580,5 +580,33 @@ namespace Website_CangTienSa.Controllers
             ViewBag.vaiTroNhanVienList = new SelectList(db.vaiTroNhanViens, "maVaiTroNhanVien", "tenLoaiNhanVien", model.maLoaiNhanVien);
             return View(model);
         }
+
+        [HttpPost]
+        public JsonResult PhanQuyenNhanVien_QuanTriVien(string id, string maVaiTroNhanVien)
+        {
+            try
+            {
+                var nhanVien = db.nhanViens.Find(id);
+                if (nhanVien == null)
+                {
+                    return Json(new { success = false, message = "Nhân viên không tồn tại." });
+                }
+
+                var vaiTro = db.vaiTroNhanViens.Find(maVaiTroNhanVien);
+                if (vaiTro == null)
+                {
+                    return Json(new { success = false, message = "Vai trò không hợp lệ." });
+                }
+
+                nhanVien.maLoaiNhanVien = maVaiTroNhanVien;
+                db.SaveChanges();
+
+                return Json(new { success = true, message = "Phân quyền thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
     }
 }
