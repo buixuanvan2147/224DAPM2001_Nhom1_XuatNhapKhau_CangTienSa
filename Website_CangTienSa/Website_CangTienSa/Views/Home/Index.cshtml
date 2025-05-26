@@ -25,24 +25,10 @@
         $(document).ready(function () {
             console.log("jQuery đã sẵn sàng. Kiểm tra sự kiện click cho #btnTraCuu.");
 
-            // Kiểm tra xem nút có tồn tại không
-            var btnTraCuu = $("#btnTraCuu");
-            if (!btnTraCuu.length) {
-                console.error("Không tìm thấy nút với ID 'btnTraCuu'. Vui lòng kiểm tra HTML.");
-                return;
-            }
-
-            btnTraCuu.click(function () {
+            $("#btnTraCuu").click(function () {
                 console.log("Nút Tra Cứu được nhấn.");
 
-                var maDonHangInput = $("#maDonHang");
-                if (!maDonHangInput.length) {
-                    console.error("Không tìm thấy phần tử với ID 'maDonHang'. Vui lòng kiểm tra HTML.");
-                    alert("Lỗi: Không tìm thấy ô nhập mã đơn hàng.");
-                    return;
-                }
-
-                var maDonHang = maDonHangInput.val();
+                var maDonHang = $("#maDonHang").val();
                 console.log("Mã đơn hàng nhập vào: " + maDonHang);
 
                 if (maDonHang.trim() === "") {
@@ -51,7 +37,6 @@
                     return;
                 }
 
-                // Kiểm tra định dạng mã đơn hàng
                 if (!/^[a-zA-Z0-9-]+$/.test(maDonHang)) {
                     alert("Mã đơn hàng chỉ chứa chữ cái, số và dấu gạch ngang.");
                     console.log("Mã đơn hàng không hợp lệ: " + maDonHang);
@@ -61,7 +46,6 @@
                 var urlTraCuu = '@Url.Action("TraCuuDonHang", "Home")';
                 console.log("URL TraCuuDonHang: " + urlTraCuu);
 
-                // Gọi AJAX để gửi yêu cầu tra cứu đến server
                 $.ajax({
                     url: urlTraCuu,
                     type: 'POST',
@@ -71,7 +55,8 @@
                         console.log("Phản hồi từ server:", data);
                         if (data.Success) {
                             if (data.MaDonHang) {
-                                var redirectUrl = '@Url.Action("KhachVangLai_TraCuuDonHang", "Home")?maDonHang=' + encodeURIComponent(data.MaDonHang);
+                                // Chuyển hướng đến action ChiTietDonHang của khách hàng
+                                var redirectUrl = '@Url.Action("XemChiTietDonHang", "KhachHang")?maDonHang=' + encodeURIComponent(data.MaDonHang);
                                 console.log("Chuyển hướng đến: " + redirectUrl);
                                 window.location.href = redirectUrl;
                             } else {
