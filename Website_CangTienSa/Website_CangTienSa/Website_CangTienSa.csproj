@@ -172,6 +172,7 @@
     <Compile Include="Controllers\NhanVienNhapKhoController.cs" />
     <Compile Include="Controllers\NhanVienXuatKhoController.cs" />
     <Compile Include="Controllers\QuanTriVienController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_ContainerController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLTaiKhoanController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,6 +197,7 @@
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KVL_DangKyViewModel.cs" />
+    <Compile Include="Models\QTV_QLDH_ContainerViewModel.cs" />
     <Compile Include="Models\QTV_QLTK_NhanVienViewModel.cs" />
     <Compile Include="Models\PhieuXuatKhoViewModel.cs" />
     <Compile Include="Models\DonHangChiTietViewModel.cs" />
@@ -278,6 +280,8 @@
     <Content Include="Content\img\default_user_image.png" />
     <Content Include="Content\img\feature.jpg" />
     <Content Include="Content\img\header.jpg" />
+    <Content Include="Content\img\KhachHangUrl\default_user_image.png" />
+    <Content Include="Content\img\NhanVienUrl\default_user_image.png" />
     <Content Include="Content\img\team-1.jpg" />
     <Content Include="Content\img\team-2.jpg" />
     <Content Include="Content\img\team-3.jpg" />
@@ -484,14 +488,18 @@
     <Content Include="Views\NhanVienKhoBai\ChiTietDonHang.cshtml" />
     <Content Include="Views\NhanVienXuatKho\XuatPhieuXuatKho.cshtml" />
     <Content Include="Views\Home\KhachVangLai_TraCuuDonHang.cshtml" />
-    <Content Include="Views\QuanTriVien\TaoTaiKhoanNhanVien_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanNhanVien_QuanTriVien.cshtml" />
+    <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
     <Content Include="Views\KhachHang\XemChiTietDonHang.cshtml" />
-    <Content Include="Views\QuanTriVien\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
     <Content Include="Views\Home\ThongBaoDangKyThanhCong.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ThemDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_XoaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ChiTietDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_SuaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_IndexDanhmucContainer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\QuanTriVien_QLTaiKhoan\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

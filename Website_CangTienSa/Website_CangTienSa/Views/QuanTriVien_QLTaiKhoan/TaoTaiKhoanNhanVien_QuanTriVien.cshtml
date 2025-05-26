@@ -153,19 +153,16 @@
                 color: #0056b3;
             }
 </style>
+
 <div class="table-responsive">
     <h2 class="create-account">Tạo Tài Khoản Nhân Viên</h2>
     <div class="form-container">
         <div class="left-section">
             <div class="form-group image-upload-group" style="margin-bottom: 0;">
-
                 @Html.LabelFor(model => model.anhDaiDienNhanVienUrl, "Ảnh Đại Diện", new { style = "color: white;" })
-
-
                 <div class="profile-picture-preview">
                     <img id="newImage" src="" alt="Ảnh Mới" style="display:none;" />
                 </div>
-
                 <span id="imagePath" style="margin-bottom: 10px; color:#ffffff;">Chưa chọn ảnh</span>
             </div>
             <label for="fileUpload" class="custom-button">Chọn ảnh đại diện</label>
@@ -173,63 +170,64 @@
         </div>
 
         <div class="right-section">
-            @* Các trường còn lại *@
-            <div class="form-group">
-                @Html.LabelFor(model => model.maLoaiNhanVien, "Vai Trò")
-                @Html.DropDownListFor(model => model.maLoaiNhanVien, (SelectList)ViewBag.vaiTroNhanVienList, "Chọn vai trò", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.maLoaiNhanVien, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.tenDangNhap, "Tên Đăng Nhập")
-                @Html.TextBoxFor(model => model.tenDangNhap, new { @class = "form-control", placeholder = "Nhập tên đăng nhập" })
-                @Html.ValidationMessageFor(model => model.tenDangNhap, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.matKhau, "Mật Khẩu")
-                @Html.PasswordFor(model => model.matKhau, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
-                @Html.ValidationMessageFor(model => model.matKhau, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.tenHienThi, "Tên Hiển Thị")
-                @Html.TextBoxFor(model => model.tenHienThi, new { @class = "form-control", placeholder = "Nhập tên hiển thị" })
-                @Html.ValidationMessageFor(model => model.tenHienThi, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.sdtNhanVien, "Số Điện Thoại")
-                @Html.TextBoxFor(model => model.sdtNhanVien, new { @class = "form-control", placeholder = "Nhập số điện thoại" })
-                @Html.ValidationMessageFor(model => model.sdtNhanVien, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.diaChi, "Địa Chỉ")
-                @Html.TextBoxFor(model => model.diaChi, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
-                @Html.ValidationMessageFor(model => model.diaChi, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.email, "Email")
-                @Html.TextBoxFor(model => model.email, new { @class = "form-control", type = "email", placeholder = "Nhập địa chỉ email" })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "error-message" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.trangThaiTaiKhoanNhanVien, "Trạng Thái Tài Khoản Sau Khi Tạo")
-                @Html.DropDownListFor(model => model.trangThaiTaiKhoanNhanVien, new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Mở sẵn", Value = "Đang hoạt động" },
-                    new SelectListItem { Text = "Khóa", Value = "Đang bị khóa" }
-                }, "Chọn trạng thái", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.trangThaiTaiKhoanNhanVien, "", new { @class = "error-message" })
-            </div>
-            @using (Html.BeginForm("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("TaoTaiKhoanNhanVien_QuanTriVien", "QuanTriVien_QLTaiKhoan", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "error-message" })
+                @Html.ValidationSummary(true, "Có lỗi xảy ra khi tạo tài khoản. Vui lòng kiểm tra các thông tin sau:", new { @class = "error-message" })
                 @Html.HiddenFor(model => model.anhDaiDienNhanVienUrl)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.maLoaiNhanVien, "Vai Trò")
+                    @Html.DropDownListFor(model => model.maLoaiNhanVien, (SelectList)ViewBag.vaiTroNhanVienList, "Chọn vai trò", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maLoaiNhanVien, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tenDangNhap, "Tên Đăng Nhập")
+                    @Html.TextBoxFor(model => model.tenDangNhap, new { @class = "form-control", placeholder = "Nhập tên đăng nhập", required = "required" })
+                    @Html.ValidationMessageFor(model => model.tenDangNhap, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.matKhau, "Mật Khẩu")
+                    @Html.PasswordFor(model => model.matKhau, new { @class = "form-control", placeholder = "Nhập mật khẩu", required = "required" })
+                    @Html.ValidationMessageFor(model => model.matKhau, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tenHienThi, "Tên Hiển Thị")
+                    @Html.TextBoxFor(model => model.tenHienThi, new { @class = "form-control", placeholder = "Nhập tên hiển thị" })
+                    @Html.ValidationMessageFor(model => model.tenHienThi, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.sdtNhanVien, "Số Điện Thoại")
+                    @Html.TextBoxFor(model => model.sdtNhanVien, new { @class = "form-control", placeholder = "Nhập số điện thoại" })
+                    @Html.ValidationMessageFor(model => model.sdtNhanVien, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.diaChi, "Địa Chỉ")
+                    @Html.TextBoxFor(model => model.diaChi, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+                    @Html.ValidationMessageFor(model => model.diaChi, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.email, "Email")
+                    @Html.TextBoxFor(model => model.email, new { @class = "form-control", type = "email", placeholder = "Nhập địa chỉ email", required = "required" })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "error-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.trangThaiTaiKhoanNhanVien, "Trạng Thái Tài Khoản Sau Khi Tạo")
+                    @Html.DropDownListFor(model => model.trangThaiTaiKhoanNhanVien, new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Mở sẵn", Value = "Đang hoạt động", Selected = true },
+                        new SelectListItem { Text = "Khóa", Value = "Đang bị khóa" }
+                    }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.trangThaiTaiKhoanNhanVien, "", new { @class = "error-message" })
+                </div>
+
                 <div class="form-group">
                     <button type="submit" class="btnTaoTaiKhoan btn btn-primary btn-block">Tạo Tài Khoản</button>
                 </div>
@@ -243,7 +241,6 @@
 </div>
 
 <script>
-    // Hàm preview ảnh
     function previewImage() {
         var file = document.getElementById("fileUpload").files[0];
         var reader = new FileReader();
@@ -259,7 +256,7 @@
                 newImage.src = reader.result;
                 newImage.style.display = "block";
                 previewContainer.style.display = "block";
-                hiddenInput.value = 'temp_' + file.name; // Gán một giá trị tạm thời
+                hiddenInput.value = 'temp_' + file.name;
             };
             reader.readAsDataURL(file);
         } else {
@@ -267,11 +264,10 @@
             newImage.style.display = "none";
             previewContainer.style.display = "none";
             imagePath.innerText = "Chưa chọn ảnh";
-            hiddenInput.value = ''; // Xóa giá trị tạm thời
+            hiddenInput.value = '';
         }
     }
 
-    // Cập nhật tên file khi chọn ảnh
     function updateFileName() {
         var input = document.getElementById("fileUpload");
         var imagePath = document.getElementById("imagePath");
@@ -282,13 +278,10 @@
         }
     }
 
-    // Xác nhận trước khi submit form
     document.querySelector("form").addEventListener("submit", function (event) {
         var userConfirmed = confirm("Xác nhận thêm mới nhân viên?");
         if (!userConfirmed) {
             event.preventDefault();
         }
-        // Logic xử lý upload ảnh thực tế nên được thực hiện ở phía server
-        // Giá trị tạm thời trong hidden input chỉ để đánh dấu có ảnh được chọn
     });
 </script>

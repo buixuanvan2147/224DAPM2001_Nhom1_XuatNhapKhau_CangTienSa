@@ -72,6 +72,14 @@ namespace Website_CangTienSa.Controllers
                 .ToList();
             ViewBag.NhanViens = allNhanVien;
 
+            // Lấy ánh xạ vai trò cho modal phân quyền
+            // Tạo ánh xạ vai trò cho modal phân quyền dưới dạng Dictionary
+            var roleMappingDict = db.vaiTroNhanViens.ToDictionary(
+                v => v.tenLoaiNhanVien,
+                v => v.maVaiTroNhanVien
+            );
+            ViewBag.RoleMapping = roleMappingDict;
+
             return View();
         }
 
@@ -79,6 +87,44 @@ namespace Website_CangTienSa.Controllers
         {
             ViewBag.Title = "QuanLyDonHang_QuanTriVien";
             ViewBag.ActiveSidebar = "QuanLyDonHang";
+
+            //danh mục container để làm select option cho container
+            ViewBag.dmContainers = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer");
+            //Danh sách container
+            var allConTaiNer = db.containers
+                .Include(ctn => ctn.danhMucContainer)
+                .Select(ctn => new QTV_QLDH_ContainerViewModel
+                {
+                    MaContainer = ctn.maContainer,
+                    TenMaDanhMucContainer = ctn.danhMucContainer.tenDanhMucContainer,
+                    MaChiTietKho = ctn.maChiTietKho,
+                    SoHieu = ctn.soHieu,
+                    TrangThaiContainer = ctn.trangThaiContainer,
+                    ViTriTrongKho = ctn.viTriTrongKho,
+                    NgayMuaContainer = ctn.ngayMuaContainer,
+                    TrongTai = ctn.trongTai
+                })
+                .ToList();
+            ViewBag.ConTaiNers = allConTaiNer;
+
+            //Danh sách phiếu nhập
+            var allPhieuNhap = db.phieuNhaps.ToList();
+            ViewBag.PhieuNhaps = allPhieuNhap;
+
+            //Danh sách phiếu xuất
+            var allPhieuXuat = db.phieuXuats.ToList();
+            ViewBag.PhieuXuats = allPhieuXuat;
+
+            //trạng thái đơn hàng để làm select option cho đơn hàng
+            var ttdh = db.donHangs.Select(d => d.trangThaiDonHang).Distinct().ToList();
+            ViewBag.trangThaiDonHangs = ttdh;
+            //trạng thái thanh toán để làm select option cho đơn hàng
+            var tttt = db.donHangs.Select(d => d.trangThaiThanhToan).Distinct().ToList();
+            ViewBag.trangThaiThanhToans = tttt;
+            //Danh sách phiếu xuất
+            var allDonHang = db.donHangs.ToList();
+            ViewBag.DonHangs = allDonHang;
+
             return View();
         }
 

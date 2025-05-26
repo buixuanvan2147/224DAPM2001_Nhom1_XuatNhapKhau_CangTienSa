@@ -1,0 +1,198 @@
+﻿@model Website_CangTienSa.Models.khachHang
+
+@{
+    ViewBag.Title = "Tạo Khách Hàng Mới"; // Đặt tiêu đề cho trang
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml"; // Sử dụng layout quản trị viên
+}
+
+<style>
+    .taotaikhoancontainer {
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
+    .taotaikhoan {
+        display: flex;
+        gap: 30px;
+    }
+    .CotThuNhat {
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        width: 34%;
+        padding: 30px;
+        background-color: #ffffff;
+    }
+
+    .CotThuHai {
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        width: 33%;
+        padding: 30px;
+        background-color: #ffffff;
+    }
+
+    .CotThuBa {
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        width: 33%;
+        padding: 30px;
+        background-color: #ffffff;
+    }
+</style>
+
+<div class="taotaikhoancontainer bg-white p-8 lg:p-10 rounded-xl shadow-2xl w-full max-w-4xl mx-auto border border-gray-200" style="margin:4px 0px 70px 0px; padding:30px; background-color: #ffffff ">
+
+    <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">Tạo Tài Khoản Khách Hàng Mới</h2>
+
+    @* Hiển thị thông báo từ TempData (thành công hoặc lỗi) *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="successMessageBox" class="message-box-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div id="errorMessageBox" class="message-box-error" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @* Form chính để tạo khách hàng, gửi dữ liệu lên Controller *@
+    @using (Html.BeginForm("TaoTaiKhoanKhachHang_QuanTriVien", "QuanTriVien_QLTaiKhoan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken() 
+<div class="taotaikhoan grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-x-16">
+    @*cột thứ nhất*@
+    <div class="CotThuNhat">
+        <label for="fileInput" class="form-label text-center mb-4 text-lg font-semibold">Ảnh Đại Diện Khách Hàng</label>
+        <div class="avatar-upload-box">
+            <img id="avatarPreview" class="avatar-preview" style="border-radius: 8px; height:150px; width: 150px; height: auto; display: block; object-fit: contain;"
+                 src="@(string.IsNullOrEmpty(Model.anhDaiDienKhachHangUrl) || Model.anhDaiDienKhachHangUrl == "default_user_image.png" ? "https://placehold.co/150x150/EEEEEE/888888?text=Chọn+Ảnh" : Url.Content("~/Content/img/KhachHangUrl/" + Model.anhDaiDienKhachHangUrl))"
+                 alt="Xem trước ảnh đại diện">
+            <p class="text-gray-500 text-sm mb-3">JPG, PNG hoặc GIF (tối đa 5MB)</p>
+            <label for="fileInput" class="file-input-button">
+                <input type="file" id="fileInput" name="imageFile" class="hidden" accept="image/png, image/jpeg, image/gif" onchange="previewImage(event)">
+            </label>
+        </div>
+        <button type="button" onclick="clearImage()" class="clear-image-button mt-3 @(string.IsNullOrEmpty(Model.anhDaiDienKhachHangUrl) || Model.anhDaiDienKhachHangUrl == "default_user_image.png" ? "hidden" : "")" id="clearImageBtn">Xóa ảnh</button>
+        @Html.ValidationMessage("imageFile", new { @class = "validation-message mt-2" })
+    </div>
+    @*cột thứ hai*@
+    <div class="CotThuHai">
+        <div class="form-group">
+            <label for="tenDangNhap" class="form-label">Tên Đăng Nhập <span class="text-red-500">*</span></label>
+            @Html.TextBoxFor(model => model.tenDangNhap, new { @class = "form-input", placeholder = "VD: nguyenvanA", maxlength = 100, required = "required" })
+            @Html.ValidationMessageFor(model => model.tenDangNhap, "", new { @class = "validation-message" })
+        </div>
+
+        <div class="form-group">
+            <label for="matKhau" class="form-label">Mật Khẩu <span class="text-red-500">*</span></label>
+            @Html.PasswordFor(model => model.matKhau, new { @class = "form-input", placeholder = "Nhập mật khẩu", maxlength = 50, required = "required" })
+            @Html.ValidationMessageFor(model => model.matKhau, "", new { @class = "validation-message" })
+        </div>
+
+        <div class="form-group">
+            <label for="tenKhachHang" class="form-label">Tên Khách Hàng <span class="text-red-500">*</span></label>
+            @Html.TextBoxFor(model => model.tenKhachHang, new { @class = "form-input", placeholder = "VD: Nguyễn Văn A", maxlength = 100, required = "required" })
+            @Html.ValidationMessageFor(model => model.tenKhachHang, "", new { @class = "validation-message" })
+        </div>
+
+        <div class="form-group">
+            <label for="tenCongTy" class="form-label">Tên Công Ty</label>
+            @Html.TextBoxFor(model => model.tenCongTy, new { @class = "form-input", placeholder = "VD: Công ty TNHH ABC", maxlength = 255 })
+            @Html.ValidationMessageFor(model => model.tenCongTy, "", new { @class = "validation-message" })
+        </div>
+
+        <div class="form-group">
+            <label for="maSoThueCongTy" class="form-label">Mã Số Thuế Công Ty</label>
+            @Html.TextBoxFor(model => model.maSoThueCongTy, new { @class = "form-input", placeholder = "VD: 12345678901234", maxlength = 14 })
+            @Html.ValidationMessageFor(model => model.maSoThueCongTy, "", new { @class = "validation-message" })
+        </div>
+    </div>
+    @*cột thứ ba*@
+<div class="CotThuBa">
+    <div class="form-group">
+        <label for="cccd" class="form-label">CCCD</label>
+        @Html.TextBoxFor(model => model.cccd, new { @class = "form-input", placeholder = "VD: 012345678901", maxlength = 12 })
+        @Html.ValidationMessageFor(model => model.cccd, "", new { @class = "validation-message" })
+    </div>
+
+    <div class="form-group">
+        <label for="diaChiLienLac" class="form-label">Địa Chỉ Liên Lạc <span class="text-red-500">*</span></label>
+        @Html.TextBoxFor(model => model.diaChiLienLac, new { @class = "form-input", placeholder = "VD: 123 Đường ABC, Quận XYZ, TP.HCM", maxlength = 100, required = "required" })
+        @Html.ValidationMessageFor(model => model.diaChiLienLac, "", new { @class = "validation-message" })
+    </div>
+
+    <div class="form-group">
+        <label for="sdtKhachHang" class="form-label">Số Điện Thoại <span class="text-red-500">*</span></label>
+        @Html.TextBoxFor(model => model.sdtKhachHang, new { @class = "form-input", type = "tel", placeholder = "VD: 0901234567", maxlength = 10, required = "required" })
+        @Html.ValidationMessageFor(model => model.sdtKhachHang, "", new { @class = "validation-message" })
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="form-label">Email <span class="text-red-500">*</span></label>
+        @Html.TextBoxFor(model => model.email, new { @class = "form-input", type = "email", placeholder = "VD: email@example.com", maxlength = 50, required = "required" })
+        @Html.ValidationMessageFor(model => model.email, "", new { @class = "validation-message" })
+    </div>
+
+    <div class="form-group">
+        <label for="trangThaiTaiKhoanKhachHang" class="form-label">Trạng Thái Tài Khoản <span class="text-red-500">*</span></label>
+        @Html.DropDownListFor(model => model.trangThaiTaiKhoanKhachHang, ViewBag.TrangThaiList as SelectList, "Chọn trạng thái", new { @class = "form-input", required = "required" })
+        @Html.ValidationMessageFor(model => model.trangThaiTaiKhoanKhachHang, "", new { @class = "validation-message" })
+    </div>
+
+    <button type="submit" class="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out mt-8 shadow-lg hover:shadow-xl transform hover:scale-105"
+            style="background-color: #228B22; color: #ffffff; height: 60px; padding: 0 30px">
+        Tạo Khách Hàng
+    </button>
+
+</div>
+</div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm hiển thị xem trước ảnh đại diện khi người dùng chọn file.
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('avatarPreview');
+                output.src = reader.result;
+                document.getElementById('clearImageBtn').classList.remove('hidden');
+            };
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                clearImage(); // Xóa nếu không có file nào được chọn
+            }
+        }
+
+        // Hàm xóa ảnh đại diện đã chọn và reset về ảnh placeholder.
+        function clearImage() {
+            document.getElementById('avatarPreview').src = "https://placehold.co/150x150/EEEEEE/888888?text=Chọn+Ảnh";
+            document.getElementById('fileInput').value = ''; // Xóa input file
+            document.getElementById('clearImageBtn').classList.add('hidden');
+        }
+
+        // Ẩn các thông báo TempData sau một khoảng thời gian
+        document.addEventListener('DOMContentLoaded', function () {
+            const successBox = document.getElementById('successMessageBox');
+            const errorBox = document.getElementById('errorMessageBox');
+
+            if (successBox) {
+                setTimeout(() => successBox.classList.add('hidden'), 5000); // Ẩn sau 5 giây
+            }
+            if (errorBox) {
+                setTimeout(() => errorBox.classList.add('hidden'), 5000); // Ẩn sau 5 giây
+            }
+
+            // Cập nhật preview ảnh nếu có ảnh từ Model trả về (do lỗi validation)
+            // Kiểm tra xem Model.anhDaiDienKhachHangUrl có giá trị không rỗng và không phải là placeholder
+            const initialImageUrl = document.getElementById('avatarPreview').src;
+            if (initialImageUrl && !initialImageUrl.includes("placeholder.co") && !initialImageUrl.includes("default_user_image.png")) {
+                document.getElementById('clearImageBtn').classList.remove('hidden');
+            }
+        });
+    </script>
+}

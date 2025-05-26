@@ -31,11 +31,17 @@
                     <td>@(string.IsNullOrEmpty(donHang.NguoiXacNhan) ? "Chưa có" : donHang.NguoiXacNhan)</td>
                     <td>
                         <a href="@Url.Action("ChiTietDonHang", "NhanVienKhoBai", new { maDonHang = donHang.MaDonHang })" class="btn btn-info btn-sm">Xem chi tiết</a>
-                        <button class="btn btn-success btn-sm"
-                                @(donHang.TrangThai == "Hoàn Thành" ? "disabled" : "")
-                                onclick="xacNhanNhapKho('@donHang.MaDonHang')">
-                            Xác nhận
-                        </button>
+
+                        @if (donHang.TrangThai != "Hoàn Thành")
+                        {
+                            <form action="@Url.Action("ConfirmTransport", "NhanVienKhoBai")" method="post" style="display:inline;">
+                                <input type="hidden" name="maDonHang" value="@donHang.MaDonHang" />
+                                <button type="submit" class="btn btn-success btn-sm"
+                                        onclick="return confirm('Bạn có chắc muốn xác nhận đơn hàng @donHang.MaDonHang vào kho?');">
+                                    Xác nhận
+                                </button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }
@@ -47,21 +53,3 @@
     </tbody>
 </table>
 
-<script>
-    function xacNhanNhapKho(maDonHang) {
-        if (confirm(`Xác nhận nhập kho cho đơn hàng ${maDonHang}?`)) {
-            $.ajax({
-                url: '@Url.Action("ConfirmTransport", "NhanVienKhoBai")',
-                type: 'POST',
-                data: { maPhieuXuat: maDonHang },
-                success: function (result) {
-                    alert(result.message);
-                    if (result.success) location.reload();
-                },
-                error: function () {
-                    alert("Lỗi khi xác nhận.");
-                }
-            });
-        }
-    }
-</script>
