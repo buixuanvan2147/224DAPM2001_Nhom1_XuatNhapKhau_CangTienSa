@@ -65,7 +65,7 @@
                             <option value="Đang xử lý" @(status == "Đang xử lý" ? "selected" : "")>Đang xử lý</option>
                             <option value="Đã xuất kho" @(status == "Đã xuất kho" ? "selected" : "")>Đã xuất kho</option>
                             <option value="Hoàn thành" @(status == "Hoàn thành" ? "selected" : "")>Hoàn thành</option>
-                            <option value="đang vận chuyển xuất kho" @(status == "đang vận chuyển xuất kho" ? "selected" : "")>đang vận chuyển xuất kho</option>
+                            <option value="Đang vận chuyển xuất kho" @(status == "Đang vận chuyển xuất kho" ? "selected" : "")>Đang vận chuyển xuất kho</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-right: 10px;">
@@ -108,7 +108,7 @@
                                 <td>
                                     <span class="badge @(item.trangThaiDonHang == "Đã xuất kho" ? "badge-success" :
                                                        item.trangThaiDonHang == "Hoàn thành" ? "badge-primary" :
-                                                       item.trangThaiDonHang == "đang vận chuyển xuất kho" ? "badge-info" : "badge-warning")">
+                                                       item.trangThaiDonHang == "Đang vận chuyển xuất kho" ? "badge-info" : "badge-warning")">
                                         @item.trangThaiDonHang
                                     </span>
                                 </td>

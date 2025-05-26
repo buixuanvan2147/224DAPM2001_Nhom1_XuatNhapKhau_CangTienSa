@@ -264,94 +264,108 @@ namespace Website_CangTienSa.Controllers
             return View();
         }
 
-        [Authorize] // Yêu cầu người dùng phải đăng nhập để truy cập action này
+
+        // GET: Hiển thị trang đổi mật khẩu (đã có trong yêu cầu trước đó)
+        [HttpGet]
         public ActionResult DoiMatKhau()
         {
-            string currentUsername = User.Identity.Name;
-            string tenHienThi = "";
+            // Lấy thông tin người dùng hiện tại để hiển thị tên hiển thị
+            // Giả sử bạn có cách để lấy ID người dùng đã đăng nhập, ví dụ từ Session hoặc Authentication
+            string maNhanVien = Session["MaNhanVien"] as string; // Lấy mã nhân viên từ Session
 
-            var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == currentUsername);
-            if (khachHang != null)
+            if (string.IsNullOrEmpty(maNhanVien))
             {
-                tenHienThi = khachHang.tenKhachHang; // Giả sử bạn có trường tenHienThi
+                // Xử lý trường hợp chưa đăng nhập hoặc không có mã nhân viên
+                // Ví dụ: Chuyển hướng về trang đăng nhập
+                return RedirectToAction("Login", "Account");
             }
-            else
+
+            var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.maNhanVien == maNhanVien);
+
+            if (nhanVien == null)
             {
-                var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.tenDangNhap == currentUsername);
-                if (nhanVien != null)
-                {
-                    tenHienThi = nhanVien.tenHienThi; // Giả sử bạn có trường tenNhanVien
-                }
+                ViewBag.Message = "Không tìm thấy thông tin người dùng.";
+                return View(new DoiMatKhauViewModel());
             }
 
             var model = new DoiMatKhauViewModel
             {
-                TenHienThi = tenHienThi
+                TenHienThi = nhanVien.tenHienThi // Lấy tên hiển thị từ thông tin nhân viên
             };
 
             return View(model);
         }
 
-        // POST: DoiMatKhau
+        // POST: Xử lý yêu cầu đổi mật khẩu
         [HttpPost]
-        [Authorize] // Yêu cầu người dùng phải đăng nhập để truy cập action này
-        [ValidateAntiForgeryToken] // Xác thực token chống CSRF từ form
+        [ValidateAntiForgeryToken] // Bảo vệ khỏi tấn công CSRF
         public ActionResult DoiMatKhau(DoiMatKhauViewModel model)
         {
+            // Lấy thông tin người dùng hiện tại
+            string maNhanVien = Session["MaNhanVien"] as string; // Lấy mã nhân viên từ Session
+
+            if (string.IsNullOrEmpty(maNhanVien))
+            {
+                ViewBag.Message = "Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn.";
+                return View(model); // Trả về view với thông báo
+            }
+
+            var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.maNhanVien == maNhanVien);
+
+            if (nhanVien == null)
+            {
+                ViewBag.Message = "Không tìm thấy thông tin người dùng.";
+                return View(model);
+            }
+
+            // Cập nhật TenHienThi trong model để hiển thị lại trên form nếu có lỗi
+            model.TenHienThi = nhanVien.tenHienThi;
+
             if (ModelState.IsValid)
             {
-                string currentUsername = User.Identity.Name;
-                bool passwordChanged = false;
-
-                var khachHang = db.khachHangs.FirstOrDefault(kh => kh.tenDangNhap == currentUsername);
-                if (khachHang != null)
+                // 1. Kiểm tra mật khẩu cũ có đúng không
+                if (nhanVien.matKhau != model.MatKhauCu) // Giả sử mật khẩu được lưu dưới dạng văn bản thuần túy (KHÔNG KHUYẾN NGHỊ TRONG THỰC TẾ)
                 {
-                    // **Quan trọng:** So sánh mật khẩu cũ đã nhập với mật khẩu đã hash trong database.
-                    // Sử dụng Crypto.VerifyHashedPassword (CHỈ CHO MỤC ĐÍCH DEMO)
-                    if (Crypto.VerifyHashedPassword(khachHang.matKhau, model.MatKhauCu))
-                    {
-                        // Hash mật khẩu mới trước khi lưu
-                        khachHang.matKhau = Crypto.HashPassword(model.MatKhauMoi);
-                        db.SaveChanges();
-                        ViewBag.Message = "Đổi mật khẩu thành công.";
-                        passwordChanged = true;
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("MatKhauCu", "Mật khẩu cũ không đúng.");
-                    }
-                }
-                else
-                {
-                    var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.tenDangNhap == currentUsername);
-                    if (nhanVien != null)
-                    {
-                        // **Quan trọng:** So sánh mật khẩu cũ đã nhập với mật khẩu đã hash trong database.
-                        // Sử dụng Crypto.VerifyHashedPassword (CHỈ CHO MỤC ĐÍCH DEMO)
-                        if (Crypto.VerifyHashedPassword(nhanVien.matKhau, model.MatKhauCu))
-                        {
-                            // Hash mật khẩu mới
-                            nhanVien.matKhau = Crypto.HashPassword(model.MatKhauMoi);
-                            db.SaveChanges();
-                            ViewBag.Message = "Đổi mật khẩu thành công.";
-                            passwordChanged = true;
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("MatKhauCu", "Mật khẩu cũ không đúng.");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Không tìm thấy tài khoản người dùng.");
-                    }
+                    ModelState.AddModelError("MatKhauCu", "Mật khẩu cũ không chính xác.");
+                    ViewBag.Message = "Đổi mật khẩu không thành công.";
+                    return View(model);
                 }
 
-                if (passwordChanged)
+                // 2. Kiểm tra mật khẩu mới và xác nhận mật khẩu mới
+                if (model.MatKhauMoi != model.XacNhanMatKhauMoi)
                 {
-                    return View();
+                    ModelState.AddModelError("XacNhanMatKhauMoi", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+                    ViewBag.Message = "Đổi mật khẩu không thành công.";
+                    return View(model);
+                }
+
+                // 3. Cập nhật mật khẩu mới vào database
+                try
+                {
+                    nhanVien.matKhau = model.MatKhauMoi; // Cập nhật mật khẩu
+
+                    // Cập nhật thời gian đăng nhập gần nhất nếu cần (tùy thuộc vào logic của bạn)
+                    // nhanVien.thoiGianDangNhapGanNhat = DateTime.Now;
+
+                    db.Entry(nhanVien).State = System.Data.Entity.EntityState.Modified; // Đánh dấu là đã sửa đổi
+                    db.SaveChanges(); // Lưu thay đổi vào database
+
+                    ViewBag.Message = "Mật khẩu đã được đổi thành công!";
+                    // Có thể chuyển hướng đến trang cá nhân hoặc trang xác nhận
+                    return View(new DoiMatKhauViewModel { TenHienThi = nhanVien.tenHienThi }); // Trả về model rỗng sau khi đổi thành công
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi để debug
+                    Console.WriteLine("Lỗi khi cập nhật mật khẩu: " + ex.Message);
+                    ModelState.AddModelError("", "Đã xảy ra lỗi khi đổi mật khẩu. Vui lòng thử lại.");
+                    ViewBag.Message = "Đổi mật khẩu không thành công.";
+                    return View(model);
                 }
             }
+
+            // Nếu ModelState không hợp lệ (ví dụ: validation attributes trên ViewModel không được đáp ứng)
+            ViewBag.Message = "Vui lòng kiểm tra lại thông tin nhập.";
             return View(model);
         }
 

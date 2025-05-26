@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Website_CangTienSa.Models;
+using System.Data.Entity;
+using System.Web.Configuration;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -19,8 +21,7 @@ namespace Website_CangTienSa.Controllers
             }
 
             // 1. Lấy thông tin Phiếu Nhập chính
-            var phieuNhap = db.phieuNhaps
-                                     .FirstOrDefault(pn => pn.maPhieuNhap == id);
+            var phieuNhap = db.phieuNhaps.FirstOrDefault(pn => pn.maPhieuNhap == id);
 
             if (phieuNhap == null)
             {
@@ -69,8 +70,84 @@ namespace Website_CangTienSa.Controllers
             return View();
         }
 
-        // Đảm bảo bạn có class ViewModel này trong thư mục Models của bạn
-        // Hoặc bạn có thể định nghĩa nó ngay trong Controller nếu chỉ dùng nội bộ
+        public ActionResult QTV_QLDH_XoaPhieuNhap(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return HttpNotFound("Không tìm thấy mã phiếu nhập.");
+            }
+
+            var phieuNhap = db.phieuNhaps
+                    .Include(pn => pn.donHang) // Nếu có mối quan hệ và bạn muốn hiển thị thông tin đơn hàng
+                    .FirstOrDefault(pn => pn.maPhieuNhap == id);
+
+            if (phieuNhap == null)
+            {
+                return HttpNotFound($"Không tìm thấy phiếu nhập với mã: {id}");
+            }
+
+            return View(phieuNhap); // Truyền đối tượng phiếu nhập sang View để hiển thị thông tin cần xác nhận
+        }
+        [HttpPost, ActionName("QTV_QLDH_XoaPhieuNhap")]
+        [ValidateAntiForgeryToken] // Nên thêm để chống tấn công CSRF
+        public ActionResult XacNhanXoaPhieuNhap(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return HttpNotFound("Không tìm thấy mã phiếu nhập để xóa.");
+            }
+
+            try
+            {
+                // Kiểm tra các ràng buộc khóa ngoại (Foreign Key Constraints)
+                // Trong trường hợp của bạn, PhieuNhap có ChiTietPhieuNhap phụ thuộc vào nó.
+                // Do đó, bạn phải xóa ChiTietPhieuNhap trước khi xóa PhieuNhap.
+
+                // 1. Tìm và xóa các ChiTietPhieuNhap liên quan
+                var chiTietPhieuNhapsCanXoa = db.chiTietPhieuNhaps
+                        .Where(ctpn => ctpn.maPhieuNhap == id)
+                        .ToList();
+                if (chiTietPhieuNhapsCanXoa.Any())
+                {
+                    db.chiTietPhieuNhaps.RemoveRange(chiTietPhieuNhapsCanXoa);
+                }
+
+                // 2. Sau khi đã xóa các ChiTietPhieuNhap, tiến hành xóa PhieuNhap
+                var phieuNhapCanXoa = db.phieuNhaps.Find(id);
+                if (phieuNhapCanXoa == null)
+                {
+                    return HttpNotFound($"Không tìm thấy phiếu nhập với mã: {id} để xóa.");
+                }
+
+                db.phieuNhaps.Remove(phieuNhapCanXoa);
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Phiếu nhập đã được xóa thành công!";
+                return RedirectToAction("QuanLyDonHang_QuanTriVien", "QuanTriVien"); 
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            {
+                // Xử lý lỗi nếu có ràng buộc toàn vẹn dữ liệu khác
+                // Ví dụ: Phiếu nhập đang có liên kết với dữ liệu khác mà không thể xóa
+                ModelState.AddModelError("", "Không thể xóa phiếu nhập này vì có dữ liệu liên quan khác.");
+                System.Diagnostics.Debug.WriteLine("Lỗi khi xóa phiếu nhập: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                var phieuNhap = db.phieuNhaps.Find(id); // Tải lại để hiển thị lại View
+                return View("QTV_QLDH_XoaPhieuNhap", phieuNhap); // Hiển thị lại trang xác nhận với lỗi
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi trong quá trình xóa: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("General Error: " + ex.Message);
+                var phieuNhap = db.phieuNhaps.Find(id);
+                return View("QTV_QLDH_XoaPhieuNhap", phieuNhap);
+            }
+        }
+
+        // Model dùng cho chi tiết phiếu nhập
         public class ChiTietPhieuNhapViewModel
         {
             public string MaChiTietPhieuNhap { get; set; }

@@ -284,6 +284,7 @@
     <Content Include="Content\img\header.jpg" />
     <Content Include="Content\img\KhachHangUrl\default_user_image.png" />
     <Content Include="Content\img\NhanVienUrl\default_user_image.png" />
+    <Content Include="Content\img\NhanVienUrl\testimonial-4.jpg" />
     <Content Include="Content\img\team-1.jpg" />
     <Content Include="Content\img\team-2.jpg" />
     <Content Include="Content\img\team-3.jpg" />
@@ -504,7 +505,7 @@
     <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_ChiTietContainer.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_SuaContainer.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_ChiTietPhieuNhap.cshtml" />
-    <Content Include="Views\NhanVienKhoBai\ChiTietDonHangXuatKho.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_XoaPhieuNhap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
