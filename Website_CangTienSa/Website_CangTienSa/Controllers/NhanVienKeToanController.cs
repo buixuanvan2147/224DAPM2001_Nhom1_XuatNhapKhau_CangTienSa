@@ -20,6 +20,7 @@ namespace Website_CangTienSa.Controllers
         public ActionResult Index_NhanVienKeToan()
         {
             var listDonHang = db.donHangs
+                .Where(d => d.trangThaiDonHang != "Đang yêu cầu") // Loại bỏ đơn hàng có trạng thái "Đang yêu cầu"
                 .Select(d => new DonHangViewModel
                 {
                     MaDonHang = d.maDonHang,
@@ -28,7 +29,7 @@ namespace Website_CangTienSa.Controllers
                     NgayTaoDon = d.ngayTaoDonHang,
                     TongTien = (float)d.tongTien,
                     TrangThai = d.trangThaiThanhToan,
-                    ThoiGianThanhToan = d.ngayTaoDonHang
+                    ThoiGianThanhToan = d.ngayTaoDonHang // Nếu cần sửa thành ngayThanhToan, kiểm tra cột tương ứng
                 }).ToList();
 
             return View(listDonHang);
@@ -49,23 +50,37 @@ namespace Website_CangTienSa.Controllers
             {
                 var donHang = db.donHangs.FirstOrDefault(d => d.maDonHang == maDonHang);
 
-                if (donHang != null && donHang.trangThaiThanhToan == "Chưa thanh toán")
+                if (donHang != null)
                 {
-                    donHang.trangThaiThanhToan = "Đã thanh toán";
-                    donHang.trangThaiDonHang = "Đang vận chuyển";
-                 //   donHang.ngayThanhToan = DateTime.Now;
-                    db.SaveChanges();
-                    return Json(new { success = true, message = "Cập nhật trạng thái thành công." });
+                    if (donHang.trangThaiDonHang == "Đang yêu cầu")
+                    {
+                        return Json(new { success = false, message = "Đơn hàng đang yêu cầu, không thể thanh toán." });
+                    }
+
+                    if (donHang.trangThaiThanhToan == "Chưa thanh toán")
+                    {
+                        donHang.trangThaiThanhToan = "Đã thanh toán";
+                        // donHang.ngayThanhToan = DateTime.Now; // Nếu cần lưu thời gian thanh toán
+
+                        if (donHang.moTa == "Đơn hàng nhập khẩu")
+                        {
+                            donHang.trangThaiDonHang = "Đang vận chuyển nhập kho";
+                        }
+
+                        db.SaveChanges();
+                        return Json(new { success = true, message = "Cập nhật trạng thái thành công." });
+                    }
+
+                    return Json(new { success = false, message = "Đơn hàng đã được thanh toán." });
                 }
 
-                return Json(new { success = false, message = "Đơn hàng không tồn tại hoặc đã được thanh toán." });
+                return Json(new { success = false, message = "Đơn hàng không tồn tại." });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
         }
-
 
         [HttpPost]
         public ActionResult XuatBienLai(string maDonHang)

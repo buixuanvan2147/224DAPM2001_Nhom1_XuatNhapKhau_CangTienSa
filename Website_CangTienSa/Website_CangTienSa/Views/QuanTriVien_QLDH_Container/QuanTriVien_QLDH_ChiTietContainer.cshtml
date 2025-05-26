@@ -5,71 +5,231 @@
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
-<h2>Details</h2>
+<style>
+    /* Container chính cho toàn bộ nội dung */
+    .details-container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Căn trên thay vì căn giữa tuyệt đối */
+        padding: 40px 20px;
+        min-height: calc(100vh - 56px); /* Đảm bảo đủ chiều cao */
+        color: #E2E8F0; /* Màu chữ sáng */
+        margin-bottom: 60px;
+    }
 
-<div>
-    <h4>container</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.soHieu)
-        </dt>
+    /* Card chứa thông tin chi tiết */
+    .details-card {
+        background-color: #2D3748; /* Màu nền phụ tối */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        max-width: 800px; /* Giới hạn chiều rộng tối đa của card */
+        transition: transform 0.3s ease-in-out;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.soHieu)
-        </dd>
+    .details-card:hover {
+        transform: translateY(-5px);
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.trangThaiContainer)
-        </dt>
+    /* Tiêu đề trang */
+    .details-card h2 {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4FD1C5; /* Màu nhấn */
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.trangThaiContainer)
-        </dd>
+    .details-card hr {
+        border-color: #4A5568; /* Màu đường kẻ ngang */
+        margin-bottom: 30px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.viTriTrongKho)
-        </dt>
+    /* Danh sách chi tiết (thay thế dl-horizontal) */
+    .details-list {
+        display: grid;
+        grid-template-columns: 50% 50%; /* Cột label tự động chiều rộng, cột giá trị chiếm phần còn lại */
+        gap: 15px 30px; /* Khoảng cách giữa các hàng và cột */
+        margin-bottom: 30px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.viTriTrongKho)
-        </dd>
+    .details-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #A0AEC0; /* Màu xám nhạt cho label */
+        text-align: left; /* Căn trái label */
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ngayMuaContainer)
-        </dt>
+    .details-value {
+        font-size: 1rem;
+        color: #E2E8F0; /* Màu chữ sáng cho giá trị */
+        font-weight: 500;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.ngayMuaContainer)
-        </dd>
+    /* Nhóm nút hành động */
+    .details-actions-group {
+        display: flex;
+        justify-content: center; /* Căn giữa các nút */
+        align-items: center;
+        gap: 15px; /* Khoảng cách giữa các nút */
+        margin-top: 30px;
+        margin-bottom: 20px; /* Khoảng cách với link quay lại */
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.trongTai)
-        </dt>
+    .action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border: none;
+        color: #ffffff;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.trongTai)
-        </dd>
+    .action-button i {
+        margin-right: 8px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.chiTietKho.maKho)
-        </dt>
+    /* Màu cho nút "Xác Nhận Sửa" */
+    .action-button.edit {
+        background: linear-gradient(45deg, #FCD34D, #FBBF24); /* Vàng */
+        color: #1A202C; /* Chữ tối */
+    }
+    .action-button.edit:hover {
+        background: linear-gradient(45deg, #FBBF24, #FCD34D);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.chiTietKho.maKho)
-        </dd>
+    /* Màu cho nút "Quay Lại" */
+    .action-button.back {
+        background: linear-gradient(45deg, #63B3ED, #4299E1); /* Xanh dương */
+    }
+    .action-button.back:hover {
+        background: linear-gradient(45deg, #4299E1, #63B3ED);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.danhMucContainer.tenDanhMucContainer)
-        </dt>
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .details-card {
+            padding: 30px;
+            border-radius: 8px;
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.danhMucContainer.tenDanhMucContainer)
-        </dd>
+        .details-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
 
-    </dl>
+        .details-list {
+            grid-template-columns: 1fr; /* Một cột trên mobile */
+            gap: 15px;
+        }
+
+        .details-label {
+            text-align: left; /* Căn trái label trên mobile */
+            padding-right: 0;
+            font-size: 0.9rem;
+        }
+
+        .details-value {
+            font-size: 0.9rem;
+        }
+
+        .details-actions-group {
+            flex-direction: column; /* Xếp nút dọc trên mobile */
+            gap: 10px;
+        }
+
+        .action-button {
+            width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .details-card {
+            padding: 20px;
+        }
+
+        .details-card h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="details-container-wrapper">
+    <div class="details-card">
+        <h2>CHI TIẾT CONTAINER</h2>
+        <dl class="details-list">
+            <dt class="details-label">
+                Số Hiệu
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.soHieu)
+            </dd>
+
+            <dt class="details-label">
+                Trạng Thái Container
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.trangThaiContainer)
+            </dd>
+
+            <dt class="details-label">
+                Vị Trí Trong Kho
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.viTriTrongKho)
+            </dd>
+
+            <dt class="details-label">
+                Ngày Mua Container
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.ngayMuaContainer)
+            </dd>
+
+            <dt class="details-label">
+                Trọng Tải
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.trongTai)
+            </dd>
+
+            <dt class="details-label">
+                Mã Kho
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.chiTietKho.maKho)
+            </dd>
+
+            <dt class="details-label">
+                Tên Danh Mục Container
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.danhMucContainer.tenDanhMucContainer)
+            </dd>
+        </dl>
+
+        <div class="details-actions-group">
+            <a href="@Url.Action("QuanTriVien_QLDH_SuaContainer", "QuanTriVien_QLDH_Container", new { id = Model.maContainer })" class="action-button edit" title="Xác nhận sửa">
+                <i class="fas fa-edit"></i> Xác Nhận Sửa
+            </a>
+            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="action-button back" title="Quay lại">
+                <i class="fas fa-arrow-left"></i> Quay Lại
+            </a>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.maContainer }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -431,13 +431,13 @@ BEGIN
     SET trangThaiXuatHang = 
         CASE i.trangThaiDonHang
             WHEN N'Hoàn thành' THEN N'Hoàn thành'
-            WHEN N'Đang vận chuyển' THEN N'Đang vận chuyển'
+            WHEN N'Đang vận chuyển xuất kho' THEN N'Đang vận chuyển xuất kho'
         END
     FROM phieuXuat px
     INNER JOIN inserted i ON px.maDonHang = i.maDonHang
     INNER JOIN deleted d ON i.maDonHang = d.maDonHang
     WHERE i.trangThaiDonHang <> d.trangThaiDonHang
-      AND i.trangThaiDonHang IN (N'Hoàn thành', N'Đang vận chuyển');
+      AND i.trangThaiDonHang IN (N'Hoàn thành', N'Đang vận chuyển xuất kho');
 END;
 GO
 
@@ -457,4 +457,4 @@ SET trangThaiDonHang = N'Hoàn thành',
 WHERE maDonHang = 'DH00000011';
 
 DELETE FROM phieuXuat
-WHERE maPhieuXuat = 'PX00000011';*/
+WHERE maPhieuXuat = 'PX00000011';

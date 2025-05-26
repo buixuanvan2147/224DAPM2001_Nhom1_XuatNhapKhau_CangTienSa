@@ -1,0 +1,425 @@
+﻿
+@{
+    ViewBag.Title = "QTV_QLDH_ChiTietPhieuNhap";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+<style>
+    /* General Page Container */
+    .details-page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Align to top */
+        padding: 10px 20px; /* Cập nhật padding */
+        min-height: calc(100vh - 56px); /* Ensure minimum height */
+        /* background-color và color được kế thừa từ _LayoutQuanTriVien.cshtml */
+        color: #E2E8F0; /* Light text color */
+        margin-top: 20px; /* Cập nhật margin-top */
+        margin-bottom: 60px; /* Cập nhật margin-bottom */
+    }
+
+    /* Main Card for Details */
+    .detail-card {
+        background-color: #2D3748; /* Slightly lighter dark background for card */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        width: 100%; /* Đảm bảo responsive */
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Page Title */
+    .page-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4FD1C5; /* Accent color */
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    /* Section Headers */
+    .section-header {
+        color: #4FD1C5; /* Accent color for section headers */
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #4A5568; /* Darker border */
+        padding-bottom: 10px;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    /* Detail Items */
+    .detail-item {
+        display: flex; /* Use flexbox for alignment */
+        margin-bottom: 10px;
+        align-items: baseline; /* Align text baselines */
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+    }
+
+    .detail-label {
+        color: #A0AEC0; /* Light gray for labels */
+        font-weight: 600;
+        min-width: 180px; /* Fixed width for labels for alignment */
+        margin-right: 15px; /* Space between label and value */
+        font-size: 1rem;
+    }
+
+    .detail-value {
+        color: #E2E8F0; /* Light text for values */
+        font-size: 1rem;
+        flex-grow: 1; /* Allow value to take remaining space */
+    }
+
+    /* Two-column layout for order details */
+    .order-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: 15px 30px; /* Gap between items */
+    }
+
+    /* Table Styling */
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling for tables on small screens */
+        margin-top: 25px;
+        border-radius: 10px; /* Rounded corners for the table container */
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #4A5568; /* Border for the table container */
+    }
+
+    .table-custom {
+        width: 100%;
+        border-collapse: separate; /* Allows border-radius on parent */
+        border-spacing: 0;
+        background-color: #2D3748; /* Dark background for table */
+        color: #E2E8F0; /* Light text color */
+    }
+
+    .table-custom thead th {
+        background-color: #1A202C; /* Darker background for table header */
+        color: #4FD1C5; /* Accent color for header text */
+        font-weight: 700;
+        padding: 12px 15px; /* Giảm padding */
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 0.8rem; /* Giảm cỡ chữ */
+        letter-spacing: 0.5px;
+        border: 1px solid #4A5568; /* Border for header cells */
+        white-space: nowrap; /* Prevent wrapping in headers */
+    }
+
+    .table-custom tbody td {
+        padding: 10px 15px; /* Giảm padding */
+        border: 1px solid #4A5568; /* Border for body cells */
+        font-size: 0.8rem; /* Giảm cỡ chữ */
+        color: #E2E8F0;
+        white-space: nowrap; /* Prevent wrapping in cells */
+    }
+
+    .table-custom tbody tr:nth-child(even) {
+        background-color: #262D3B; /* Alternating row background */
+    }
+
+    .table-custom tbody tr:hover {
+        background-color: #3D4A5E; /* Hover effect for rows */
+        transition: background-color 0.2s ease;
+    }
+
+    /* Action Buttons Group */
+    .action-buttons-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px; /* Space between buttons */
+        margin-top: 30px;
+    }
+
+    .action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 30px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-decoration: none; /* Remove underline for links */
+        color: #1A202C; /* Dark text for light buttons */
+    }
+
+    .action-button i {
+        margin-right: 8px;
+    }
+
+    /* Specific button colors */
+    .action-button.back {
+        background: linear-gradient(45deg, #63B3ED, #4299E1); /* Blue gradient */
+        color: #FFFFFF; /* White text */
+    }
+
+    .action-button.back:hover {
+        background: linear-gradient(45deg, #4299E1, #63B3ED);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(99, 179, 237, 0.4);
+    }
+
+    .action-button.back:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(99, 179, 237, 0.2);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .detail-card {
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            font-size: 1.4rem;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            flex-direction: column; /* Stack label and value vertically */
+            align-items: flex-start;
+        }
+
+        .detail-label {
+            min-width: auto; /* Remove fixed width */
+            margin-right: 0;
+            margin-bottom: 5px; /* Space between label and value */
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-size: 0.9rem;
+        }
+
+        /* Single column for order info on small screens */
+        .order-info-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .table-custom tbody td {
+            display: block; /* Make table cells act like block elements */
+            text-align: right; /* Align value to right */
+            padding-left: 50%; /* Space for pseudo-element label */
+            position: relative;
+            border-bottom: 1px solid #4A5568; /* Only bottom border for mobile rows */
+            border-left: none;
+            border-right: none;
+            font-size: 0.8rem; /* Giảm cỡ chữ trên mobile */
+        }
+
+        .table-custom tbody td:last-child {
+            border-bottom: none; /* No border for the last cell in a row */
+        }
+
+        .table-custom tbody td:before {
+            content: attr(data-label); /* Use data-label for pseudo-element */
+            position: absolute;
+            left: 10px;
+            width: 45%;
+            text-align: left;
+            font-weight: 600;
+            color: #4FD1C5; /* Accent color for mobile labels */
+            font-size: 0.8rem; /* Giảm cỡ chữ trên mobile */
+        }
+
+        .table-custom thead {
+            display: none; /* Hide table header on mobile */
+        }
+
+        .table-custom tbody tr {
+            display: block; /* Make rows act like blocks/cards */
+            margin-bottom: 15px;
+            border: 1px solid #4A5568;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-buttons-group {
+            flex-direction: column; /* Stack buttons vertically */
+            gap: 10px;
+        }
+
+        .action-button {
+            width: 100%; /* Full width buttons */
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .detail-card {
+            padding: 20px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .section-header {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<div class="details-page-wrapper">
+    <div class="detail-card">
+        <h2 class="page-title">CHI TIẾT PHIẾU NHẬP</h2>
+
+        @if (ViewBag.PhieuNhap != null)
+        {
+            var phieuNhap = ViewBag.PhieuNhap;
+            var donHang = ViewBag.DonHang;
+
+            <h3 class="section-header">Thông tin Phiếu Nhập</h3>
+            <div class="detail-item">
+                <span class="detail-label">Mã Phiếu Nhập:</span> <span class="detail-value">@phieuNhap.maPhieuNhap</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Mô tả Phiếu Nhập:</span> <span class="detail-value">@(string.IsNullOrEmpty(phieuNhap.moTa) ? "Không có mô tả" : phieuNhap.moTa)</span>
+            </div>
+
+            if (donHang != null)
+            {
+                <h3 class="section-header">Thông tin Đơn Hàng liên quan</h3>
+                <div class="order-info-grid">
+                    @* Added new wrapper for two-column layout *@
+                    <div class="detail-item">
+                        <span class="detail-label">Mã Đơn Hàng:</span> <span class="detail-value">@donHang.maDonHang</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mã Khách Hàng:</span> <span class="detail-value">@donHang.maKhachHang</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mã Nhân Viên:</span> <span class="detail-value">@donHang.maNhanVien</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Người Gửi:</span> <span class="detail-value">@donHang.tenNguoiGui</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Người Nhận:</span> <span class="detail-value">@donHang.tenNguoiNhan</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Cảng Đích Đến:</span> <span class="detail-value">@donHang.cangDichDen</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ngày Tạo ĐH:</span> <span class="detail-value">@(donHang.ngayTaoDonHang.ToString("dd/MM/yyyy HH:mm"))</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Thời Gian Lưu Trữ:</span> <span class="detail-value">@(donHang.thoiGianLuuTru) Ngày</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ngày Xuất Cảng:</span> <span class="detail-value">@(donHang.ngayXuatCang == null || donHang.ngayXuatCang == default(DateTime) ? "Chưa xuất cảng" : donHang.ngayXuatCang.ToString("dd/MM/yyyy"))</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ngày Nhập Cảng:</span> <span class="detail-value">@(donHang.ngayNhapCang == null || donHang.ngayNhapCang == default(DateTime) ? "Vận chuyển nội bộ" : donHang.ngayNhapCang.ToString("dd/MM/yyyy"))</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Trạng Thái Đơn Hàng:</span> <span class="detail-value">@donHang.trangThaiDonHang</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Trạng Thái Thanh Toán:</span> <span class="detail-value">@donHang.trangThaiThanhToan</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tổng Tiền:</span> <span class="detail-value">@((donHang.tongTien != 0) ? donHang.tongTien.ToString("N0") + " VND" : "Chưa tính")</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mô tả Đơn Hàng:</span> <span class="detail-value">@(string.IsNullOrEmpty(donHang.moTa) ? "Không có mô tả" : donHang.moTa)</span>
+                    </div>
+                </div> @* End of order-info-grid *@
+            }
+            else
+            {
+                <p class="detail-value">Không tìm thấy thông tin đơn hàng liên quan.</p>
+            }
+
+            <h3 class="section-header">Danh sách Container trong Phiếu Nhập</h3>
+            <div class="table-container">
+                @if (ViewBag.ChiTietPhieuNhaps != null && ViewBag.ChiTietPhieuNhaps.Count > 0)
+                {
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Chi Tiết PN</th>
+                                <th>Mô tả Chi Tiết PN</th>
+                                <th>Mã Container</th>
+                                <th>Số Hiệu Container</th>
+                                <th>Danh Mục Container</th>
+                                <th>Trọng Tải Container</th>
+                                <th>Trạng Thái Container</th>
+                                <th>Vị Trí Trong Kho</th>
+                                <th>Ngày Mua Container</th>
+                                <th>Sức chứa Danh Mục</th>
+                                <th>Trọng tải Danh Mục</th>
+                                <th>Kích thước Danh Mục</th>
+                                <th>Mã Chi Tiết Kho</th>
+                                <th>Trạng Thái Chi Tiết Kho</th>
+                                <th>Lần Cuối Cập Nhật Trong Kho</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int sttContainer = 1; }
+                            @foreach (var chiTiet in ViewBag.ChiTietPhieuNhaps)
+                            {
+                                <tr>
+                                    <td data-label="STT">@sttContainer</td>
+                                    <td data-label="Mã Chi Tiết PN">@chiTiet.MaChiTietPhieuNhap</td>
+                                    <td data-label="Mô tả Chi Tiết PN">@(string.IsNullOrEmpty(chiTiet.MoTaChiTietPN) ? "Không có mô tả" : chiTiet.MoTaChiTietPN)</td>
+                                    <td data-label="Mã Container">@chiTiet.MaContainer</td>
+                                    <td data-label="Số Hiệu Container">@chiTiet.SoHieuContainer</td>
+                                    <td data-label="Danh Mục Container">@chiTiet.TenDanhMucContainer</td>
+                                    <td data-label="Trọng Tải Container">@chiTiet.TrongTaiContainer</td>
+                                    <td data-label="Trạng Thái Container">@chiTiet.TrangThaiContainer</td>
+                                    <td data-label="Vị Trí Trong Kho">@chiTiet.ViTriTrongKho</td>
+                                    <td data-label="Ngày Mua Container">@(chiTiet.NgayMuaContainer != DateTime.MinValue ? chiTiet.NgayMuaContainer.ToString("dd/MM/yyyy") : "N/A")</td>
+                                    <td data-label="Sức chứa Danh Mục">@chiTiet.SucChuaToiDaDanhMuc</td>
+                                    <td data-label="Trọng tải Danh Mục">@chiTiet.TrongTaiToiDaDanhMuc</td>
+                                    <td data-label="Kích thước Danh Mục">@chiTiet.ChieuDaiDanhMuc x @chiTiet.ChieuRongDanhMuc x @chiTiet.ChieuCaoDanhMuc</td>
+                                    <td data-label="Mã Chi Tiết Kho">@chiTiet.MaChiTietKho</td>
+                                    <td data-label="Trạng Thái Chi Tiết Kho">@chiTiet.TrangThaiChiTietKho</td>
+                                    <td data-label="Ngày Cập Nhật Cuối CTK">@chiTiet.NgayCapNhatCuoiCTK.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                                sttContainer++;
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="detail-value">Phiếu nhập này không có thông tin chi tiết container nào.</p>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="detail-value">Không tìm thấy thông tin phiếu nhập.</p>
+        }
+
+        <div class="action-buttons-group">
+            <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="action-button back" title="Quay lại">
+                <i class="fas fa-arrow-left"></i> Quay Lại
+            </a>
+        </div>
+    </div>
+</div>
+

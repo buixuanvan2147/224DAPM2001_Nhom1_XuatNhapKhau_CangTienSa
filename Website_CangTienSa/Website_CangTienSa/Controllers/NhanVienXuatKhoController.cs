@@ -139,7 +139,7 @@ namespace Website_CangTienSa.Controllers
                     {
                         maPhieuXuat = maPhieuXuat,
                         maDonHang = id,
-                        trangThaiXuatHang = "Đang vận chuyển", // Đồng bộ với trạng thái đơn hàng
+                        trangThaiXuatHang = "Đang vận chuyển xuất kho", // Đồng bộ với trạng thái đơn hàng
                         ngayXuatKho = DateTime.Now,
                         moTa = $"Phiếu xuất kho tự động tạo cho đơn hàng {id}"
                     };
@@ -150,8 +150,8 @@ namespace Website_CangTienSa.Controllers
                 // Cập nhật trạng thái đơn hàng nếu chưa phải "Hoàn thành"
                 if (donHang.trangThaiDonHang != "Hoàn thành")
                 {
-                    donHang.trangThaiDonHang = "Đang vận chuyển";
-                    TempData["Success"] = TempData["Success"] ?? $"Cập nhật trạng thái đơn hàng {id} thành 'Đang vận chuyển'.";
+                    donHang.trangThaiDonHang = "Đang vận chuyển xuất kho";
+                    TempData["Success"] = TempData["Success"] ?? $"Cập nhật trạng thái đơn hàng {id} thành 'Đang vận chuyển xuất kho'.";
                 }
 
                 // Lưu thay đổi

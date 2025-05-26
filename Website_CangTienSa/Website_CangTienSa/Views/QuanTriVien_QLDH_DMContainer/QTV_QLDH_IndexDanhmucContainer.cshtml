@@ -34,7 +34,7 @@
         display: inline-flex; /* Sử dụng flex để căn chỉnh icon và text */
         align-items: center;
         padding: 12px 25px;
-        background: linear-gradient(45deg, #10B981, #059669); /* Màu xanh lá cây */
+        background-color: #4FD1C5;
         border: none;
         color: #ffffff;
         font-size: 1rem;
@@ -50,6 +50,7 @@
         background: linear-gradient(45deg, #059669, #10B981);
         transform: translateY(-3px);
         box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        color: #ffffff;
     }
 
     .add-new-button i {
@@ -251,10 +252,10 @@
     <h2 class="page-title">QUẢN LÝ DANH MỤC CONTAINER</h2>
 
     <div class="add-new-button-container">
+        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" style="margin-right: auto;" class="add-new-button">Quay Lại Quản Lý Đơn Hàng</a>
         <a href="@Url.Action("QTV_QLDH_ThemDanhmucContainer", "QuanTriVien_QLDH_DMContainer")" class="add-new-button">
             <i class="fas fa-plus-circle"></i> Thêm Danh Mục Mới
         </a>
-        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="add-new-button">Quay Lại Quản Lý Đơn Hàng</a>
     </div>
 
     <div class="table-responsive">
