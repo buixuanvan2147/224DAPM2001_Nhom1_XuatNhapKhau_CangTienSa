@@ -282,6 +282,79 @@ namespace Website_CangTienSa.Controllers
             return View(donHang);
         }
 
+        [HttpPost]
+        public ActionResult HuyDonHang(string maDonHang)
+        {
+            try
+            {
+                // Kiểm tra khách hàng đã đăng nhập
+                var khachHang = Session["KhachHang"] as khachHang;
+                if (khachHang == null)
+                {
+                    TempData["Error"] = "Vui lòng đăng nhập để hủy đơn hàng.";
+                    return RedirectToAction("DangNhap", "Home");
+                }
+
+                // Kiểm tra mã đơn hàng
+                if (string.IsNullOrEmpty(maDonHang))
+                {
+                    TempData["Error"] = "Mã đơn hàng không hợp lệ.";
+                    return RedirectToAction("XemChiTiet");
+                }
+
+                // Tìm đơn hàng
+                var donHang = db.donHangs.FirstOrDefault(dh => dh.maDonHang == maDonHang && dh.maKhachHang == khachHang.maKhachHang);
+                if (donHang == null)
+                {
+                    TempData["Error"] = "Không tìm thấy đơn hàng hoặc bạn không có quyền hủy đơn hàng này.";
+                    return RedirectToAction("XemChiTiet");
+                }
+
+                // Kiểm tra trạng thái đơn hàng
+                if (donHang.trangThaiDonHang != "Đang yêu cầu")
+                {
+                    TempData["Error"] = "Chỉ có thể hủy đơn hàng đang yêu cầu.";
+                    return RedirectToAction("XemChiTiet");
+                }
+
+                // Sử dụng transaction để đảm bảo toàn vẹn
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Xóa chi tiết đơn hàng
+                        var chiTietDonHangs = db.chiTietDonHangs.Where(ct => ct.maDonHang == maDonHang).ToList();
+                        if (chiTietDonHangs.Any())
+                        {
+                            db.chiTietDonHangs.RemoveRange(chiTietDonHangs);
+                        }
+
+                        // Xóa đơn hàng
+                        db.donHangs.Remove(donHang);
+
+                        // Lưu thay đổi
+                        db.SaveChanges();
+                        transaction.Commit();
+
+                        TempData["Success"] = $"Đã hủy đơn hàng {maDonHang} thành công.";
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        TempData["Error"] = $"Lỗi khi hủy đơn hàng: {ex.Message}";
+                        return RedirectToAction("XemChiTiet");
+                    }
+                }
+
+                return RedirectToAction("XemChiTiet");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Lỗi khi hủy đơn hàng: {ex.Message}";
+                return RedirectToAction("XemChiTiet");
+            }
+        }
+
         // GET: Thông tin cá nhân
         public ActionResult ThongTinCaNhan()
         {
