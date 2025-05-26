@@ -19,7 +19,7 @@ namespace Website_CangTienSa.Controllers
         public ActionResult Index_NhanVienXuatKho(string keyword, string status, DateTime? fromDate, DateTime? toDate)
         {
             var donHangs = db.donHangs.Include("khachHang")
-                                      .Where(d => d.moTa != "Đơn hàng nhập khẩu");
+                                      .Where(d => d.moTa != "Đơn hàng nhập khẩu" && d.trangThaiDonHang != "Đang yêu cầu");
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -100,6 +100,7 @@ namespace Website_CangTienSa.Controllers
             return View(viewModel);
         }
 
+        //xuất kho, tạo phiếu xuất
         [HttpPost]
         public ActionResult XuatKho(string id)
         {
@@ -110,14 +111,52 @@ namespace Website_CangTienSa.Controllers
             if (donHang == null)
                 return HttpNotFound();
 
-            // Cập nhật trạng thái
-            donHang.trangThaiDonHang = "Đang vận chuyển";
+            try
+            {
+                // Kiểm tra trạng thái thanh toán (theo yêu cầu trước)
+                if (donHang.trangThaiThanhToan == "Chưa thanh toán")
+                {
+                    TempData["Error"] = $"Đơn hàng {id} chưa được thanh toán, không thể xuất kho.";
+                    return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
+                }
 
-            db.SaveChanges();
+                // Kiểm tra xem đơn hàng đã có phiếu xuất kho chưa
+                var phieuXuatTonTai = db.phieuXuats.Any(px => px.maDonHang == id);
+                if (!phieuXuatTonTai)
+                {
+                    // Tạo mã phiếu xuất kho
+                    string maPhieuXuat = id.Replace("DH", "PX");
+                    var phieuXuat = new phieuXuat
+                    {
+                        maPhieuXuat = maPhieuXuat,
+                        maDonHang = id,
+                        trangThaiXuatHang = "Đang vận chuyển", // Đồng bộ với trạng thái đơn hàng
+                        ngayXuatKho = DateTime.Now,
+                        moTa = $"Phiếu xuất kho tự động tạo cho đơn hàng {id}"
+                    };
+                    db.phieuXuats.Add(phieuXuat);
+                    TempData["Success"] = $"Tạo phiếu xuất kho {maPhieuXuat} thành công cho đơn hàng {id}.";
+                }
 
-            return RedirectToAction("Index_NhanVienXuatKho");
+                // Cập nhật trạng thái đơn hàng nếu chưa phải "Hoàn thành"
+                if (donHang.trangThaiDonHang != "Hoàn thành")
+                {
+                    donHang.trangThaiDonHang = "Đang vận chuyển";
+                    TempData["Success"] = TempData["Success"] ?? $"Cập nhật trạng thái đơn hàng {id} thành 'Đang vận chuyển'.";
+                }
+
+                // Lưu thay đổi
+                db.SaveChanges();
+
+                // Chuyển hướng, giữ bộ lọc trừ status
+                return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Lỗi khi xử lý xuất kho: {ex.Message}";
+                return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["toDate"], toDate = Request["toDate"] });
+            }
         }
-
 
         // POST: Thực hiện tạo và trả về file Word khi người dùng nhấn nút "Xuất phiếu"
         [HttpPost]

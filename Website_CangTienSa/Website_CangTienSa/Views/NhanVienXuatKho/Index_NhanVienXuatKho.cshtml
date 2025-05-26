@@ -9,20 +9,6 @@
     var status = Request.QueryString["status"];
     var fromDate = Request.QueryString["fromDate"];
     var toDate = Request.QueryString["toDate"];
-
-    List<donHang> filteredDonHangs = new List<donHang>();
-
-    if (Model != null)
-    {
-        foreach (var dh in Model)
-        {
-            if (dh.moTa != "Đơn hàng nhập khẩu")
-            {
-                filteredDonHangs.Add(dh);
-            }
-        }
-    }
-
 }
 
 <style>
@@ -35,6 +21,14 @@
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }
+
+    .btn-disabled {
+        background-color: #e9ecef;
+        color: #6c757d;
+        border-color: #ced4da;
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
 </style>
 
 <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
@@ -43,13 +37,27 @@
             <i class="fas fa-clipboard-list mr-2"></i> Danh sách đơn hàng
         </h3>
 
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
         <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
             @using (Html.BeginForm("Index_NhanVienXuatKho", "NhanVienXuatKho", FormMethod.Get))
             {
                 <div class="form-row align-items-end" style="flex-wrap: nowrap;">
                     <!-- Các input lọc -->
                     <div class="form-group" style="margin-right: 10px;">
-                        <input type="text" name="keyword" class="form-control" style="width: 200px;" value="@keyword" placeholder="Mã đơn / Tên khách" />
+                        <input type="text" name="keyword" class="form-control" style="width: 200px;" value="@keyword" placeholder="Mã đơn / Tên khách hàng" />
                     </div>
                     <div class="form-group" style="margin-right: 10px;">
                         <select class="form-control" name="status" style="width: 130px;">
@@ -57,6 +65,7 @@
                             <option value="Đang xử lý" @(status == "Đang xử lý" ? "selected" : "")>Đang xử lý</option>
                             <option value="Đã xuất kho" @(status == "Đã xuất kho" ? "selected" : "")>Đã xuất kho</option>
                             <option value="Hoàn thành" @(status == "Hoàn thành" ? "selected" : "")>Hoàn thành</option>
+                            <option value="Đang vận chuyển" @(status == "Đang vận chuyển" ? "selected" : "")>Đang vận chuyển</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-right: 10px;">
@@ -86,17 +95,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (filteredDonHangs.Any())
+                    @if (Model.Any())
                     {
-                        foreach (var item in filteredDonHangs)
+                        foreach (var item in Model)
                         {
+                            var phieuXuat = ViewBag.PhieuXuat as Dictionary<string, bool>;
+                            var hasPhieuXuat = phieuXuat != null && phieuXuat.ContainsKey(item.maDonHang) && phieuXuat[item.maDonHang];
                             <tr>
                                 <td>@item.maDonHang</td>
                                 <td>@(item.khachHang != null ? item.khachHang.tenKhachHang : "Không xác định")</td>
                                 <td>@item.ngayTaoDonHang.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <span class="badge @(item.trangThaiDonHang == "Đã xuất kho" ? "badge-success" :
-                                                       item.trangThaiDonHang == "Hoàn thành" ? "badge-primary" : "badge-warning")">
+                                                       item.trangThaiDonHang == "Hoàn thành" ? "badge-primary" :
+                                                       item.trangThaiDonHang == "Đang vận chuyển" ? "badge-info" : "badge-warning")">
                                         @item.trangThaiDonHang
                                     </span>
                                 </td>
@@ -104,18 +116,20 @@
                                     <a class="btn btn-info btn-sm mr-1" href="@Url.Action("ChiTietDonHang", "NhanVienXuatKho", new { id = item.maDonHang })">
                                         <i class="fas fa-eye"></i> Chi tiết
                                     </a>
-
                                     @if (item.trangThaiDonHang == "Đang xử lý")
                                     {
+                                        var isDisabled = item.trangThaiThanhToan == "Chưa thanh toán";
                                         using (Html.BeginForm("XuatKho", "NhanVienXuatKho", FormMethod.Post, new { style = "display:inline;" }))
                                         {
                                             @Html.Hidden("id", item.maDonHang)
-                                            <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Bạn có chắc muốn xuất kho đơn hàng này?');">
+                                            <button type="submit" class="btn btn-sm @(isDisabled ? "btn-disabled" : "btn-success")"
+                                                    @(isDisabled ? "disabled" : "")
+                                                    onclick="return confirm('Bạn có chắc muốn xuất kho đơn hàng này?');">
                                                 <i class="fas fa-dolly"></i> Xuất kho
                                             </button>
                                         }
                                     }
-                                    else if (item.trangThaiDonHang == "Hoàn thành")
+                                    @if (hasPhieuXuat || item.trangThaiDonHang == "Hoàn thành")
                                     {
                                         <a href="@Url.Action("XuatPhieuXuatKho", "NhanVienXuatKho", new { id = item.maDonHang })" class="btn btn-primary btn-sm">
                                             <i class="fas fa-file-invoice"></i> Xem phiếu

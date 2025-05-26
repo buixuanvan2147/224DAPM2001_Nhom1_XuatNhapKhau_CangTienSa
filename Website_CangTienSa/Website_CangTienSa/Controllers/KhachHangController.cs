@@ -72,6 +72,8 @@ namespace Website_CangTienSa.Controllers
                 .ToList();
             return Json(hangHoaList, JsonRequestBehavior.AllowGet);
         }
+
+        //tạo đơn hàng
         [HttpPost]
         public ActionResult TaoDonHang(string maDanhMucHangHoa, string ThoiGianLuuKho, int? ThoiGianLuuKhoKhac,
         string TenNguoiNhan, string SDTNguoiNhan, string CangDichDen, string LoaiHang,
@@ -227,6 +229,7 @@ namespace Website_CangTienSa.Controllers
                 return RedirectToAction("Index_KhachHang");
             }
         }
+
         // GET: XemChiTiet
         public ActionResult XemChiTiet()
         {
@@ -246,11 +249,12 @@ namespace Website_CangTienSa.Controllers
                 .ToList();
 
             var daDuyet = donHangs
-                .Where(d => d.trangThaiDonHang == "Hoàn thành" && d.trangThaiThanhToan == "Chưa thanh toán")
+                .Where(d => (d.trangThaiDonHang == "Đang vận chuyển" || d.trangThaiDonHang == "Đang xử lý") &&
+                            (d.trangThaiThanhToan == "Chưa thanh toán" || d.trangThaiThanhToan == "Đã thanh toán"))
                 .ToList();
 
             var chuaDuyet = donHangs
-                .Where(d => d.trangThaiDonHang == "Đang xử lý" && d.trangThaiThanhToan == "Chưa thanh toán")
+                .Where(d => d.trangThaiDonHang == "Đang yêu cầu" && d.trangThaiThanhToan == "Chưa thanh toán")
                 .ToList();
 
             ViewBag.DaChuyenThanhCong = daChuyenThanhCong;

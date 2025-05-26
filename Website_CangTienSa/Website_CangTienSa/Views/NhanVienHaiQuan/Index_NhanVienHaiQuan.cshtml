@@ -34,7 +34,7 @@
                 <td>
                     <button class="btn-action" onclick="xemChiTietDonHang('@donHang.MaDonHang')">Xem Chi Tiết</button>
                     <button class="btn-warning" onclick="baoCao('@donHang.MaDonHang')">Báo Cáo Vi Phạm</button>
-                    @if (donHang.TrangThaiDonHang == "Đang xử lý" || donHang.TrangThaiDonHang == "Đang vận chuyển")
+                    @if (donHang.TrangThaiDonHang == "Đang xử lý" || donHang.TrangThaiDonHang == "Đang vận chuyển" || donHang.TrangThaiDonHang == "Hoàn thành")
                     {
                         <button class="btn-duyet" disabled>Đã Duyệt</button>
                     }

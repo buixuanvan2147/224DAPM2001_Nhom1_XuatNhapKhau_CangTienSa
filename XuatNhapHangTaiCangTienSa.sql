@@ -1,5 +1,4 @@
-﻿
-CREATE DATABASE  XuatNhapHangTaiCangTienSa
+﻿CREATE DATABASE  XuatNhapHangTaiCangTienSa
 GO
 
 USE XuatNhapHangTaiCangTienSa
@@ -228,13 +227,13 @@ INSERT INTO donHang (maDonHang, maKhachHang, maNhanVien, tenNguoiGui, tenNguoiNh
 VALUES 
 ('DH00000001', 'KH00000001', 'NV00000001', N'Nguyễn Văn An', N'Trần Văn Bình', N'Cảng Singapore', '2024-01-10 08:00:00', 30, '2024-02-10 08:00:00', '2024-02-05 08:00:00', N'Hoàn thành', N'Đã thanh toán', 5000000, N'Đơn hàng xuất khẩu'),
 ('DH00000002', 'KH00000002', 'NV00000002', N'Trần Thị Bình', N'Lê Văn Cường', N'Cảng Shanghai', '2024-02-10 09:00:00', 20, NULL, '2024-03-01 09:00:00', N'Đang xử lý', N'Chưa thanh toán', 3000000, N'Đơn hàng nhập khẩu'),
-('DH00000003', 'KH00000003', 'NV00000003', N'Lê Văn Cường', N'Phạm Thị Dung', N'Cảng Tokyo', '2024-03-10 10:00:00', 15, '2024-04-10 10:00:00', NULL, N'Đang vận chuyển', N'Đã thanh toán', 4000000, N'Đơn hàng xuất khẩu'),
-('DH00000004', 'KH00000004', 'NV00000004', N'Phạm Thị Dung', N'Hoàng Văn Em', N'Cảng Busan', '2024-04-10 11:00:00', 25, NULL, '2024-05-01 11:00:00', N'Đang xử lý', N'Chưa thanh toán', 6000000, N'Đơn hàng nhập khẩu'),
-('DH00000005', 'KH00000005', 'NV00000005', N'Hoàng Văn Em', N'Ngô Thị Phượng', N'Cảng Hong Kong', '2024-05-10 12:00:00', 10, '2024-06-10 12:00:00', NULL, N'Đang xử lý', N'Đã thanh toán', 2000000, N'Đơn hàng xuất khẩu'),
+('DH00000003', 'KH00000003', 'NV00000003', N'Lê Văn Cường', N'Phạm Thị Dung', N'Cảng Tokyo', '2024-03-10 10:00:00', 15, '2024-04-10 10:00:00', NULL, N'Đang xử lý', N'Đã thanh toán', 4000000, N'Đơn hàng xuất khẩu'),
+('DH00000004', 'KH00000004', 'NV00000004', N'Phạm Thị Dung', N'Hoàng Văn Em', N'Cảng Busan', '2024-04-10 11:00:00', 25, NULL, '2024-05-01 11:00:00', N'Đang yêu cầu', N'Chưa thanh toán', 6000000, N'Đơn hàng nhập khẩu'),
+('DH00000005', 'KH00000005', 'NV00000005', N'Hoàng Văn Em', N'Ngô Thị Phượng', N'Cảng Hong Kong', '2024-05-10 12:00:00', 10, '2024-06-10 12:00:00', NULL, N'Đang vận chuyển', N'Đã thanh toán', 2000000, N'Đơn hàng xuất khẩu'),
 ('DH00000006', 'KH00000006', 'NV00000006', N'Ngô Thị Phượng', N'Vũ Văn Giang', N'Cảng Kaohsiung', '2024-06-10 13:00:00', 30, NULL, '2024-07-01 13:00:00', N'Đang xử lý', N'Chưa thanh toán', 7000000, N'Đơn hàng nhập khẩu'),
-('DH00000007', 'KH00000007', 'NV00000007', N'Vũ Văn Giang', N'Đỗ Thị Hà', N'Cảng Los Angeles', '2024-07-10 14:00:00', 20, '2024-08-10 14:00:00', NULL, N'Đang xử lý', N'Đã thanh toán', 8000000, N'Đơn hàng xuất khẩu'),
+('DH00000007', 'KH00000007', 'NV00000007', N'Vũ Văn Giang', N'Đỗ Thị Hà', N'Cảng Los Angeles', '2024-07-10 14:00:00', 20, '2024-08-10 14:00:00', NULL, N'Đang yêu cầu', N'Chưa thanh toán', 8000000, N'Đơn hàng xuất khẩu'),
 ('DH00000008', 'KH00000008', 'NV00000008', N'Đỗ Thị Hà', N'Bùi Văn Hùng', N'Cảng Rotterdam', '2024-08-10 15:00:00', 15, NULL, '2024-09-01 15:00:00', N'Đang xử lý', N'Chưa thanh toán', 9000000, N'Đơn hàng nhập khẩu'),
-('DH00000009', 'KH00000009', 'NV00000009', N'Bùi Văn Hùng', N'Nguyễn Thị In', N'Cảng Hamburg', '2024-09-10 16:00:00', 25, '2024-10-10 16:00:00', NULL, N'Đang vận chuyển', N'Đã thanh toán', 10000000, N'Đơn hàng xuất khẩu'),
+('DH00000009', 'KH00000009', 'NV00000009', N'Bùi Văn Hùng', N'Nguyễn Thị In', N'Cảng Hamburg', '2024-09-10 16:00:00', 25, '2024-10-10 16:00:00', NULL, N'Đang xử lý', N'Chưa thanh toán', 10000000, N'Đơn hàng xuất khẩu'),
 ('DH00000010', 'KH00000010', 'NV00000010', N'Nguyễn Thị In', N'Nguyễn Văn An', N'Cảng Dubai', '2024-10-10 17:00:00', 30, NULL, '2024-11-01 17:00:00', N'Đang xử lý', N'Chưa thanh toán', 11000000, N'Đơn hàng nhập khẩu');
 
 --5 Insert dữ liệu cho bảng danhMucHangHoa
@@ -370,6 +369,7 @@ VALUES
 ('CTPN000008', 'PN00000008', 'CONT000008', N'Container chứa cá đông lạnh bổ sung'),
 ('CTPN000009', 'PN00000009', 'CONT000009', N'Container chứa xi măng bổ sung'),
 ('CTPN000010', 'PN00000010', 'CONT000010', N'Container chứa nước mắm bổ sung');
+
 GO
 CREATE TRIGGER CapNhatGiaTienChiTietDonHang
 ON chiTietDonHang
@@ -415,12 +415,47 @@ BEGIN
         SELECT maDonHang FROM inserted
     );
 END;
+------------------
+--trigger update trạng thái đơn hàng và phiếu :CREATE TRIGGER trg_CapNhatTrangThaiXuatHang
+GO
+
+CREATE TRIGGER trg_CapNhatTrangThaiXuatHang
+ON donHang
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Cập nhật trạng thái xuất hàng nếu đơn hàng chuyển sang 'Hoàn thành' hoặc 'Đang vận chuyển'
+    UPDATE px
+    SET trangThaiXuatHang = 
+        CASE i.trangThaiDonHang
+            WHEN N'Hoàn thành' THEN N'Hoàn thành'
+            WHEN N'Đang vận chuyển' THEN N'Đang vận chuyển'
+        END
+    FROM phieuXuat px
+    INNER JOIN inserted i ON px.maDonHang = i.maDonHang
+    INNER JOIN deleted d ON i.maDonHang = d.maDonHang
+    WHERE i.trangThaiDonHang <> d.trangThaiDonHang
+      AND i.trangThaiDonHang IN (N'Hoàn thành', N'Đang vận chuyển');
+END;
+GO
+
+
+/*USE master;
+ALTER DATABASE XuatNhapHangTaiCangTienSa
+SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+
+DROP DATABASE XuatNhapHangTaiCangTienSa;
+--GO
+select *from phieuXuat
+select *from donHang
 
 UPDATE donHang
-SET trangThaiDonHang = N'Đang yêu cầu'
-WHERE trangThaiDonHang = N'Đang xử lý';
+SET trangThaiDonHang = N'Hoàn thành',
+    trangThaiThanhToan = N'Đã thanh toán'
+WHERE maDonHang = 'DH00000011';
 
-UPDATE donHang
-SET trangThaiDonHang = N'Đang xử lý'
-WHERE trangThaiDonHang = N'Hoàn thành';
-
+DELETE FROM phieuXuat
+WHERE maPhieuXuat = 'PX00000011';*/
