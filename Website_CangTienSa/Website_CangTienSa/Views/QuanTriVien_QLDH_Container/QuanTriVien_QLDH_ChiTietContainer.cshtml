@@ -1,0 +1,75 @@
+﻿@model Website_CangTienSa.Models.container
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>container</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.soHieu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soHieu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trangThaiContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trangThaiContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.viTriTrongKho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.viTriTrongKho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ngayMuaContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ngayMuaContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trongTai)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trongTai)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chiTietKho.maKho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chiTietKho.maKho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.danhMucContainer.tenDanhMucContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.danhMucContainer.tenDanhMucContainer)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.maContainer }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

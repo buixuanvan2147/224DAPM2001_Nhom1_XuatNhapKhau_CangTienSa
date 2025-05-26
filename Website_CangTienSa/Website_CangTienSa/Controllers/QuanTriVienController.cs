@@ -88,9 +88,11 @@ namespace Website_CangTienSa.Controllers
             ViewBag.Title = "QuanLyDonHang_QuanTriVien";
             ViewBag.ActiveSidebar = "QuanLyDonHang";
 
-            //danh mục container để làm select option cho container
-            ViewBag.dmContainers = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer");
-            //Danh sách container
+            // Danh mục container để làm select option cho container
+            // Đã thay đổi "maDanhMucContainer" thành "tenDanhMucContainer" cho cả valueField và textField
+            ViewBag.dmContainers = new SelectList(db.danhMucContainers, "tenDanhMucContainer", "tenDanhMucContainer");
+
+            // Danh sách container
             var allConTaiNer = db.containers
                 .Include(ctn => ctn.danhMucContainer)
                 .Select(ctn => new QTV_QLDH_ContainerViewModel
@@ -107,21 +109,25 @@ namespace Website_CangTienSa.Controllers
                 .ToList();
             ViewBag.ConTaiNers = allConTaiNer;
 
-            //Danh sách phiếu nhập
+            // Danh sách phiếu nhập
             var allPhieuNhap = db.phieuNhaps.ToList();
             ViewBag.PhieuNhaps = allPhieuNhap;
 
-            //Danh sách phiếu xuất
+            // Danh sách phiếu xuất
             var allPhieuXuat = db.phieuXuats.ToList();
             ViewBag.PhieuXuats = allPhieuXuat;
 
-            //trạng thái đơn hàng để làm select option cho đơn hàng
-            var ttdh = db.donHangs.Select(d => d.trangThaiDonHang).Distinct().ToList();
+            // Trạng thái đơn hàng để làm select option cho đơn hàng
+            // Đã thêm .Trim() để loại bỏ khoảng trắng thừa từ DB
+            var ttdh = db.donHangs.Select(d => d.trangThaiDonHang.Trim()).Distinct().ToList();
             ViewBag.trangThaiDonHangs = ttdh;
-            //trạng thái thanh toán để làm select option cho đơn hàng
-            var tttt = db.donHangs.Select(d => d.trangThaiThanhToan).Distinct().ToList();
+
+            // Trạng thái thanh toán để làm select option cho đơn hàng
+            // Đã thêm .Trim() để loại bỏ khoảng trắng thừa từ DB
+            var tttt = db.donHangs.Select(d => d.trangThaiThanhToan.Trim()).Distinct().ToList();
             ViewBag.trangThaiThanhToans = tttt;
-            //Danh sách phiếu xuất
+
+            // Danh sách đơn hàng
             var allDonHang = db.donHangs.ToList();
             ViewBag.DonHangs = allDonHang;
 

@@ -190,15 +190,14 @@
                 <option value="phieunhap">Quản Lý Phiếu Nhập</option>
                 <option value="phieuxuat">Quản Lý Phiếu Xuất</option>
                 <option value="donhang">Quản Lý Đơn Hàng</option>
-                <option value="chitietdonhang">Chi Tiết Đơn Hàng</option>
             </select>
         </div>
 
         <section id="container">
             <h3 class="section-title">Quản Lý Container</h3>
             <div class="selectAndButton">
-                <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-container">Thêm Mới Container</a>
-                <a href="@Url.Action("QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-DMcontainer">Quản Lý Danh Mục Container</a>
+                <a href="@Url.Action("QuanTriVien_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-container">Thêm Mới Container</a>
+                <a href="@Url.Action("QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_DMContainer")" class="button-add btn-add-DMcontainer">Quản Lý Danh Mục Container</a>
                 <select id="select-container">
                     <option value="Tất cả Container">Tất cả Container</option>
                     @foreach (var dmContainer in (SelectList)ViewBag.dmContainers)
@@ -241,9 +240,9 @@
                                     <td>@(container.NgayMuaContainer.ToString("yyyy-MM-dd"))</td>
                                     <td>@container.TrongTai</td>
                                     <td class="action-links">
-                                        <a href="#" class="edtt-link edit-container">Sửa</a> |
-                                        <a href="#" class="details-link chitiet-container">Chi tiết</a> |
-                                        <a href="#" class="delete-link xoa-container">Xóa</a>
+                                        <a href="@Url.Action("QuanTriVien_QLDH_SuaContainer", "QuanTriVien_QLDH_Container", new { id = container.MaContainer })" class="edtt-link edit-container">Sửa</a> |
+                                        <a href="@Url.Action("QuanTriVien_QLDH_ChiTietContainer", "QuanTriVien_QLDH_Container", new { id = container.MaContainer })" class="details-link chitiet-container">Chi tiết</a> |
+                                        <a href="@Url.Action("QuanTriVien_QLDH_XoaContainer", "QuanTriVien_QLDH_Container", new { id = container.MaContainer })" class="delete-link xoa-container">Xóa</a>
                                     </td>
                                 </tr>
                                 sttConTaiNer++;
@@ -254,7 +253,7 @@
                             <tr>
                                 <td colspan="14" style="text-align: center;">
                                     Không có dữ liệu container.
-                                    <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")">Tạo mới</a>
+                                    <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_DMContainer")">Tạo mới</a>
                                 </td>
                             </tr>
                         }
@@ -373,17 +372,16 @@
                 <a href="@Url.Action("QTV_QLDH_ThemDonHang", "QuanTriVien_QLDH_DonHang")" class="button-add btn-add-donhang">Thêm Mới Đơn Hàng</a>
                 <select id="select-trangThaiDonHang">
                     <option value="Tất cả trạng thái đơn hàng">Tất cả trạng thái đơn hàng</option>
-                    @foreach (var trangthaidonhang in ViewBag.trangThaiDonHangs)
+                    @foreach (var tt in (List<string>)ViewBag.trangThaiDonHangs)
                     {
-                        <option value="@trangthaidonhang">@trangthaidonhang</option>
+                        <option value="@tt">@tt</option>
                     }
                 </select>
-
                 <select id="select-trangThaiThanhToan">
                     <option value="Tất cả trạng thái thanh toán">Tất cả trạng thái thanh toán</option>
-                    @foreach (var trangthaithanhtoan in ViewBag.trangThaiThanhToans)
+                    @foreach (var tt in (List<string>)ViewBag.trangThaiThanhToans)
                     {
-                        <option value="@trangthaithanhtoan">@trangthaithanhtoan</option>
+                        <option value="@tt">@tt</option>
                     }
                 </select>
                 <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
@@ -426,10 +424,14 @@
                                     <td>@donhang.cangDichDen</td>
                                     <td>@(donhang.ngayTaoDonHang.ToString("yyyy-MM-dd"))</td>
                                     <td>@donhang.thoiGianLuuTru  Ngày</td>
-                                    <td>@(donhang.ngayXuatCang == null || donhang.ngayXuatCang == default(DateTime)
-                                            ? "Chưa xuất cảng" : donhang.ngayXuatCang.ToString("yyyy-MM-dd"))</td>
-                                    <td>@(donhang.ngayNhapCang == null || donhang.ngayNhapCang == default(DateTime)
-                                            ? "Vận chuyển nội bộ" : donhang.ngayNhapCang.ToString("yyyy-MM-dd"))</td>
+                                    <td>
+                                        @(donhang.ngayXuatCang == null || donhang.ngayXuatCang == default(DateTime)
+                                    ? "Chưa xuất cảng" : donhang.ngayXuatCang.ToString("yyyy-MM-dd"))
+                                    </td>
+                                    <td>
+                                        @(donhang.ngayNhapCang == null || donhang.ngayNhapCang == default(DateTime)
+                                    ? "Vận chuyển nội bộ" : donhang.ngayNhapCang.ToString("yyyy-MM-dd"))
+                                    </td>
                                     <td>@donhang.trangThaiDonHang</td>
                                     <td>@donhang.trangThaiThanhToan</td>
                                     <td>@(donhang.tongTien == 0 ? "Chưa tính" : donhang.tongTien.ToString("N0") + " VNĐ")</td>
@@ -445,8 +447,8 @@
                         else
                         {
                             <tr>
-                                <td colspan="14" style="text-align: center;">
-                                    Không có dữ liệu phiếu xuất.
+                                <td colspan="16" style="text-align: center; color: #dc3545;">
+                                    Không có dữ liệu đơn hàng.
                                     <a href="@Url.Action("QTV_QLDH_ThemDonHang", "QuanTriVien_QLDH_DonHang")">Tạo mới</a>
                                 </td>
                             </tr>
@@ -457,51 +459,129 @@
         </section>
     </div>
 </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const sectionSelector = document.getElementById('section-selector');
 
-            sectionSelector.addEventListener('change', function () {
-                const selectedSectionId = this.value;
-                const targetSection = document.getElementById(selectedSectionId);
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionSelector = document.getElementById('section-selector');
+        sectionSelector.addEventListener('change', function () {
+            const selectedSectionId = this.value;
+            const targetSection = document.getElementById(selectedSectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
 
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Nút Quay lại đầu trang
+        const backToTopButtons = document.querySelectorAll(".back-to-top-button");
+        const topOfPageElement = document.getElementById("dautrang");
+        if (topOfPageElement) {
+            backToTopButtons.forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    topOfPageElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
+            });
+        } else {
+            console.warn("Không tìm thấy phần tử có ID 'dautrang'.");
+            backToTopButtons.forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+            });
+        }
+
+        // Lọc Container
+        const selectContainer = document.getElementById('select-container');
+        if (selectContainer) {
+            selectContainer.addEventListener('change', function () {
+                const selectedDanhMuc = this.value;
+                const tbody = document.querySelector('#container .table tbody');
+                if (!tbody) {
+                    console.warn("Không tìm thấy tbody trong #container");
+                    return;
+                }
+                const tableRows = tbody.children;
+                let currentStt = 1;
+                const noDataInitialRow = document.querySelector('#container .table tbody td[colspan="14"]');
+                let noDataParentRow = noDataInitialRow ? noDataInitialRow.parentNode : null;
+                let hasVisibleDataRows = false;
+
+                Array.from(tableRows).forEach(row => {
+                    if (row === noDataParentRow) {
+                        row.style.display = 'none';
+                        return;
+                    }
+                    const tenDanhMucContainer = row.cells[2].textContent.trim();
+                    if (selectedDanhMuc === 'Tất cả Container' || tenDanhMucContainer === selectedDanhMuc) {
+                        row.style.display = '';
+                        row.cells[0].textContent = currentStt++;
+                        hasVisibleDataRows = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (noDataParentRow) {
+                    noDataParentRow.style.display = hasVisibleDataRows ? 'none' : '';
+                }
+            });
+            selectContainer.dispatchEvent(new Event('change'));
+        }
+
+        // Lọc Đơn Hàng
+        const selectTrangThaiDonHang = document.getElementById('select-trangThaiDonHang');
+        const selectTrangThaiThanhToan = document.getElementById('select-trangThaiThanhToan');
+        function filterDonHangs() {
+            if (!selectTrangThaiDonHang || !selectTrangThaiThanhToan) {
+                console.warn("Không tìm thấy select-trangThaiDonHang hoặc select-trangThaiThanhToan");
+                return;
+            }
+            const selectedTrangThaiDonHang = selectTrangThaiDonHang.value.trim();
+            const selectedTrangThaiThanhToan = selectTrangThaiThanhToan.value.trim();
+            const tbody = document.querySelector('#donhang .table tbody');
+            if (!tbody) {
+                console.warn("Không tìm thấy tbody trong #donhang");
+                return;
+            }
+            const tableRows = tbody.children;
+            let currentStt = 1;
+            const noDataInitialRow = document.querySelector('#donhang .table tbody td[colspan="16"]');
+            let noDataParentRow = noDataInitialRow ? noDataInitialRow.parentNode : null;
+            let hasVisibleDataRows = false;
+
+            Array.from(tableRows).forEach(row => {
+                if (row === noDataParentRow) {
+                    row.style.display = 'none';
+                    return;
+                }
+                const trangThaiDonHang = (row.cells[11].textContent || '').trim();
+                const trangThaiThanhToan = (row.cells[12].textContent || '').trim();
+
+                const matchesTrangThaiDonHang = (selectedTrangThaiDonHang === 'Tất cả trạng thái đơn hàng' ||
+                    trangThaiDonHang.toLowerCase() === selectedTrangThaiDonHang.toLowerCase());
+                const matchesTrangThaiThanhToan = (selectedTrangThaiThanhToan === 'Tất cả trạng thái thanh toán' ||
+                    trangThaiThanhToan.toLowerCase() === selectedTrangThaiThanhToan.toLowerCase());
+
+                if (matchesTrangThaiDonHang && matchesTrangThaiThanhToan) {
+                    row.style.display = '';
+                    row.cells[0].textContent = currentStt++;
+                    hasVisibleDataRows = true;
+                } else {
+                    row.style.display = 'none';
                 }
             });
 
-            // Phần script cho nút Quay lại đầu trang
-            // Lấy TẤT CẢ các phần tử nút "quay lại đầu trang" bằng class
-            const backToTopButtons = document.querySelectorAll(".back-to-top-button");
-            const topOfPageElement = document.getElementById("dautrang"); // Lấy phần tử có ID "dautrang"
-
-            // Kiểm tra xem phần tử đích có tồn tại không
-            if (topOfPageElement) {
-                // Lặp qua từng nút và thêm sự kiện click
-                backToTopButtons.forEach(button => {
-                    button.addEventListener("click", function (e) {
-                        e.preventDefault(); // RẤT QUAN TRỌNG: Ngăn chặn hành vi mặc định của thẻ <a> (nhảy tức thì)
-
-                        // Cuộn tới đầu của phần tử có ID "dautrang"
-                        topOfPageElement.scrollIntoView({
-                            behavior: "smooth", // Hiệu ứng cuộn mượt mà
-                            block: "start"      // Đặt phần tử ở đầu viewport
-                        });
-                    });
-                });
-            } else {
-                console.warn("Không tìm thấy phần tử có ID 'dautrang'. Nút 'Quay lại đầu trang' có thể không hoạt động hoặc cuộn không mượt.");
-                // Fallback: nếu không tìm thấy "dautrang", cuộn lên đầu cửa sổ (vẫn mượt)
-                backToTopButtons.forEach(button => {
-                    button.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        window.scrollTo({
-                            top: 0,
-                            behavior: "smooth"
-                        });
-                    });
-                });
+            if (noDataParentRow) {
+                noDataParentRow.style.display = hasVisibleDataRows ? 'none' : '';
             }
-        });
-    </script>
+        }
+
+        if (selectTrangThaiDonHang && selectTrangThaiThanhToan) {
+            selectTrangThaiDonHang.addEventListener('change', filterDonHangs);
+            selectTrangThaiThanhToan.addEventListener('change', filterDonHangs);
+            filterDonHangs(); // Áp dụng bộ lọc khi tải trang
+        }
+    });
+</script>
 

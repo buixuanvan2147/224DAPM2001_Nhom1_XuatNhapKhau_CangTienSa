@@ -14,62 +14,63 @@ namespace Website_CangTienSa.Controllers
     {
         private XuatNhapHangTaiCangTienSaEntities db = new XuatNhapHangTaiCangTienSaEntities();
 
-        // GET: QuanTriVien_QLDH_Container
-        public ActionResult QTV_QLDH_IndexDanhmucContainer()
-        {
-            return View(db.danhMucContainers.ToList());
-        }
-
         // GET: QuanTriVien_QLDH_Container/Details/5
-        public ActionResult QTV_QLDH_ChiTietDanhmucContainer(string id)
+        public ActionResult QuanTriVien_QLDH_ChiTietContainer(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            danhMucContainer danhMucContainer = db.danhMucContainers.Find(id);
-            if (danhMucContainer == null)
+            container container = db.containers.Find(id);
+            if (container == null)
             {
                 return HttpNotFound();
             }
-            return View(danhMucContainer);
+            return View(container);
         }
 
-        // GET: QuanTriVien_QLDH_Container/QTV_QLDH_ThemDanhmucContainer
-        public ActionResult QTV_QLDH_ThemDanhmucContainer()
+        // GET: QuanTriVien_QLDH_Container/Create
+        public ActionResult QuanTriVien_QLDH_ThemContainer()
         {
+            ViewBag.maChiTietKho = new SelectList(db.chiTietKhoes, "maChiTietKho", "maKho");
+            ViewBag.maDanhMucContainer = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer");
             return View();
         }
 
-        // POST: QuanTriVien_QLDH_Container/QTV_QLDH_ThemDanhmucContainer
+        // POST: QuanTriVien_QLDH_Container/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult QTV_QLDH_ThemDanhmucContainer([Bind(Include = "maDanhMucContainer,tenDanhMucContainer,sucChuaToiDa,trongTaiToiDa,chieuDai,chieuRong,chieuCao,moTa")] danhMucContainer danhMucContainer)
+        public ActionResult QuanTriVien_QLDH_ThemContainer([Bind(Include = "maContainer,maDanhMucContainer,maChiTietKho,soHieu,trangThaiContainer,viTriTrongKho,ngayMuaContainer,trongTai")] container container)
         {
             if (ModelState.IsValid)
             {
-                db.danhMucContainers.Add(danhMucContainer);
+                db.containers.Add(container);
                 db.SaveChanges();
+                return RedirectToAction("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien");
             }
 
-            return View(danhMucContainer);
+            ViewBag.maChiTietKho = new SelectList(db.chiTietKhoes, "maChiTietKho", "maKho", container.maChiTietKho);
+            ViewBag.maDanhMucContainer = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer", container.maDanhMucContainer);
+            return View(container);
         }
 
         // GET: QuanTriVien_QLDH_Container/Edit/5
-        public ActionResult QTV_QLDH_SuaDanhmucContainer(string id)
+        public ActionResult QuanTriVien_QLDH_SuaContainer(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            danhMucContainer danhMucContainer = db.danhMucContainers.Find(id);
-            if (danhMucContainer == null)
+            container container = db.containers.Find(id);
+            if (container == null)
             {
                 return HttpNotFound();
             }
-            return View(danhMucContainer);
+            ViewBag.maChiTietKho = new SelectList(db.chiTietKhoes, "maChiTietKho", "maKho", container.maChiTietKho);
+            ViewBag.maDanhMucContainer = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer", container.maDanhMucContainer);
+            return View(container);
         }
 
         // POST: QuanTriVien_QLDH_Container/Edit/5
@@ -77,41 +78,43 @@ namespace Website_CangTienSa.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult QTV_QLDH_SuaDanhmucContainer([Bind(Include = "maDanhMucContainer,tenDanhMucContainer,sucChuaToiDa,trongTaiToiDa,chieuDai,chieuRong,chieuCao,moTa")] danhMucContainer danhMucContainer)
+        public ActionResult QuanTriVien_QLDH_SuaContainer([Bind(Include = "maContainer,maDanhMucContainer,maChiTietKho,soHieu,trangThaiContainer,viTriTrongKho,ngayMuaContainer,trongTai")] container container)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(danhMucContainer).State = EntityState.Modified;
+                db.Entry(container).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("QTV_QLDH_IndexDanhmucContainer");
+                return RedirectToAction("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien");
             }
-            return View(danhMucContainer);
+            ViewBag.maChiTietKho = new SelectList(db.chiTietKhoes, "maChiTietKho", "maKho", container.maChiTietKho);
+            ViewBag.maDanhMucContainer = new SelectList(db.danhMucContainers, "maDanhMucContainer", "tenDanhMucContainer", container.maDanhMucContainer);
+            return View(container);
         }
 
         // GET: QuanTriVien_QLDH_Container/Delete/5
-        public ActionResult QTV_QLDH_XoaDanhmucContainer(string id)
+        public ActionResult QuanTriVien_QLDH_XoaContainer(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            danhMucContainer danhMucContainer = db.danhMucContainers.Find(id);
-            if (danhMucContainer == null)
+            container container = db.containers.Find(id);
+            if (container == null)
             {
                 return HttpNotFound();
             }
-            return View(danhMucContainer);
+            return View(container);
         }
 
         // POST: QuanTriVien_QLDH_Container/Delete/5
-        [HttpPost, ActionName("QTV_QLDH_XoaDanhmucContainer")]
+        [HttpPost, ActionName("QuanTriVien_QLDH_XoaContainer")]
         [ValidateAntiForgeryToken]
-        public ActionResult QTV_QLDH_XoaDanhmucContainerConfirmed(string id)
+        public ActionResult QuanTriVien_QLDH_XoaContainerConfirmed(string id)
         {
-            danhMucContainer danhMucContainer = db.danhMucContainers.Find(id);
-            db.danhMucContainers.Remove(danhMucContainer);
+            container container = db.containers.Find(id);
+            db.containers.Remove(container);
             db.SaveChanges();
-            return RedirectToAction("QTV_QLDH_IndexDanhmucContainer");
+            return RedirectToAction("QuanLyTaiKhoan_QuanTriVien", "QuanTriVien");
         }
 
         protected override void Dispose(bool disposing)

@@ -1,0 +1,81 @@
+﻿@model Website_CangTienSa.Models.container
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>container</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.soHieu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soHieu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trangThaiContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trangThaiContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.viTriTrongKho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.viTriTrongKho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ngayMuaContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ngayMuaContainer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trongTai)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trongTai)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chiTietKho.maKho)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chiTietKho.maKho)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.danhMucContainer.tenDanhMucContainer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.danhMucContainer.tenDanhMucContainer)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
