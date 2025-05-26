@@ -50,7 +50,7 @@ namespace Website_CangTienSa.Controllers
                 }
 
                 // Cập nhật trạng thái đơn hàng
-                bool success = _donHangDAO.UpdateTrangThaiDonHang(maDonHang, "Trong kho");
+                bool success = _donHangDAO.UpdateTrangThaiDonHang(maDonHang, "Hoàn thành");
 
                 if (success)
                 {
