@@ -101,6 +101,13 @@
                         <a href="@Url.Action("LienHe", "Home")" class="nav-item nav-link @(ViewBag.Title == "LienHe" ? "active" : "")">Liên Hệ</a>
                     </div>
                     <a style="margin-right: 10px" href="@Url.Action("Index_NhanVienKhoBai", "NhanVienKhoBai")" class="btn btn-primary py-2 px-4 d-none d-lg-block">Kênh nhân viên xuất kho</a>
+                    <!-- Đăng xuất  -->
+                    <div style="margin-top: 0px; text-align: right;">
+                        @Html.ActionLink("Đăng xuất", "DangXuat", "NhanVienXuatKho", null, new
+                        {
+                            @style = "display: inline-block; background-color: #000000; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; margin-left: 10px;"
+                        })
+                    </div>
                 </div>
             </nav>
         </div>

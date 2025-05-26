@@ -91,7 +91,7 @@
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">                   
                     <div class="navbar-nav m-auto py-0">
                         <a href="@Url.Action("Index", "Home")" class="nav-item nav-link @(ViewBag.Title == "Index" ? "active" : "")">Trang Chủ</a>
                         <a href="@Url.Action("GioiThieu", "Home")" class="nav-item nav-link @(ViewBag.Title == "GioiThieu" ? "active" : "")">Giới Thiệu</a>
@@ -99,8 +99,16 @@
                         <a href="@Url.Action("BangGia", "Home")" class="nav-item nav-link @(ViewBag.Title == "BangGia" ? "active" : "")">Bảng Giá</a>
                         <a href="@Url.Action("TinTuc", "Home")" class="nav-item nav-link @(ViewBag.Title == "TinTuc" ? "active" : "")">Tin Tức</a>
                         <a href="@Url.Action("LienHe", "Home")" class="nav-item nav-link @(ViewBag.Title == "LienHe" ? "active" : "")">Liên Hệ</a>
-                        <a href="@Url.Action("Index_NhanVienNhapKho", "NhanVienNhapKho")" class="nav-item nav-link @(ViewBag.Title == "LienHe" ? "active" : "")">Kênh Nhập Kho</a>
                     </div>
+                    <a style="margin-right: 10px" href="@Url.Action("Index_NhanVienNhapKho", "NhanVienNhapKho")" class="btn btn-primary py-2 px-4 d-none d-lg-block">Kênh Nhập Kho</a>
+                    <!-- Đăng xuất  -->
+                    <div style="margin-top: 0px; text-align: right;">
+                        @Html.ActionLink("Đăng xuất", "DangXuat", "NhanVienXuatKho", null, new
+                        {
+                            @style = "display: inline-block; background-color: #000000; color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; margin-left: 10px;"
+                        })
+                    </div>
+
                 </div>
             </nav>
         </div>

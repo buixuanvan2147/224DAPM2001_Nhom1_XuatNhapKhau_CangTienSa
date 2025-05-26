@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Website_CangTienSa.DAO;
 using Website_CangTienSa.Models;
 
@@ -35,6 +36,14 @@ namespace Website_CangTienSa.Controllers
                 ViewBag.ErrorMessage = "Đã xảy ra lỗi khi lấy dữ liệu: " + ex.Message;
                 return View(new List<PhieuNhapModel>());
             }
+        }
+
+        public ActionResult DangXuat()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult GetPhieuNhapModal(string maPhieuNhap)

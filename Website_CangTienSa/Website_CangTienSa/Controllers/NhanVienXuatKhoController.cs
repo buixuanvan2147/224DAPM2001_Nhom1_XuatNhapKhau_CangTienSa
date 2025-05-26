@@ -8,6 +8,7 @@ using System.IO;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Web.Security;
 
 namespace Website_CangTienSa.Controllers
 {
@@ -47,6 +48,14 @@ namespace Website_CangTienSa.Controllers
             return View(donHangs.ToList());
         }
 
+        
+        public ActionResult DangXuat()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Index", "Home");
+        }
         // GET: Chi tiết đơn hàng
         public ActionResult ChiTietDonHang(string id)
         {

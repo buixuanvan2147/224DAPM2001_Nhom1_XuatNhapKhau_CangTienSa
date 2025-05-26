@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Website_CangTienSa.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Web.Security;
 
 
 namespace Website_CangTienSa.Controllers
@@ -31,6 +32,14 @@ namespace Website_CangTienSa.Controllers
                 }).ToList();
 
             return View(listDonHang);
+        }
+
+        public ActionResult DangXuat()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

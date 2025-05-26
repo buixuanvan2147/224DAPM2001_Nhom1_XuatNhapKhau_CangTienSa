@@ -8,7 +8,7 @@ namespace Website_CangTienSa.DAO
 {
     public class DonHangDAO
     {
-        private readonly string connectionString = "Server=MINHTOAN\\SQLEXPRESS;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=DINHTHI\\DINHTHIMSSQLSV;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
 
         public List<DonHangModel> GetDonHangDangVanChuyen()
         {
@@ -220,6 +220,67 @@ namespace Website_CangTienSa.DAO
 
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
+                }
+            }
+        }
+        public bool UpdateTrangThaiVaNgayXuatCang(string maDonHang, string trangThaiMoi, DateTime ngayXuatCang)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+
+                try
+                {
+                    // Kiểm tra đơn hàng tồn tại
+                    string checkQuery = "SELECT maDonHang FROM donHang WHERE maDonHang = @MaDonHang";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, connection, transaction))
+                    {
+                        checkCmd.Parameters.AddWithValue("@MaDonHang", maDonHang);
+                        var result = checkCmd.ExecuteScalar();
+                        if (result == null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Đơn hàng {maDonHang} không tồn tại.");
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    // Cập nhật trạng thái và ngày xuất cảng
+                    string query = @"
+                UPDATE donHang 
+                SET 
+                    trangThaiDonHang = @TrangThai,
+                    ngayXuatCang = CASE 
+                        WHEN ngayXuatCang IS NULL THEN @NgayXuatCang 
+                        ELSE ngayXuatCang 
+                    END
+                WHERE maDonHang = @MaDonHang";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
+                        cmd.Parameters.AddWithValue("@NgayXuatCang", ngayXuatCang);
+                        cmd.Parameters.AddWithValue("@MaDonHang", maDonHang);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Không thể cập nhật đơn hàng {maDonHang}.");
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    transaction.Commit();
+                    System.Diagnostics.Debug.WriteLine($"Cập nhật thành công: maDonHang={maDonHang}, trangThai={trangThaiMoi}, ngayXuatCang={ngayXuatCang}");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine($"Lỗi khi cập nhật trạng thái và ngày xuất cảng: {ex.Message}");
+                    return false;
                 }
             }
         }

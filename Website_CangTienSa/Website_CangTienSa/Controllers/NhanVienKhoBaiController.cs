@@ -49,8 +49,8 @@ namespace Website_CangTienSa.Controllers
                     return RedirectToAction("Index_NhanVienKhoBai");
                 }
 
-                // Cập nhật trạng thái đơn hàng
-                bool success = _donHangDAO.UpdateTrangThaiDonHang(maDonHang, "Hoàn thành");
+                // Cập nhật trạng thái đơn hàng và ngày xuất cảng
+                bool success = _donHangDAO.UpdateTrangThaiVaNgayXuatCang(maDonHang, "Hoàn thành", DateTime.Now);
 
                 if (success)
                 {
@@ -64,6 +64,7 @@ namespace Website_CangTienSa.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = $"Lỗi hệ thống: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi xác nhận đơn hàng: {ex}");
             }
 
             return RedirectToAction("Index_NhanVienKhoBai");
