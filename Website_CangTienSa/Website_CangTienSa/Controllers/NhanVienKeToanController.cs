@@ -1,9 +1,14 @@
-﻿using System;
+﻿//using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Website_CangTienSa.Models;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
 
 namespace Website_CangTienSa.Controllers
 {
@@ -50,5 +55,61 @@ namespace Website_CangTienSa.Controllers
                 return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
         }
+
+
+        [HttpPost]
+        public ActionResult XuatBienLai(string maDonHang)
+        {
+            var donHang = db.donHangs
+                .Where(d => d.maDonHang == maDonHang)
+                .Select(d => new
+                {
+                    MaDonHang = d.maDonHang,
+                    TenKhachHang = d.khachHang.tenKhachHang,
+                    TenCongTy = d.khachHang.tenCongTy,
+                    TongTien = d.tongTien,
+                    ThoiGianThanhToan = d.ngayTaoDonHang
+                })
+                .FirstOrDefault();
+
+            if (donHang == null)
+            {
+                return new HttpStatusCodeResult(404, "Đơn hàng không tồn tại.");
+            }
+
+            // Tạo PDF bằng iTextSharp
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+                PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                document.Open();
+
+                // Tiêu đề
+                var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+                Paragraph title = new Paragraph("BIÊN LAI THANH TOÁN", titleFont);
+                title.Alignment = Element.ALIGN_CENTER;
+                document.Add(title);
+                document.Add(new Paragraph("\n"));
+
+                // Thông tin đơn hàng
+                var normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
+                document.Add(new Paragraph($"Mã Đơn Hàng: {donHang.MaDonHang}", normalFont));
+                document.Add(new Paragraph($"Tên Khách Hàng: {donHang.TenKhachHang}", normalFont));
+                document.Add(new Paragraph($"Tên Công Ty: {donHang.TenCongTy}", normalFont));
+                document.Add(new Paragraph($"Tổng Tiền: {string.Format("{0:N0} VNĐ", donHang.TongTien)}", normalFont));
+                document.Add(new Paragraph($"Ngày Thanh Toán: {donHang.ThoiGianThanhToan.ToString("dd/MM/yyyy")}", normalFont));
+                document.Add(new Paragraph("\nCảm ơn quý khách đã sử dụng dịch vụ của chúng tôi!", normalFont));
+
+                document.Close();
+
+                byte[] bytes = ms.ToArray();
+                return File(bytes, "application/pdf", $"BienLai_{donHang.MaDonHang}.pdf");
+            }
+        }
+
+
+
+
+
     }
 }

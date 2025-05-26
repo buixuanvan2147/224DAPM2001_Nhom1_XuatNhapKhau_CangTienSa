@@ -68,7 +68,7 @@
                 <th>Khách Hàng</th>
                 <th>Tên Công Ty</th>
                 <th>Số Tiền</th>
-                <th>Thời Gian</th>
+                <th>Thời Gian Tạo Đơn</th>
                 <th>Trạng Thái</th>
                 <th>Hành Động</th>
             </tr>
@@ -135,10 +135,10 @@
             }
         }
 
-        function xuatBienLai(maDH) {
+       /* function xuatBienLai(maDH) {
             alert("Biên lai cho đơn hàng " + maDH + " đã được tạo và gửi.");
         }
-
+        */
         function timKiem(input) {
             const keyword = input.value.toLowerCase();
             const table = input.closest('.tab-content').querySelector('table');
@@ -153,9 +153,43 @@
                 }
             });
         }
-
+        
 
         console.log("Section Scripts đã được render!");
+
+
+        function xuatBienLai(maDH) {
+            fetch('/NhanVienKeToan/XuatBienLai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ maDonHang: maDH })  // Gửi object có key
+            })
+
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Không thể tạo biên lai.");
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `BienLai_${maDH}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error("Lỗi khi xuất biên lai:", error);
+                    alert("Xuất biên lai thất bại.");
+                });
+        }
+
+
     </script>
 }
 
