@@ -504,6 +504,7 @@
     <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_ChiTietContainer.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_SuaContainer.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_ChiTietPhieuNhap.cshtml" />
+    <Content Include="Views\NhanVienKhoBai\ChiTietDonHangXuatKho.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

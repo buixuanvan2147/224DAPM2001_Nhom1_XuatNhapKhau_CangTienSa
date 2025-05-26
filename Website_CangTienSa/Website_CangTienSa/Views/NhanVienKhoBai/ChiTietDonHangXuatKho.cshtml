@@ -1,0 +1,42 @@
+﻿@model Website_CangTienSa.Models.DonHangModel
+
+<h2 class="mt-4">Chi tiết đơn hàng xuất kho: @Model.MaDonHang</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-striped">
+    <tr><th>Mã đơn hàng</th><td>@Model.MaDonHang</td></tr>
+    <tr><th>Người gửi</th><td>@Model.TenNguoiGui</td></tr>
+    <tr>
+        <th>Ngày nhập cảng</th>
+        <td>@(Model.NgayNhapCang != null ? Model.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
+    </tr>
+    <tr>
+        <th>Tên sản phẩm</th>
+        <td>@(string.IsNullOrEmpty(Model.TenSanPham) ? "Chưa có" : Model.TenSanPham)</td>
+    </tr>
+    <tr>
+        <th>Đơn vị tính</th>
+        <td>@(string.IsNullOrEmpty(Model.DonViTinh) ? "Chưa có" : Model.DonViTinh)</td>
+    </tr>
+    <tr>
+        <th>Mã hàng hóa</th>
+        <td>@(string.IsNullOrEmpty(Model.MaHangHoa) ? "Chưa có" : Model.MaHangHoa)</td>
+    </tr>
+    <tr><th>Số lượng</th><td>@Model.SoLuong</td></tr>
+    <tr><th>Trạng thái thanh toán</th><td>@Model.TrangThai</td></tr>
+    <tr>
+        <th>Người xác nhận</th>
+        <td>@(string.IsNullOrEmpty(Model.NguoiXacNhan) ? "Chưa có" : Model.NguoiXacNhan)</td>
+    </tr>
+    <tr><th>Mô tả</th><td>@(string.IsNullOrEmpty(Model.MoTa) ? "Chưa có" : Model.MoTa)</td></tr>
+</table>
+
+<a href="@Url.Action("Index_NhanVienKhoBai", "NhanVienKhoBai")" class="btn btn-secondary">⬅ Quay lại</a>
