@@ -122,12 +122,31 @@ namespace Website_CangTienSa.Controllers
 
             try
             {
-                // Kiểm tra trạng thái thanh toán (theo yêu cầu trước)
+                // Kiểm tra trạng thái thanh toán
                 if (donHang.trangThaiThanhToan == "Chưa thanh toán")
                 {
                     TempData["Error"] = $"Đơn hàng {id} chưa được thanh toán, không thể xuất kho.";
                     return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
                 }
+
+                // Lấy mã nhân viên từ Session
+                string maNhanVienDangNhap = Session["LoggedInUserId"]?.ToString();
+                if (string.IsNullOrEmpty(maNhanVienDangNhap))
+                {
+                    TempData["Error"] = "Không tìm thấy thông tin nhân viên đang đăng nhập.";
+                    return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
+                }
+
+                // Kiểm tra nhân viên có tồn tại
+                var nhanVien = db.nhanViens.FirstOrDefault(nv => nv.maNhanVien == maNhanVienDangNhap);
+                if (nhanVien == null)
+                {
+                    TempData["Error"] = "Nhân viên không tồn tại trong hệ thống.";
+                    return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
+                }
+
+                // Cập nhật maNhanVien cho đơn hàng
+                donHang.maNhanVien = maNhanVienDangNhap;
 
                 // Kiểm tra xem đơn hàng đã có phiếu xuất kho chưa
                 var phieuXuatTonTai = db.phieuXuats.Any(px => px.maDonHang == id);
@@ -139,9 +158,9 @@ namespace Website_CangTienSa.Controllers
                     {
                         maPhieuXuat = maPhieuXuat,
                         maDonHang = id,
-                        trangThaiXuatHang = "Đang vận chuyển xuất kho", // Đồng bộ với trạng thái đơn hàng
+                        trangThaiXuatHang = "Đang vận chuyển xuất kho",
                         ngayXuatKho = DateTime.Now,
-                        moTa = $"Phiếu xuất kho tự động tạo cho đơn hàng {id}"
+                        moTa = $"Phiếu xuất kho tự động tạo cho đơn hàng {id} bởi nhân viên {maNhanVienDangNhap}"
                     };
                     db.phieuXuats.Add(phieuXuat);
                     TempData["Success"] = $"Tạo phiếu xuất kho {maPhieuXuat} thành công cho đơn hàng {id}.";
@@ -163,7 +182,7 @@ namespace Website_CangTienSa.Controllers
             catch (Exception ex)
             {
                 TempData["Error"] = $"Lỗi khi xử lý xuất kho: {ex.Message}";
-                return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["toDate"], toDate = Request["toDate"] });
+                return RedirectToAction("Index_NhanVienXuatKho", new { keyword = Request["keyword"], fromDate = Request["fromDate"], toDate = Request["toDate"] });
             }
         }
 
