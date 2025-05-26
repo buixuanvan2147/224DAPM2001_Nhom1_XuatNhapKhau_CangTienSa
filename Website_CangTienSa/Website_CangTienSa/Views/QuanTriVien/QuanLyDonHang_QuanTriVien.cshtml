@@ -52,6 +52,12 @@
         font-size: 20px; /* Điều chỉnh kích thước font chữ */
     }
 
+    .selectAndButton {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap; /* Để responsive tốt */
+    }
+
     .button-add {
         display: inline-block;
         padding: 12px 20px; /* Tăng padding */
@@ -70,6 +76,19 @@
             color: #ffffff;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ khi hover */
         }
+
+    #select-container, #select-trangThaiDonHang, #select-trangThaiThanhToan {
+        padding: 10px;
+        font-size: 16px;
+        height: 44px; /* Khớp chiều cao với .button-add */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .button-add, #select-container, #select-trangThaiDonHang, #select-trangThaiThanhToan {
+        vertical-align: middle;
+    }
 
     .table-container {
         background-color: white;
@@ -128,9 +147,41 @@
     .delete-link {
         color: #dc3545;
     }
+
+    .edtt-link {
+        color: #EE82EE;
+    }
+
+    /* Định kiểu cho icon Quay lại đầu trang */
+    .back-to-top-button { /* Đã đổi từ .back-to-top-link sang .back-to-top-button để phân biệt rõ hơn nếu cần */
+        margin-left: auto; /* Đẩy nút sang phải trong container flex */
+        width: 45px;
+        height: 45px;
+        border-radius: 50%; /* Hình tròn */
+        background-color: #141d26; /* Màu nền */
+        color: #ffffff; /* Màu icon */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
+        text-decoration: none; /* Bỏ gạch chân */
+        display: flex; /* Dùng flexbox để căn giữa icon */
+        justify-content: center;
+        align-items: center;
+        cursor: pointer; /* Con trỏ chuột */
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển động */
+    }
+
+        .back-to-top-button i {
+            font-size: 24px; /* Kích thước icon mũi tên */
+        }
+
+        .back-to-top-button:hover {
+            background-color: #34495e; /* Màu nền khi rê chuột */
+            transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bóng đổ khi rê chuột */
+        }
+
 </style>
 
-<div class="report-container">
+<div id="dautrang" class="report-container">
     <div class="page-container">
         <div class="header-container">
             <h2>Quản Lý Đơn Hàng Tổng Hợp</h2>
@@ -145,13 +196,23 @@
 
         <section id="container">
             <h3 class="section-title">Quản Lý Container</h3>
-            <p>
-                <a href="#" class="button-add">Thêm Mới Container</a>
-            </p>
+            <div class="selectAndButton">
+                <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-container">Thêm Mới Container</a>
+                <a href="@Url.Action("QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-DMcontainer">Quản Lý Danh Mục Container</a>
+                <select id="select-container">
+                    <option value="Tất cả Container">Tất cả Container</option>
+                    @foreach (var dmContainer in (SelectList)ViewBag.dmContainers)
+                    {
+                        <option value="@dmContainer.Value">@dmContainer.Text</option>
+                    }
+                </select>
+                <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
+            </div>
             <div class="table-container">
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>STT</th>
                             <th>Mã Container</th>
                             <th>Danh Mục</th>
                             <th>Chi Tiết Kho</th>
@@ -164,21 +225,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>CONT001</td>
-                            <td>20 feet</td>
-                            <td>DETAIL001</td>
-                            <td>ABC1234</td>
-                            <td>Đang lưu kho</td>
-                            <td>A1-2</td>
-                            <td>2024-01-15</td>
-                            <td>20.0</td>
-                            <td class="action-links">
-                                <a href="#">Sửa</a> |
-                                <a href="#" class="details-link">Chi tiết</a> |
-                                <a href="#" class="delete-link">Xóa</a>
-                            </td>
-                        </tr>
+                        @if (ViewBag.ConTaiNers != null && ViewBag.ConTaiNers.Count > 0)
+                        {
+                            int sttConTaiNer = 1;
+                            foreach (var container in ViewBag.ConTaiNers)
+                            {
+                                <tr>
+                                    <td>@sttConTaiNer</td>
+                                    <td>@container.MaContainer</td>
+                                    <td>@container.TenMaDanhMucContainer</td>
+                                    <td>@container.MaChiTietKho</td>
+                                    <td>@container.SoHieu</td>
+                                    <td>@container.TrangThaiContainer</td>
+                                    <td>@container.ViTriTrongKho</td>
+                                    <td>@(container.NgayMuaContainer.ToString("yyyy-MM-dd"))</td>
+                                    <td>@container.TrongTai</td>
+                                    <td class="action-links">
+                                        <a href="#" class="edtt-link edit-container">Sửa</a> |
+                                        <a href="#" class="details-link chitiet-container">Chi tiết</a> |
+                                        <a href="#" class="delete-link xoa-container">Xóa</a>
+                                    </td>
+                                </tr>
+                                sttConTaiNer++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="14" style="text-align: center;">
+                                    Không có dữ liệu container.
+                                    <a href="@Url.Action("QTV_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")">Tạo mới</a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -186,151 +265,192 @@
 
         <section id="phieunhap">
             <h3 class="section-title">Quản Lý Phiếu Nhập</h3>
-            <p>
-                <a href="#" class="button-add">Thêm Mới Phiếu Nhập</a>
-            </p>
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Mã Phiếu Nhập</th>
-                            <th>Mã Đơn Hàng</th>
-                            <th>Mô tả</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>PN001</td>
-                            <td>DH001</td>
-                            <td>Nhập hàng lô A</td>
-                            <td class="action-links">
-                                <a href="#">Sửa</a> |
-                                <a href="#" class="details-link">Chi tiết</a> |
-                                <a href="#" class="delete-link">Xóa</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="selectAndButton">
+                <a href="@Url.Action("QTV_QLDH_ThemPhieuNhap", "QuanTriVien_QLDH_PhieuNhap")" class="button-add btn-add-phieunhap">Thêm Mới Phiếu Nhập</a>
+                <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
             </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Phiếu Nhập</th>
+                                <th>Mã Đơn Hàng</th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.PhieuNhaps != null && ViewBag.PhieuNhaps.Count > 0)
+                            {
+                                int sttphieuNhap = 1;
+                                foreach (var phieuNhap in ViewBag.PhieuNhaps)
+                                {
+                                    <tr>
+                                        <td>@sttphieuNhap</td>
+                                        <td>@phieuNhap.maPhieuNhap</td>
+                                        <td>@phieuNhap.maDonHang</td>
+                                        <td>@phieuNhap.moTa</td>
+                                        <td class="action-links">
+                                            <a href="#" class="details-link chitiet-phieunhap">Chi tiết</a> |
+                                            <a href="#" class="delete-link xoa-phieunhap">Xóa</a>
+                                        </td>
+                                    </tr>
+                                    sttphieuNhap++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="14" style="text-align: center;">
+                                        Không có dữ liệu phiếu nhập.
+                                        <a href="@Url.Action("QTV_QLDH_ThemPhieuNhap", "QuanTriVien_QLDH_PhieuNhap")">Tạo mới</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
         </section>
 
         <section id="phieuxuat">
             <h3 class="section-title">Quản Lý Phiếu Xuất</h3>
-            <p>
-                <a href="#" class="button-add">Thêm Mới Phiếu Xuất</a>
-            </p>
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Mã Phiếu Xuất</th>
-                            <th>Mã Đơn Hàng</th>
-                            <th>Trạng Thái</th>
-                            <th>Ngày Xuất</th>
-                            <th>Mô tả</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>PX001</td>
-                            <td>DH002</td>
-                            <td>Đã xuất kho</td>
-                            <td>2024-05-20</td>
-                            <td>Xuất hàng theo yêu cầu</td>
-                            <td class="action-links">
-                                <a href="#">Sửa</a> |
-                                <a href="#" class="details-link">Chi tiết</a> |
-                                <a href="#" class="delete-link">Xóa</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="selectAndButton">
+                <a href="@Url.Action("QTV_QLDH_ThemPhieuXuat", "QuanTriVien_QLDH_PhieuXuat")" class="button-add btn-add-phieuxuat">Thêm Mới Phiếu Xuất</a>
+                <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
             </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Phiếu Xuất</th>
+                                <th>Mã Đơn Hàng</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày Xuất</th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.PhieuXuats != null && ViewBag.PhieuXuats.Count > 0)
+                            {
+                                int sttphieuXuat = 1;
+                                foreach (var phieuXuat in ViewBag.PhieuXuats)
+                                {
+                                    <tr>
+                                        <td>@sttphieuXuat</td>
+                                        <td>@phieuXuat.maPhieuXuat</td>
+                                        <td>@phieuXuat.maDonHang</td>
+                                        <td>@phieuXuat.trangThaiXuatHang</td>
+                                        <td>@(phieuXuat.ngayXuatKho.ToString("yyyy-MM-dd"))</td>
+                                        <td>@phieuXuat.moTa</td>
+                                        <td class="action-links">
+                                            <a href="#" class="details-link chitiet-phieuxuat">Chi tiết</a> |
+                                            <a href="#" class="delete-link xoa-phieuxuat">Xóa</a>
+                                        </td>
+                                    </tr>
+                                    sttphieuXuat++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="14" style="text-align: center;">
+                                        Không có dữ liệu phiếu xuất.
+                                        <a href="@Url.Action("QTV_QLDH_ThemPhieuXuat", "QuanTriVien_QLDH_PhieuXuat")">Tạo mới</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
         </section>
 
         <section id="donhang">
             <h3 class="section-title">Quản Lý Đơn Hàng</h3>
-            <p>
-                <a href="#" class="button-add">Thêm Mới Đơn Hàng</a>
-            </p>
+            <div class="selectAndButton">
+                <a href="@Url.Action("QTV_QLDH_ThemDonHang", "QuanTriVien_QLDH_DonHang")" class="button-add btn-add-donhang">Thêm Mới Đơn Hàng</a>
+                <select id="select-trangThaiDonHang">
+                    <option value="Tất cả trạng thái đơn hàng">Tất cả trạng thái đơn hàng</option>
+                    @foreach (var trangthaidonhang in ViewBag.trangThaiDonHangs)
+                    {
+                        <option value="@trangthaidonhang">@trangthaidonhang</option>
+                    }
+                </select>
+
+                <select id="select-trangThaiThanhToan">
+                    <option value="Tất cả trạng thái thanh toán">Tất cả trạng thái thanh toán</option>
+                    @foreach (var trangthaithanhtoan in ViewBag.trangThaiThanhToans)
+                    {
+                        <option value="@trangthaithanhtoan">@trangthaithanhtoan</option>
+                    }
+                </select>
+                <a href="#dautrang" class="back-to-top-button" title="Quay lại đầu trang"><i class="fas fa-arrow-up"></i></a>
+            </div>
             <div class="table-container">
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>STT</th>
                             <th>Mã Đơn Hàng</th>
                             <th>Mã Khách Hàng</th>
                             <th>Mã Nhân Viên</th>
                             <th>Người Gửi</th>
                             <th>Người Nhận</th>
                             <th>Cảng Đến</th>
-                            <th>Ngày Tạo</th>
+                            <th>Ngày Tạo DH</th>
+                            <th>Lưu trữ</th>
+                            <th>Ngày xuất cảng</th>
+                            <th>Ngày nhập cảng</th>
                             <th>Trạng Thái</th>
                             <th>Thanh Toán</th>
                             <th>Tổng Tiền</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>DH001</td>
-                            <td>KH001</td>
-                            <td>NV001</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>Trần Thị B</td>
-                            <td>Cảng Sài Gòn</td>
-                            <td>2024-05-15</td>
-                            <td>Đang xử lý</td>
-                            <td>Chưa thanh toán</td>
-                            <td>1,500,000</td>
-                            <td class="action-links">
-                                <a href="#">Sửa</a> |
-                                <a href="#" class="details-link">Chi tiết</a> |
-                                <a href="#" class="delete-link">Xóa</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="chitietdonhang">
-            <h3 class="section-title">Chi Tiết Đơn Hàng (Mã Đơn Hàng: DH001)</h3>
-            <p>
-                <a href="#" class="button-add">Thêm Mới Chi Tiết</a>
-            </p>
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Mã Chi Tiết</th>
-                            <th>Mã Hàng Hóa</th>
-                            <th>Số Lượng</th>
-                            <th>Đơn Vị</th>
-                            <th>Chất Lượng</th>
-                            <th>Đơn Giá</th>
-                            <th>Tiền Lưu Kho</th>
                             <th>Mô tả</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>CTDH001</td>
-                            <td>HH001</td>
-                            <td>10</td>
-                            <td>Thùng</td>
-                            <td>Mới</td>
-                            <td>150,000</td>
-                            <td>50,000</td>
-                            <td>Hàng dễ vỡ</td>
-                            <td class="action-links">
-                                <a href="#">Sửa</a> |
-                                <a href="#" class="details-link">Chi tiết</a> |
-                                <a href="#" class="delete-link">Xóa</a>
-                            </td>
-                        </tr>
+                        @if (ViewBag.DonHangs != null && ViewBag.DonHangs.Count > 0)
+                        {
+                            int sttdonHang = 1;
+                            foreach (var donhang in ViewBag.DonHangs)
+                            {
+                                <tr>
+                                    <td>@sttdonHang</td>
+                                    <td>@donhang.maDonHang</td>
+                                    <td>@donhang.maKhachHang</td>
+                                    <td>@donhang.maNhanVien</td>
+                                    <td>@donhang.tenNguoiGui</td>
+                                    <td>@donhang.tenNguoiNhan</td>
+                                    <td>@donhang.cangDichDen</td>
+                                    <td>@(donhang.ngayTaoDonHang.ToString("yyyy-MM-dd"))</td>
+                                    <td>@donhang.thoiGianLuuTru  Ngày</td>
+                                    <td>@(donhang.ngayXuatCang == null || donhang.ngayXuatCang == default(DateTime)
+                                            ? "Chưa xuất cảng" : donhang.ngayXuatCang.ToString("yyyy-MM-dd"))</td>
+                                    <td>@(donhang.ngayNhapCang == null || donhang.ngayNhapCang == default(DateTime)
+                                            ? "Vận chuyển nội bộ" : donhang.ngayNhapCang.ToString("yyyy-MM-dd"))</td>
+                                    <td>@donhang.trangThaiDonHang</td>
+                                    <td>@donhang.trangThaiThanhToan</td>
+                                    <td>@(donhang.tongTien == 0 ? "Chưa tính" : donhang.tongTien.ToString("N0") + " VNĐ")</td>
+                                    <td>@(string.IsNullOrEmpty(donhang.moTa) ? "Không có mô tả" : donhang.moTa)</td>
+                                    <td class="action-links">
+                                        <a href="#" class="details-link chitiet-donhang">Chi tiết</a> |
+                                        <a href="#" class="delete-link xoa-donhang">Xóa</a>
+                                    </td>
+                                </tr>
+                                sttdonHang++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="14" style="text-align: center;">
+                                    Không có dữ liệu phiếu xuất.
+                                    <a href="@Url.Action("QTV_QLDH_ThemDonHang", "QuanTriVien_QLDH_DonHang")">Tạo mới</a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -349,6 +469,39 @@
                     targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+
+            // Phần script cho nút Quay lại đầu trang
+            // Lấy TẤT CẢ các phần tử nút "quay lại đầu trang" bằng class
+            const backToTopButtons = document.querySelectorAll(".back-to-top-button");
+            const topOfPageElement = document.getElementById("dautrang"); // Lấy phần tử có ID "dautrang"
+
+            // Kiểm tra xem phần tử đích có tồn tại không
+            if (topOfPageElement) {
+                // Lặp qua từng nút và thêm sự kiện click
+                backToTopButtons.forEach(button => {
+                    button.addEventListener("click", function (e) {
+                        e.preventDefault(); // RẤT QUAN TRỌNG: Ngăn chặn hành vi mặc định của thẻ <a> (nhảy tức thì)
+
+                        // Cuộn tới đầu của phần tử có ID "dautrang"
+                        topOfPageElement.scrollIntoView({
+                            behavior: "smooth", // Hiệu ứng cuộn mượt mà
+                            block: "start"      // Đặt phần tử ở đầu viewport
+                        });
+                    });
+                });
+            } else {
+                console.warn("Không tìm thấy phần tử có ID 'dautrang'. Nút 'Quay lại đầu trang' có thể không hoạt động hoặc cuộn không mượt.");
+                // Fallback: nếu không tìm thấy "dautrang", cuộn lên đầu cửa sổ (vẫn mượt)
+                backToTopButtons.forEach(button => {
+                    button.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        });
+                    });
+                });
+            }
         });
     </script>
 

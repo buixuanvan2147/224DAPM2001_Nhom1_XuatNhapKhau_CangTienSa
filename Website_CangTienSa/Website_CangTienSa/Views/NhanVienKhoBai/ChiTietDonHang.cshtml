@@ -9,6 +9,14 @@
         <td>@(Model.NgayNhapCang != null ? Model.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
     </tr>
     <tr>
+        <th>Tên sản phẩm</th>
+        <td>@Model.TenSanPham</td>
+    </tr>
+    <tr>
+        <th>Đơn vị tính</th>
+        <td>@Model.DonViTinh</td>
+    </tr>
+    <tr>
         <th>Mã Container</th>
         <td>@(!string.IsNullOrEmpty(Model.MaContainer) ? Model.MaContainer : "Chưa có")</td>
     </tr>
@@ -24,4 +32,31 @@
     </tr>
 </table>
 
+<h4 class="mt-4">📦 Thêm vào container</h4>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@using (Html.BeginForm("GanDonHangVaoContainer", "NhanVienKhoBai", FormMethod.Post))
+{
+    <div class="form-inline">
+        <input type="hidden" name="maDonHang" value="@Model.MaDonHang" />
+
+        <label class="mr-2">Chọn container rỗng:</label>
+        <select name="maContainer" class="form-control mr-2" required>
+            <option value="">-- Chọn container --</option>
+            @foreach (var cont in ViewBag.ContainerRong as List<SelectListItem>)
+            {
+                <option value="@cont.Value">@cont.Text</option>
+            }
+        </select>
+
+        <button type="submit" class="btn btn-primary">Thêm vào</button>
+    </div>
+}
 <a href="@Url.Action("Index_NhanVienKhoBai", "NhanVienKhoBai")" class="btn btn-secondary">⬅ Quay lại</a>
