@@ -8,7 +8,7 @@ namespace Website_CangTienSa.DAO
 {
     public class DonHangDAO
     {
-        private readonly string connectionString = "Server=MINHTOAN\\SQLEXPRESS;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=DINHTHI\\DINHTHIMSSQLSV;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
         public List<DonHangModel> GetDonHangDangVanChuyen()
         {
             var donHangList = new List<DonHangModel>();
@@ -29,7 +29,7 @@ namespace Website_CangTienSa.DAO
             JOIN chiTietDonHang ctdh ON dh.maDonHang = ctdh.maDonHang
             JOIN nhanVien nv ON dh.maNhanVien = nv.maNhanVien
             WHERE dh.moTa LIKE N'%Đơn hàng nhập khẩu%'
-            AND dh.trangThaiThanhToan = N'Đã thanh toán'";
+            AND dh.trangThaiThanhToan = N'Đã thanh toán' AND dh.trangThaiDonHang = N'Đang vận chuyển nhập kho'";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -74,7 +74,8 @@ namespace Website_CangTienSa.DAO
             JOIN chiTietDonHang ctdh ON dh.maDonHang = ctdh.maDonHang
             JOIN nhanVien nv ON dh.maNhanVien = nv.maNhanVien
             WHERE dh.moTa LIKE N'%Đơn hàng xuất khẩu%'
-            AND dh.trangThaiThanhToan = N'Đã thanh toán'";
+            AND dh.trangThaiThanhToan = N'Đã thanh toán' AND dh.trangThaiDonHang = N'Đang vận chuyển xuất kho'
+            AND dh.trangThaiDonHang NOT IN (N'Đang xử lý', N'Đang yêu cầu')";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 using (SqlDataReader reader = command.ExecuteReader())
