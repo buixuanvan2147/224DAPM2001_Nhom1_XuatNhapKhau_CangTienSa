@@ -45,39 +45,6 @@ namespace Website_CangTienSa.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmTransport(string maDonHang)
-        {
-            try
-            {
-                // Validate input
-                if (string.IsNullOrEmpty(maDonHang))
-                {
-                    TempData["ErrorMessage"] = "Mã đơn hàng không hợp lệ";
-                    return RedirectToAction("Index_NhanVienKhoBai");
-                }
-
-                // Cập nhật trạng thái đơn hàng và ngày xuất cảng
-                bool success = _donHangDAO.UpdateTrangThaiVaNgayXuatCang(maDonHang, "Hoàn thành", DateTime.Now);
-
-                if (success)
-                {
-                    TempData["SuccessMessage"] = "Đã xác nhận đơn hàng vào kho thành công";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Xác nhận đơn hàng thất bại";
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = $"Lỗi hệ thống: {ex.Message}";
-                System.Diagnostics.Debug.WriteLine($"Lỗi khi xác nhận đơn hàng: {ex}");
-            }
-
-            return RedirectToAction("Index_NhanVienKhoBai");
-        }
-
-        [HttpPost]
         public ActionResult GanDonHangVaoContainer(string maDonHang, string maContainer)
         {
             try
