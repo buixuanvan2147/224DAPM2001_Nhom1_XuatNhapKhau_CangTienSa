@@ -1,0 +1,260 @@
+﻿@model Website_CangTienSa.Models.container
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Container chính cho toàn bộ nội dung */
+    .edit-container-wrapper { /* Đổi tên class để tránh trùng lặp */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Căn trên thay vì căn giữa tuyệt đối */
+        padding: 10px 20px;
+        min-height: calc(100vh - 56px); /* Đảm bảo đủ chiều cao */
+        color: #E2E8F0; /* Màu chữ sáng */
+        margin-top:20px;
+        margin-bottom:60px;
+    }
+
+    /* Card chứa form */
+    .form-card { /* Tái sử dụng class form-card từ các view khác */
+        background-color: #2D3748; /* Màu nền phụ tối */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        max-width: 800px; /* Giới hạn chiều rộng tối đa của form */
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .form-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Tiêu đề trang */
+    .form-card h2 {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #4FD1C5; /* Màu nhấn */
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .form-card hr {
+        border-color: #4A5568; /* Màu đường kẻ ngang */
+        margin-bottom: 30px;
+    }
+
+    /* Validation Summary */
+    .validation-summary-errors {
+        color: #EF4444; /* Màu đỏ cho lỗi */
+        background-color: rgba(239, 68, 68, 0.1);
+        border: 1px solid #EF4444;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    /* Form Layout (Grid) */
+    .form-horizontal {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 cột trên desktop, 1 cột trên mobile */
+        gap: 8px 30px; /* Khoảng cách giữa các hàng và cột */
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Khoảng cách giữa label và input */
+    }
+
+    /* Labels */
+    .control-label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #E2E8F0; /* Màu chữ sáng */
+        margin-bottom: 0; /* Xóa margin mặc định */
+    }
+
+    /* Input/Editor fields và DropdownList */
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #4A5568; /* Viền màu tối */
+        border-radius: 8px;
+        font-size: 1rem;
+        background-color: #2D3748; /* Nền input tối */
+        color: #ffffff; /* CHỮ TRONG INPUT MÀU TRẮNG TINH */
+        /* Đã loại bỏ transition để không có hiệu ứng khi focus */
+    }
+
+    /* Validation messages for individual fields */
+    .text-danger {
+        color: #EF4444; /* Màu đỏ cho lỗi */
+        font-size: 0.8rem;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+
+    /* Submit button group */
+    .form-group.submit-group {
+        grid-column: 1 / -1; /* Chiếm toàn bộ chiều rộng hàng */
+        display: flex;
+        justify-content: center; /* Căn giữa nút */
+        margin-top: 30px;
+    }
+
+    .btn-submit {
+        padding: 14px 30px;
+        background: linear-gradient(45deg, #4FD1C5, #38B2AC); /* Gradient màu nhấn */
+        border: none;
+        color: #1A202C; /* Chữ tối trên nền sáng */
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(45deg, #38B2AC, #4FD1C5);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(79, 209, 197, 0.4);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(79, 209, 197, 0.2);
+    }
+
+    /* Back to List link */
+    .back-link-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .back-link {
+        color: #63B3ED; /* Màu xanh dương cho link */
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        padding: 10px 20px; /* Thêm padding để trông giống nút */
+        display: inline-block; /* Để padding hoạt động */
+    }
+
+    .back-link:hover {
+        color: #4299E1; /* Màu xanh đậm hơn khi hover */
+        text-decoration: underline;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .form-card {
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .form-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .form-horizontal {
+            grid-template-columns: 1fr; /* Một cột trên mobile */
+            gap: 20px;
+        }
+
+        .form-control {
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .btn-submit {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .form-card {
+            padding: 20px;
+        }
+
+        .form-card h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="edit-container-wrapper">
+    <div class="form-card">
+        <h2>CHỈNH SỬA THÔNG TIN CONTAINER</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+                @Html.HiddenFor(model => model.maContainer)
+
+                <div class="form-group">
+                    <label class="control-label">Danh Mục Container</label>
+                    @Html.DropDownList("maDanhMucContainer", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maDanhMucContainer, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Kho</label>
+                    @Html.DropDownList("maChiTietKho", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maChiTietKho, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Số Hiệu</label>
+                    @Html.EditorFor(model => model.soHieu, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập số hiệu" } })
+                    @Html.ValidationMessageFor(model => model.soHieu, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Trạng Thái Container</label>
+                    @Html.EditorFor(model => model.trangThaiContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập trạng thái container" } })
+                    @Html.ValidationMessageFor(model => model.trangThaiContainer, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Vị Trí Trong Kho</label>
+                    @Html.EditorFor(model => model.viTriTrongKho, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập vị trí trong kho" } })
+                    @Html.ValidationMessageFor(model => model.viTriTrongKho, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ngày Mua Container</label>
+                    @Html.EditorFor(model => model.ngayMuaContainer, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                    @Html.ValidationMessageFor(model => model.ngayMuaContainer, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Trọng Tải</label>
+                    @Html.EditorFor(model => model.trongTai, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập trọng tải", type = "number" } })
+                    @Html.ValidationMessageFor(model => model.trongTai, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group submit-group">
+                    <input type="submit" value="Lưu Thay Đổi" class="btn-submit" />
+                </div>
+            </div>
+        }
+
+    <div class="back-link-container">
+        @Html.ActionLink("Quay lại", "QuanLyDonHang_QuanTriVien", "QuanTriVien", null, new { @class = "back-link" })
+    </div>
+    </div>
+</div>

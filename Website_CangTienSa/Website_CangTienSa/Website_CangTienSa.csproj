@@ -173,6 +173,8 @@
     <Compile Include="Controllers\NhanVienXuatKhoController.cs" />
     <Compile Include="Controllers\QuanTriVienController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLDH_ContainerController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_DMContainerController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_PhieuNhapController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLTaiKhoanController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -492,11 +494,16 @@
     <Content Include="Views\QuanTriVien_QLTaiKhoan\TaoTaiKhoanKhachHang_QuanTriVien.cshtml" />
     <Content Include="Views\KhachHang\XemChiTietDonHang.cshtml" />
     <Content Include="Views\Home\ThongBaoDangKyThanhCong.cshtml" />
-    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ThemDanhmucContainer.cshtml" />
-    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_XoaDanhmucContainer.cshtml" />
-    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_ChiTietDanhmucContainer.cshtml" />
-    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_SuaDanhmucContainer.cshtml" />
-    <Content Include="Views\QuanTriVien_QLDH_Container\QTV_QLDH_IndexDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_DMContainer\QTV_QLDH_ThemDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_DMContainer\QTV_QLDH_XoaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_DMContainer\QTV_QLDH_ChiTietDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_DMContainer\QTV_QLDH_SuaDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_DMContainer\QTV_QLDH_IndexDanhmucContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_ThemContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_XoaContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_ChiTietContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_SuaContainer.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_ChiTietPhieuNhap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

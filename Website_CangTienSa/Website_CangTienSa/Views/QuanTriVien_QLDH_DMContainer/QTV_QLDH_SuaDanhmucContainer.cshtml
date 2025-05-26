@@ -1,20 +1,19 @@
 ﻿@model Website_CangTienSa.Models.danhMucContainer
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
 <style>
-    /* Tổng quan cho trang */
-    .create-container {
+    /* Container chính cho toàn bộ nội dung */
+    .edit-container { /* Đổi tên class để tránh trùng lặp nếu có */
         display: flex;
         justify-content: center;
         align-items: flex-start; /* Căn trên thay vì căn giữa tuyệt đối */
-        padding: 40px 20px;
+        padding: 30px 20px 70px 20px;
         min-height: calc(100vh - 56px); /* Đảm bảo đủ chiều cao */
-        color: #E2E8F0; /* Màu chữ sáng cho toàn bộ khu vực này */
-        margin-bottom: 60px; /* Thêm margin-bottom theo yêu cầu */
+        color: #E2E8F0; /* Màu chữ sáng */
     }
 
     /* Card chứa form */
@@ -32,7 +31,7 @@
         transform: translateY(-5px);
     }
 
-    /* Tiêu đề */
+    /* Tiêu đề trang */
     .form-card h2 {
         text-align: center;
         font-size: 2.2rem;
@@ -92,8 +91,6 @@
         color: #ffffff; /* CHỮ TRONG INPUT MÀU TRẮNG TINH */
         /* Đã loại bỏ transition để không có hiệu ứng khi focus */
     }
-
-
 
     /* Validation messages for individual fields */
     .text-danger {
@@ -192,23 +189,18 @@
     }
 </style>
 
-<div class="create-container">
+<div class="edit-container">
     <div class="form-card">
-        <h2>THÊM MỚI DANH MỤC CONTAINER</h2>
+        <h2>Chỉnh Sửa Danh Mục Container</h2>
 
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
             @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+            @Html.HiddenFor(model => model.maDanhMucContainer)
 
             <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label">Mã Danh Mục Container</label>
-                    @Html.EditorFor(model => model.maDanhMucContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Mã danh mục container" } })
-                    @Html.ValidationMessageFor(model => model.maDanhMucContainer, "", new { @class = "text-danger" })
-                </div>
-
                 <div class="form-group">
                     <label class="control-label">Tên danh mục container</label>
                     @Html.EditorFor(model => model.tenDanhMucContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Tên danh mục container" } })
@@ -252,13 +244,13 @@
                 </div>
 
                 <div class="form-group submit-group">
-                    <input type="submit" value="Tạo Mới" class="btn-submit" />
+                    <input type="submit" value="Lưu Chỉnh Sửa" class="btn-submit" />
                 </div>
             </div>
         }
 
         <div class="back-link-container">
-            @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container", null, new { @class = "back-link" })
+            @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_DMContainer", null, new { @class = "back-link" })
         </div>
     </div>
 </div>
@@ -266,5 +258,3 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-

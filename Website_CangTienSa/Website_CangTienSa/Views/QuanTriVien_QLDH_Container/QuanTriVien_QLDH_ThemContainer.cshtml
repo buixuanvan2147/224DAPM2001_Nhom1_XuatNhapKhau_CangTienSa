@@ -1,23 +1,24 @@
-﻿@model Website_CangTienSa.Models.danhMucContainer
+﻿@model Website_CangTienSa.Models.container
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
 
 <style>
     /* Container chính cho toàn bộ nội dung */
-    .edit-container { /* Đổi tên class để tránh trùng lặp nếu có */
+    .create-container-wrapper { /* Đổi tên class để tránh trùng lặp với các view khác */
         display: flex;
         justify-content: center;
         align-items: flex-start; /* Căn trên thay vì căn giữa tuyệt đối */
-        padding: 30px 20px 70px 20px;
+        padding: 40px 20px;
         min-height: calc(100vh - 56px); /* Đảm bảo đủ chiều cao */
         color: #E2E8F0; /* Màu chữ sáng */
+        margin-bottom: 60px; /* Thêm margin-bottom theo yêu cầu */
     }
 
     /* Card chứa form */
-    .form-card {
+    .form-card { /* Tái sử dụng class form-card từ các view khác */
         background-color: #2D3748; /* Màu nền phụ tối */
         padding: 40px;
         border-radius: 12px;
@@ -80,7 +81,6 @@
         margin-bottom: 0; /* Xóa margin mặc định */
     }
 
-    /* Input/Editor fields */
     .form-control {
         width: 100%;
         padding: 12px 15px;
@@ -189,72 +189,73 @@
     }
 </style>
 
-<div class="edit-container">
+<div class="create-container-wrapper">
     <div class="form-card">
-        <h2>Chỉnh Sửa Danh Mục Container</h2>
+        <h2>THÊM MỚI CONTAINER</h2>
 
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
             @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
-            @Html.HiddenFor(model => model.maDanhMucContainer)
 
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="control-label">Tên danh mục container</label>
-                    @Html.EditorFor(model => model.tenDanhMucContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Tên danh mục container" } })
-                    @Html.ValidationMessageFor(model => model.tenDanhMucContainer, "", new { @class = "text-danger" })
+                    <label class="control-label">Mã Container</label>
+                    @Html.EditorFor(model => model.maContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập mã container" } })
+                    @Html.ValidationMessageFor(model => model.maContainer, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Sức chứa tối đa</label>
-                    @Html.EditorFor(model => model.sucChuaToiDa, new { htmlAttributes = new { @class = "form-control", placeholder = "Sức chứa tối đa" } })
-                    @Html.ValidationMessageFor(model => model.sucChuaToiDa, "", new { @class = "text-danger" })
+                    <label class="control-label">Danh Mục Container</label>
+                    @Html.DropDownList("maDanhMucContainer", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maDanhMucContainer, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Trọng tải tối đa</label>
-                    @Html.EditorFor(model => model.trongTaiToiDa, new { htmlAttributes = new { @class = "form-control", placeholder = "Trọng tải tối đa" } })
-                    @Html.ValidationMessageFor(model => model.trongTaiToiDa, "", new { @class = "text-danger" })
+                    <label class="control-label">Mã Chi Tiết Kho</label>
+                    @Html.DropDownList("maChiTietKho", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maChiTietKho, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Chiều dài</label>
-                    @Html.EditorFor(model => model.chieuDai, new { htmlAttributes = new { @class = "form-control", placeholder = "Chiều dài" } })
-                    @Html.ValidationMessageFor(model => model.chieuDai, "", new { @class = "text-danger" })
+                    <label class="control-label">Số Hiệu</label>
+                    @Html.EditorFor(model => model.soHieu, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập số hiệu" } })
+                    @Html.ValidationMessageFor(model => model.soHieu, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Chiều rộng</label>
-                    @Html.EditorFor(model => model.chieuRong, new { htmlAttributes = new { @class = "form-control", placeholder = "Chiều rộng" } })
-                    @Html.ValidationMessageFor(model => model.chieuRong, "", new { @class = "text-danger" })
+                    <label class="control-label">Trạng Thái Container</label>
+                    @Html.EditorFor(model => model.trangThaiContainer, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập trạng thái container" } })
+                    @Html.ValidationMessageFor(model => model.trangThaiContainer, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Chiều cao</label>
-                    @Html.EditorFor(model => model.chieuCao, new { htmlAttributes = new { @class = "form-control", placeholder = "Chiều cao" } })
-                    @Html.ValidationMessageFor(model => model.chieuCao, "", new { @class = "text-danger" })
+                    <label class="control-label">Vị Trí Trong Kho</label>
+                    @Html.EditorFor(model => model.viTriTrongKho, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập vị trí trong kho" } })
+                    @Html.ValidationMessageFor(model => model.viTriTrongKho, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Mô tả</label>
-                    @Html.EditorFor(model => model.moTa, new { htmlAttributes = new { @class = "form-control", placeholder = "Mô tả" } })
-                    @Html.ValidationMessageFor(model => model.moTa, "", new { @class = "text-danger" })
+                    <label class="control-label">Ngày Mua Container</label>
+                    @Html.EditorFor(model => model.ngayMuaContainer, new { htmlAttributes = new { @class = "form-control", type = "date" } }) @* Thêm type="date" cho input ngày *@
+                    @Html.ValidationMessageFor(model => model.ngayMuaContainer, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Trọng Tải</label>
+                    @Html.EditorFor(model => model.trongTai, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập trọng tải" } })
+                    @Html.ValidationMessageFor(model => model.trongTai, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group submit-group">
-                    <input type="submit" value="Lưu Chỉnh Sửa" class="btn-submit" />
+                    <input type="submit" value="Thêm Container" class="btn-submit" />
                 </div>
             </div>
         }
 
         <div class="back-link-container">
-            @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container", null, new { @class = "back-link" })
+            @Html.ActionLink("Quay lại", "QuanLyDonHang_QuanTriVien", "QuanTriVien", null, new { @class = "back-link" })
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

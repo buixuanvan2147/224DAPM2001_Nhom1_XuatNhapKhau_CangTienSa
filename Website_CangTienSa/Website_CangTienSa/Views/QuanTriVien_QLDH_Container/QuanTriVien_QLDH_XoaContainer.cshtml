@@ -1,4 +1,4 @@
-﻿@model Website_CangTienSa.Models.danhMucContainer
+﻿@model Website_CangTienSa.Models.container
 
 @{
     ViewBag.Title = "Delete";
@@ -7,7 +7,7 @@
 
 <style>
     /* Container chính cho toàn bộ nội dung */
-    .delete-container { /* Đổi tên class để tránh trùng lặp */
+    .delete-container-wrapper { /* Đổi tên class để tránh trùng lặp */
         display: flex;
         justify-content: center;
         align-items: flex-start; /* Căn trên thay vì căn giữa tuyệt đối */
@@ -64,7 +64,7 @@
     /* Danh sách chi tiết (thay thế dl-horizontal) */
     .details-list {
         display: grid;
-        grid-template-columns: 60% 40%;
+        grid-template-columns: 50% 50%; /* Cột label tự động chiều rộng, cột giá trị chiếm phần còn lại */
         gap: 15px 30px; /* Khoảng cách giữa các hàng và cột */
         margin-bottom: 30px;
     }
@@ -117,21 +117,30 @@
     }
 
     /* Link quay lại danh sách */
-    .back-link-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-
     .back-link {
-        color: #63B3ED; /* Màu xanh dương cho link */
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
+        padding: 14px 30px; /* Thêm padding cho link để trông giống nút */
+        background: linear-gradient(45deg, #63B3ED, #4299E1); /* Màu xanh dương cho link */
+        border: none;
+        color: #FFFFFF; /* Chữ trắng */
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(99, 179, 237, 0.3);
+        text-decoration: none; /* Bỏ gạch chân mặc định */
+        display: inline-block; /* Để padding và margin hoạt động */
     }
 
     .back-link:hover {
-        color: #4299E1; /* Màu xanh đậm hơn khi hover */
-        text-decoration: underline;
+        background: linear-gradient(45deg, #4299E1, #63B3ED);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(99, 179, 237, 0.4);
+    }
+
+    .back-link:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(99, 179, 237, 0.2);
     }
 
     /* Responsive adjustments */
@@ -171,7 +180,7 @@
             gap: 10px;
         }
 
-        .btn-delete-confirm {
+        .btn-delete-confirm, .back-link {
             width: 100%; /* Nút chiếm toàn bộ chiều rộng */
             padding: 12px 20px;
             font-size: 1rem;
@@ -189,74 +198,70 @@
     }
 </style>
 
-<div class="delete-container">
+<div class="delete-container-wrapper">
     <div class="form-card">
-        <h2 class="details-title">XÓA DANH MỤC CONTAINER</h2>
+        <h2>XÓA CONTAINER</h2>
 
-        <h3 class="confirmation-message">Bạn có chắc muốn xóa danh mục **@Model.tenDanhMucContainer** không?</h3>
-
-        <hr />
+        <h3 class="confirmation-message">Bạn có chắc muốn xóa container số hiệu **< @Model.soHieu >** không?</h3>
         <dl class="details-list">
+            <dt class="details-label">
+                Số Hiệu
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.soHieu)
+            </dd>
+
+            <dt class="details-label">
+                Trạng Thái Container
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.trangThaiContainer)
+            </dd>
+
+            <dt class="details-label">
+                Vị Trí Trong Kho
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.viTriTrongKho)
+            </dd>
+
+            <dt class="details-label">
+                Ngày Mua Container
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.ngayMuaContainer)
+            </dd>
+
+            <dt class="details-label">
+                Trọng Tải
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.trongTai)
+            </dd>
+
+            <dt class="details-label">
+                Mã Kho
+            </dt>
+            <dd class="details-value">
+                @Html.DisplayFor(model => model.chiTietKho.maKho)
+            </dd>
+
             <dt class="details-label">
                 Tên Danh Mục Container
             </dt>
             <dd class="details-value">
-                @Html.DisplayFor(model => model.tenDanhMucContainer)
-            </dd>
-
-            <dt class="details-label">
-                Sức Chứa Tối Đa
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.sucChuaToiDa)
-            </dd>
-
-            <dt class="details-label">
-                Trọng Tải Tối Đa
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.trongTaiToiDa)
-            </dd>
-
-            <dt class="details-label">
-                Chiều Dài
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.chieuDai)
-            </dd>
-
-            <dt class="details-label">
-                Chiều Rộng
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.chieuRong)
-            </dd>
-
-            <dt class="details-label">
-                Chiều Cao
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.chieuCao)
-            </dd>
-
-            <dt class="details-label">
-                Mô Tả
-            </dt>
-            <dd class="details-value">
-                @Html.DisplayFor(model => model.moTa)
+                @Html.DisplayFor(model => model.danhMucContainer.tenDanhMucContainer)
             </dd>
         </dl>
 
-        @using (Html.BeginForm("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_Container", FormMethod.Post))
+        @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            <div class="delete-actions-group">
-                <input type="submit" value="Xác Nhận Xóa" class="btn-delete-confirm" />
-            </div>
-            <div class="back-link-container">
-                @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container", null, new { @class = "back-link" })
-            </div>
+    <div class="delete-actions-group">
+        <input type="submit" value="Xác Nhận Xóa" class="btn-delete-confirm" />
+        @Html.ActionLink("Quay lại", "QuanLyDonHang_QuanTriVien", "QuanTriVien", null, new { @class = "back-link" })
+    </div>
         }
     </div>
 </div>

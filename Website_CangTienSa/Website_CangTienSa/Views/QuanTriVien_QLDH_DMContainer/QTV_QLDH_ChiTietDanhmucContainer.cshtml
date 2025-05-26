@@ -243,16 +243,16 @@
         </dl>
 
         <div class="details-actions-group">
-            <a href="@Url.Action("QTV_QLDH_SuaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = Model.maDanhMucContainer })" class="action-button edit" title="Sửa">
+            <a href="@Url.Action("QTV_QLDH_SuaDanhmucContainer", "QuanTriVien_QLDH_DMContainer", new { id = Model.maDanhMucContainer })" class="action-button edit" title="Sửa">
                 <i class="fas fa-edit"></i> Sửa
             </a>
-            <a href="@Url.Action("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = Model.maDanhMucContainer })" class="action-button delete" title="Xóa">
+            <a href="@Url.Action("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_DMContainer", new { id = Model.maDanhMucContainer })" class="action-button delete" title="Xóa">
                 <i class="fas fa-trash-alt"></i> Xóa
             </a>
         </div>
 
         <div class="back-link-container">
-            @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_Container", null, new { @class = "back-link" })
+            @Html.ActionLink("Quay lại danh sách", "QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_DMContainer", null, new { @class = "back-link" })
         </div>
     </div>
 </div>

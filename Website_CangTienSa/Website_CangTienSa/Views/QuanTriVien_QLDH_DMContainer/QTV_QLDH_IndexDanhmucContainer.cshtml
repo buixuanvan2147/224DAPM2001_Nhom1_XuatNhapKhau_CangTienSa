@@ -34,7 +34,7 @@
         display: inline-flex; /* Sử dụng flex để căn chỉnh icon và text */
         align-items: center;
         padding: 12px 25px;
-        background: linear-gradient(45deg, #10B981, #059669); /* Màu xanh lá cây */
+        background-color: #4FD1C5;
         border: none;
         color: #ffffff;
         font-size: 1rem;
@@ -50,6 +50,7 @@
         background: linear-gradient(45deg, #059669, #10B981);
         transform: translateY(-3px);
         box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        color: #ffffff;
     }
 
     .add-new-button i {
@@ -77,7 +78,7 @@
         padding: 15px 20px;
         text-align: left;
         text-transform: uppercase;
-        font-size: 0.9rem;
+        font-size: 0.7rem;
         letter-spacing: 0.5px;
         border: 1px solid #4A5568; /* Thêm border cho từng ô header */
         white-space: nowrap; /* Ngăn chữ xuống dòng */
@@ -251,10 +252,10 @@
     <h2 class="page-title">QUẢN LÝ DANH MỤC CONTAINER</h2>
 
     <div class="add-new-button-container">
-        <a href="@Url.Action("QTV_QLDH_ThemDanhmucContainer", "QuanTriVien_QLDH_Container")" class="add-new-button">
+        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" style="margin-right: auto;" class="add-new-button">Quay Lại Quản Lý Đơn Hàng</a>
+        <a href="@Url.Action("QTV_QLDH_ThemDanhmucContainer", "QuanTriVien_QLDH_DMContainer")" class="add-new-button">
             <i class="fas fa-plus-circle"></i> Thêm Danh Mục Mới
         </a>
-        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="add-new-button">Quay Lại Quản Lý Đơn Hàng</a>
     </div>
 
     <div class="table-responsive">
@@ -298,13 +299,13 @@
                         </td>
                         <td class="action-column">
                             <div class="action-buttons-group">
-                                <a href="@Url.Action("QTV_QLDH_ChiTietDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button edit" title="Sửa">
+                                <a href="@Url.Action("QTV_QLDH_ChiTietDanhmucContainer", "QuanTriVien_QLDH_DMContainer", new { id = item.maDanhMucContainer })" class="action-button edit" title="Sửa">
                                     <i class="fas fa-edit"></i> Xem
                                 </a>
-                                <a href="@Url.Action("QTV_QLDH_SuaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button details" title="Xem chi tiết">
+                                <a href="@Url.Action("QTV_QLDH_SuaDanhmucContainer", "QuanTriVien_QLDH_DMContainer", new { id = item.maDanhMucContainer })" class="action-button details" title="Xem chi tiết">
                                     <i class="fas fa-eye"></i> Sửa
                                 </a>
-                                <a href="@Url.Action("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_Container", new { id = item.maDanhMucContainer })" class="action-button delete" title="Xóa">
+                                <a href="@Url.Action("QTV_QLDH_XoaDanhmucContainer", "QuanTriVien_QLDH_DMContainer", new { id = item.maDanhMucContainer })" class="action-button delete" title="Xóa">
                                     <i class="fas fa-trash-alt"></i> Xóa
                                 </a>
                             </div>
