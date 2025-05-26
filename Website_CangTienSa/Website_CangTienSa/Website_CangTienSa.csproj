@@ -190,6 +190,7 @@
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KVL_DangKyViewModel.cs" />
+    <Compile Include="Models\QTV_QLDH_ContainerViewModel.cs" />
     <Compile Include="Models\QTV_QLTK_NhanVienViewModel.cs" />
     <Compile Include="Models\PhieuXuatKhoViewModel.cs" />
     <Compile Include="Models\DonHangChiTietViewModel.cs" />
