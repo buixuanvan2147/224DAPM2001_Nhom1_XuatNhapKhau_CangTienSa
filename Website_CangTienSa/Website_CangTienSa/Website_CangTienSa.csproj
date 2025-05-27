@@ -517,6 +517,7 @@
     <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Details.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Edit.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Index.cshtml" />
+    <Content Include="Views\QuanTriVien\ThongKeBaoCao_QuanTriVien.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

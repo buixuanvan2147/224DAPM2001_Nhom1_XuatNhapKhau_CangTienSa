@@ -133,7 +133,12 @@ namespace Website_CangTienSa.Controllers
 
             return View();
         }
-
+        public ActionResult ThongKeBaoCao_QuanTriVien()
+        {
+            ViewBag.Title = "ThongKeBaoCao_QuanTriVien";
+            ViewBag.ActiveSidebar = "ThongKeBaoCao";
+            return View();
+        }
         public ActionResult TrangCaNhan_QuanTriVien()
         {
             ViewBag.Title = "TrangCaNhan_QuanTriVien";
