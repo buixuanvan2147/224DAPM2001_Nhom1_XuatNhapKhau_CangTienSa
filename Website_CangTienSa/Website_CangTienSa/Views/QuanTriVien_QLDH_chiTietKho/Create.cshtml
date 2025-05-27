@@ -1,0 +1,301 @@
+﻿@model Website_CangTienSa.Models.chiTietKho
+
+@{
+    ViewBag.Title = "Tạo mới Chi tiết Kho";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Global styles (giữ lại để đảm bảo tính nhất quán) */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f0f2f5;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 800px; /* Giới hạn chiều rộng nhỏ hơn cho form */
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 4px solid #28a745; /* Màu xanh lá cho tiêu đề tạo mới */
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* Form specific styles */
+    .form-horizontal {
+        background-color: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .form-horizontal h4 {
+            color: #34495e;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid #28a745; /* Màu xanh lá cho tiêu đề form */
+            padding-bottom: 10px;
+        }
+
+    .form-group {
+        margin-bottom: 20px; /* Khoảng cách giữa các nhóm form */
+        display: flex; /* Dùng flexbox cho bố cục label và input */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+    }
+
+    .control-label {
+        font-weight: 600;
+        color: #555;
+        padding-right: 15px; /* Khoảng cách từ label đến input */
+        flex: 0 0 180px; /* Độ rộng cố định cho label */
+        text-align: right; /* Căn phải label */
+    }
+
+    .col-md-10 {
+        flex: 1; /* Input chiếm phần còn lại */
+        min-width: 200px; /* Đảm bảo input không quá nhỏ */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: block; /* Đảm bảo lỗi hiển thị trên dòng mới */
+        text-align: left; /* Căn trái lỗi */
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        padding-left: 180px; /* Căn chỉnh với input */
+    }
+
+    /* Create button */
+    .btn.btn-default { /* Sử dụng lại class mặc định của MVC nhưng định kiểu lại */
+        background-color: #28a745; /* Màu xanh lá cây */
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 7px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+    }
+
+        .btn.btn-default:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+    .col-md-offset-2 {
+        margin-left: 180px; /* Căn chỉnh nút Create dưới input */
+    }
+
+    /* Back link */
+    .back-link-container {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .action-button-link.back-to-kho {
+        display: inline-flex; /* Dùng inline-flex để căn chỉnh icon và text */
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #6c757d;
+        color: white;
+        border: 1px solid #6c757d;
+    }
+
+        .action-button-link.back-to-kho:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 95%;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .form-horizontal {
+            padding: 20px;
+        }
+
+            .form-horizontal h4 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+        .form-group {
+            flex-direction: column; /* Xếp chồng label và input */
+            align-items: flex-start; /* Căn trái tất cả */
+        }
+
+        .control-label {
+            flex: unset; /* Bỏ độ rộng cố định */
+            width: 100%; /* Chiếm toàn bộ chiều rộng */
+            text-align: left; /* Căn trái label */
+            padding-right: 0;
+            margin-bottom: 5px; /* Khoảng cách giữa label và input */
+        }
+
+        .col-md-10 {
+            width: 100%; /* Input chiếm toàn bộ chiều rộng */
+            min-width: unset;
+        }
+
+        .text-danger {
+            padding-left: 0; /* Bỏ padding lỗi trên mobile */
+        }
+
+        .col-md-offset-2 {
+            margin-left: 0; /* Bỏ offset cho nút Create */
+            width: 100%; /* Nút Create chiếm toàn bộ chiều rộng */
+            text-align: center; /* Căn giữa nút */
+            padding-top: 10px; /* Thêm padding trên nút */
+        }
+
+        .btn.btn-default {
+            width: 100%; /* Nút Create full width */
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        .back-link-container {
+            margin-top: 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>TẠO MỚI CHI TIẾT KHO</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>NHẬP THÔNG TIN CHI TIẾT KHO</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @* Thêm trường maChiTietKho nếu nó là trường nhập liệu thủ công *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.maChiTietKho, "Mã Chi tiết Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.maChiTietKho, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.maChiTietKho, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.maKho, "Mã Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("maKho", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.maKho, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.sucChuaToiDa, "Sức chứa tối đa", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.sucChuaToiDa, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.sucChuaToiDa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.tonKho, "Tồn kho", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.tonKho, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.tonKho, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.trangThaiChiTietKho, "Trạng thái Chi tiết Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.trangThaiChiTietKho, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.trangThaiChiTietKho, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ngayCapNhatCuoi, "Ngày cập nhật cuối", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ngayCapNhatCuoi, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ngayCapNhatCuoi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.moTa, "Mô tả", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.moTa, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.moTa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Tạo mới" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="back-link-container">
+        @Html.ActionLink("Quay lại danh sách Chi tiết Kho", "Index", "QuanTriVien_QLDH_chiTietKho", null, new { @class = "action-button-link back-to-kho" })
+    </div>
+</div>

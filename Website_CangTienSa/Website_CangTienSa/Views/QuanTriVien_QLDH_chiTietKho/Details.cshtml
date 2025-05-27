@@ -1,0 +1,217 @@
+﻿@model Website_CangTienSa.Models.chiTietKho
+
+@{
+    ViewBag.Title = "Chi tiết Chi tiết Kho";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Global styles (giữ lại để đảm bảo tính nhất quán) */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f0f2f5;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 800px; /* Giới hạn chiều rộng nhỏ hơn một chút cho trang chi tiết */
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 4px solid #3498db;
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* Details specific styles */
+    .details-card {
+        background-color: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .details-card h4 {
+            color: #34495e;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid #3498db; /* Màu xanh dương cho tiêu đề thông tin */
+            padding-bottom: 10px;
+        }
+
+    .dl-horizontal {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Thay đổi: Mỗi cột chiếm 1 phần (50% mỗi phần) */
+        gap: 15px 20px; /* Khoảng cách giữa các hàng và cột */
+        font-size: 16px;
+    }
+
+        .dl-horizontal dt {
+            font-weight: 600;
+            color: #555;
+            text-align: left; /* Căn trái các label */
+            padding-right: 0;
+        }
+
+        .dl-horizontal dd {
+            margin-left: 0;
+            color: #333;
+            text-align: left; /* Căn trái các giá trị */
+        }
+
+    /* Buttons at the bottom */
+    .button-group-bottom {
+        text-align: center;
+        margin-top: 30px;
+        display: flex; /* Dùng flexbox để căn chỉnh nút */
+        justify-content: center; /* Căn giữa các nút */
+        gap: 20px; /* Khoảng cách giữa các nút */
+        flex-wrap: wrap; /* Cho phép các nút xuống dòng trên màn hình nhỏ */
+    }
+
+    .action-button-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .action-button-link i {
+            margin-right: 8px; /* Khoảng cách giữa icon và text */
+        }
+
+        .action-button-link.edit-detail { /* Đổi tên class để tránh trùng với Back */
+            background-color: #ffc107;
+            color: #333;
+            border: 1px solid #ffc107;
+        }
+
+            .action-button-link.edit-detail:hover {
+                background-color: #e0a800;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+        .action-button-link.back-to-list {
+            background-color: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+        }
+
+            .action-button-link.back-to-list:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 95%; /* Tăng chiều rộng trên tablet */
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .details-card {
+            padding: 20px;
+        }
+
+            .details-card h4 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+        .dl-horizontal {
+            grid-template-columns: 1fr; /* Stack dt và dd trên màn hình nhỏ */
+            gap: 10px;
+            font-size: 15px;
+        }
+
+            .dl-horizontal dt,
+            .dl-horizontal dd {
+                text-align: left;
+                padding-right: 0;
+            }
+
+        .button-group-bottom {
+            flex-direction: column; /* Xếp chồng các nút trên mobile */
+            gap: 10px;
+        }
+
+        .action-button-link {
+            width: 80%; /* Nút chiếm phần lớn chiều rộng */
+            max-width: 300px;
+            margin: 0 auto; /* Căn giữa nút */
+            justify-content: center; /* Căn giữa nội dung nút */
+            font-size: 15px;
+            padding: 12px 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>CHI TIẾT CHI TIẾT KHO</h2>
+
+    <div class="details-card">
+        <h4>THÔNG TIN CHI TIẾT</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Sức chứa tối đa:</dt>
+            <dd>@Model.sucChuaToiDa.ToString("N0")</dd>
+
+            <dt>Tồn kho:</dt>
+            <dd>@Model.tonKho.ToString("N0")</dd>
+
+            <dt>Trạng thái Chi tiết Kho:</dt>
+            <dd>@(Model.trangThaiChiTietKho ?? "N/A")</dd>
+
+            <dt>Ngày cập nhật cuối:</dt>
+            <dd>@Html.DisplayFor(model => model.ngayCapNhatCuoi)</dd>
+
+            <dt>Mô tả:</dt>
+            <dd>@(Model.moTa ?? "N/A")</dd>
+
+            <dt>Loại Kho:</dt>
+            <dd>@(Model.kho.loaiKho.tenLoaiKho ?? "N/A")</dd>
+
+            <dt>Mã Kho liên kết:</dt>
+            <dd>@(Model.maKho ?? "N/A")</dd>
+        </dl>
+    </div>
+
+    <div class="button-group-bottom">
+        @Html.ActionLink("Sửa chi tiết này", "Edit", "QuanTriVien_QLDH_chiTietKho", new { id = Model.maChiTietKho }, new { @class = "action-button-link edit-detail" })
+        @Html.ActionLink("Quay lại danh sách", "Index", "QuanTriVien_QLDH_chiTietKho", null, new { @class = "action-button-link back-to-list" })
+    </div>
+</div>

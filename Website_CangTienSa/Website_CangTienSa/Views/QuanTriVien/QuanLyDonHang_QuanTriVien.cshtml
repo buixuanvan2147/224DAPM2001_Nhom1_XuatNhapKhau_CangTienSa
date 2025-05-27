@@ -198,6 +198,7 @@
             <div class="selectAndButton">
                 <a href="@Url.Action("QuanTriVien_QLDH_ThemContainer", "QuanTriVien_QLDH_Container")" class="button-add btn-add-container">Thêm Mới Container</a>
                 <a href="@Url.Action("QTV_QLDH_IndexDanhmucContainer", "QuanTriVien_QLDH_DMContainer")" class="button-add btn-add-DMcontainer">Quản Lý Danh Mục Container</a>
+                <a href="@Url.Action("Index", "QuanTriVien_QLDH_Kho")" class="button-add btn-add-DMcontainer">Quản Lý Kho</a>
                 <select id="select-container">
                     <option value="Tất cả Container">Tất cả Container</option>
                     @foreach (var dmContainer in (SelectList)ViewBag.dmContainers)
@@ -367,6 +368,7 @@
         <section id="donhang">
             <h3 class="section-title">Quản Lý Đơn Hàng</h3>
             <div class="selectAndButton">
+                <a href="#" class="button-add btn-add-container btn-xuat-bao-cao">Xuất Báo Cáo</a>
                 <select id="select-trangThaiDonHang">
                     <option value="Tất cả trạng thái đơn hàng">Tất cả trạng thái đơn hàng</option>
                     @foreach (var tt in (List<string>)ViewBag.trangThaiDonHangs)

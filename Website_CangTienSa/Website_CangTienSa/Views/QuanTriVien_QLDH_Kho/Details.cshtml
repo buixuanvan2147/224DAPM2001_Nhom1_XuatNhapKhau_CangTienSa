@@ -1,0 +1,412 @@
+﻿@model Website_CangTienSa.Models.kho
+
+@{
+    ViewBag.Title = "Chi tiết Kho"; // Đổi tiêu đề rõ ràng hơn
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Global styles */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f0f2f5;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 960px; /* Tăng nhẹ chiều rộng container để bảng có nhiều không gian hơn */
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 4px solid #3498db;
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase; /* Viết hoa tiêu đề chính */
+    }
+
+    /* Details specific styles */
+    .details-card {
+        background-color: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .details-card h4 {
+            color: #34495e;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase; /* Viết hoa tiêu đề phụ */
+        }
+
+    .dl-horizontal {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Mỗi cột chiếm 50% */
+        gap: 15px 20px;
+        font-size: 16px;
+    }
+
+        .dl-horizontal dt {
+            font-weight: 600;
+            color: #555;
+            text-align: left;
+            padding-right: 0;
+        }
+
+        .dl-horizontal dd {
+            margin-left: 0;
+            color: #333;
+            text-align: left;
+        }
+
+    /* Buttons at the bottom */
+    .button-group-bottom {
+        text-align: center;
+        margin-top: 30px;
+        padding-bottom: 30px; /* Thêm padding để tách biệt với phần dưới */
+        border-bottom: 1px dashed #ccc; /* Đường kẻ đứt nét để phân chia */
+    }
+
+    .action-link {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .action-link.edit {
+            background-color: #ffc107;
+            color: #333;
+            border: 1px solid #ffc107;
+        }
+
+            .action-link.edit:hover {
+                background-color: #e0a800;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+        .action-link.back-to-list {
+            background-color: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+        }
+
+            .action-link.back-to-list:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+    /* Styles for Sub-details (Chi tiết Kho con) */
+    .sub-details-section {
+        margin-top: 40px; /* Khoảng cách lớn hơn từ phần trên */
+        background-color: #fdfdfd; /* Nền trắng nhẹ */
+        border-radius: 10px;
+        padding: 25px 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Đổ bóng nổi bật hơn */
+        border: 1px solid #d0d0d0; /* Viền rõ nét hơn */
+    }
+
+        .sub-details-section h4 {
+            color: #007bff; /* Màu xanh dương cho tiêu đề con */
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 25px; /* Tăng khoảng cách dưới tiêu đề */
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 3px solid #007bff; /* Đường kẻ dưới màu xanh */
+            padding-bottom: 12px;
+            text-transform: uppercase; /* Viết hoa tiêu đề con */
+        }
+
+        /* Table styles for chiTietKho */
+        .sub-details-section .table {
+            width: 100%;
+            border-collapse: collapse; /* Đảm bảo không có khoảng trống giữa các ô */
+            margin-bottom: 20px;
+            background-color: #fff; /* Nền trắng cho bảng */
+            border-radius: 8px; /* Bo góc cho toàn bộ bảng */
+            overflow: hidden; /* Quan trọng để border-radius hoạt động với border-collapse */
+        }
+
+            .sub-details-section .table th,
+            .sub-details-section .table td {
+                padding: 14px 15px; /* Tăng padding để thoáng hơn */
+                border: 1px solid #e9ecef; /* Viền nhạt hơn */
+                text-align: left;
+                vertical-align: middle; /* Căn giữa theo chiều dọc */
+            }
+
+            .sub-details-section .table th {
+                background-color: #e2e6ea; /* Nền xám nhạt cho header */
+                font-weight: 700; /* Đậm hơn */
+                color: #495057; /* Màu chữ đậm hơn */
+                white-space: nowrap; /* Ngăn chặn tiêu đề bị xuống dòng */
+            }
+
+            .sub-details-section .table tbody tr:nth-child(even) {
+                background-color: #f8f9fa; /* Màu nền xen kẽ nhẹ */
+            }
+
+            .sub-details-section .table tbody tr:hover {
+                background-color: #e9f0f7; /* Hover màu xanh nhạt */
+                cursor: pointer;
+            }
+
+    .no-data-message {
+        text-align: center;
+        color: #888;
+        padding: 30px; /* Tăng padding */
+        font-style: italic;
+        font-size: 18px; /* Font lớn hơn */
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px dashed #dcdcdc;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .container {
+            max-width: 95%; /* Tăng chiều rộng trên tablet */
+            padding: 25px 30px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .details-card {
+            padding: 20px;
+        }
+
+            .details-card h4 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+        .dl-horizontal {
+            grid-template-columns: 1fr; /* Stack dt và dd trên màn hình nhỏ */
+            gap: 10px;
+            font-size: 15px;
+        }
+
+            .dl-horizontal dt,
+            .dl-horizontal dd {
+                text-align: left;
+                padding-right: 0;
+            }
+
+        .action-link {
+            padding: 8px 15px;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+
+        .button-group-bottom {
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 20px; /* Điều chỉnh padding */
+        }
+        /* Responsive cho bảng chiTietKho */
+        .sub-details-section .table,
+        .sub-details-section .table thead,
+        .sub-details-section .table tbody,
+        .sub-details-section .table th,
+        .sub-details-section .table td,
+        .sub-details-section .table tr {
+            display: block;
+        }
+
+            .sub-details-section .table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .sub-details-section .table tr {
+                border: 1px solid #dee2e6; /* Viền rõ hơn trên mobile */
+                margin-bottom: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+            }
+
+            .sub-details-section .table td {
+                border: none; /* Bỏ viền giữa các ô */
+                border-bottom: 1px solid #e9ecef; /* Chỉ giữ viền dưới */
+                position: relative;
+                padding-left: 50%; /* Tạo không gian cho label giả */
+                text-align: right; /* Căn phải giá trị */
+                font-size: 15px;
+            }
+
+                .sub-details-section .table td:last-child {
+                    border-bottom: none; /* Bỏ viền dưới ô cuối cùng */
+                }
+
+                .sub-details-section .table td:before {
+                    position: absolute;
+                    top: 0;
+                    left: 6px;
+                    width: 45%;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                    text-align: left;
+                    font-weight: 700; /* Đậm hơn */
+                    color: #555;
+                    padding-top: 14px; /* Căn chỉnh với padding của td */
+                }
+
+                .sub-details-section .table td:nth-of-type(1):before {
+                    content: "Mã CT Kho:";
+                }
+
+                .sub-details-section .table td:nth-of-type(2):before {
+                    content: "Sức chứa tối đa:";
+                }
+
+                .sub-details-section .table td:nth-of-type(3):before {
+                    content: "Tồn kho:";
+                }
+
+                .sub-details-section .table td:nth-of-type(4):before {
+                    content: "Trạng thái:";
+                }
+
+                .sub-details-section .table td:nth-of-type(5):before {
+                    content: "Ngày cập nhật:";
+                }
+
+                .sub-details-section .table td:nth-of-type(6):before {
+                    content: "Mô tả:";
+                }
+    }
+
+    @@media (max-width: 576px) {
+        .action-link {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+            max-width: 250px;
+        }
+
+        .sub-details-section .table td {
+            padding-left: 55%; /* Tăng khoảng cách cho label trên màn hình nhỏ hơn */
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>CHI TIẾT KHO</h2>
+
+    <div class="details-card">
+        <h4>THÔNG TIN KHO</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Tên Kho:</dt>
+            <dd>@(Model.tenKho ?? "N/A")</dd>
+
+            <dt>Địa chỉ Kho:</dt>
+            <dd>@(Model.diaChiKho ?? "N/A")</dd>
+
+            <dt>Trạng thái Kho:</dt>
+            <dd>@(Model.trangThaiKho ?? "N/A")</dd>
+
+            <dt>Sức chứa tối đa:</dt>
+            <dd>@Model.sucChuaToiDa.ToString("N0")</dd>
+
+            <dt>Tồn kho:</dt>
+            <dd>@Model.tonKho.ToString("N0")</dd>
+
+            <dt>Mô tả:</dt>
+            <dd>@(Model.moTa ?? "N/A")</dd>
+
+            <dt>Loại Kho:</dt>
+            <dd>@(Model.loaiKho.tenLoaiKho ?? "N/A")</dd>
+
+        </dl>
+    </div>
+
+    <div class="button-group-bottom">
+        @Html.ActionLink("Sửa", "Edit", "QuanTriVien_QLDH_Kho", new { id = Model.maKho }, new { @class = "action-link edit" })
+        @Html.ActionLink("Quay lại danh sách", "Index", "QuanTriVien_QLDH_Kho", new { @class = "action-link back-to-list" })
+    </div>
+
+    <div class="sub-details-section">
+        <h4>CHI TIẾT KHO CON</h4>
+        @if (Model.chiTietKhoes != null && Model.chiTietKhoes.Any())
+        {
+            <div class="table-responsive">
+                @* Bọc bảng vào div responsive nếu cần cuộn ngang *@
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã CT Kho</th>
+                            <th>Sức chứa tối đa</th>
+                            <th>Tồn kho</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày cập nhật cuối</th>
+                            <th>Mô tả</th>
+                            <th class="text-center">Thao tác</th> @* Thêm cột thao tác và căn giữa *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.chiTietKhoes)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.maChiTietKho)</td>
+                                <td>@item.sucChuaToiDa.ToString("N0")</td>
+                                <td>@item.tonKho.ToString("N0")</td>
+                                <td>@(item.trangThaiChiTietKho ?? "N/A")</td>
+                                <td>@Html.DisplayFor(modelItem => item.ngayCapNhatCuoi)</td>
+                                <td>@(item.moTa ?? "N/A")</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Edit","QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho })" class="action-link-small edit-small" title="Sửa chi tiết kho"><i class="fas fa-edit"></i></a>
+                                        <a href="@Url.Action("Details","QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho })" class="action-link-small details-small" title="Xem chi tiết"><i class="fas fa-info-circle"></i></a>
+                                        <a href="@Url.Action("Delete","QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho })" class="action-link-small delete-small" title="Xóa chi tiết kho"><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="no-data-message">Không có chi tiết kho con nào cho kho này.</p>
+        }
+    </div>
+</div>

@@ -1,0 +1,390 @@
+﻿@model IEnumerable<Website_CangTienSa.Models.chiTietKho>
+
+@{
+    ViewBag.Title = "Danh sách Chi tiết Kho";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Global styles (giữ lại để đảm bảo tính nhất quán) */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f0f2f5;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px; /* Tăng chiều rộng để bảng có nhiều không gian hơn */
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 4px solid #3498db;
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* Action buttons above the table */
+    .action-buttons-top {
+        margin-bottom: 25px;
+        text-align: left; /* Căn trái các nút */
+        display: flex; /* Dùng flexbox để sắp xếp nút */
+        gap: 15px; /* Khoảng cách giữa các nút */
+        flex-wrap: wrap; /* Cho phép các nút xuống dòng trên màn hình nhỏ */
+    }
+
+    .action-button-link {
+        display: inline-flex; /* Dùng inline-flex để căn chỉnh icon và text */
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .action-button-link i {
+            margin-right: 8px; /* Khoảng cách giữa icon và text */
+        }
+
+        .action-button-link.back-to-kho {
+            background-color: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+        }
+
+            .action-button-link.back-to-kho:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+        .action-button-link.create-chitietkho {
+            background-color: #28a745; /* Màu xanh lá cho nút tạo mới */
+            color: white;
+            border: 1px solid #28a745;
+        }
+
+            .action-button-link.create-chitietkho:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+    /* Table styles for chiTietKho list */
+    .data-table-container {
+        background-color: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        overflow-x: auto; /* Cho phép cuộn ngang trên màn hình nhỏ */
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0; /* Loại bỏ margin-bottom mặc định */
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 15px;
+            border: 1px solid #e9ecef;
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap; /* Giữ nội dung trên một dòng nếu có thể */
+        }
+
+        .data-table th {
+            background-color: #e2e6ea;
+            font-weight: 700;
+            color: #495057;
+            text-transform: uppercase; /* Viết hoa tiêu đề cột */
+            font-size: 15px;
+        }
+
+            /* Center STT column */
+            .data-table th.stt-column,
+            .data-table td.stt-column {
+                text-align: center;
+                width: 50px; /* Độ rộng cố định cho cột STT */
+            }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #e9f0f7;
+            cursor: pointer;
+        }
+
+    /* Action links within table cells */
+    .table-action-links {
+        display: flex;
+        gap: 8px; /* Khoảng cách giữa các nút */
+        justify-content: center; /* Căn giữa các nút trong cột */
+        align-items: center;
+    }
+
+        .table-action-links a {
+            font-size: 14px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            font-weight: 500;
+            color: white; /* Mặc định màu chữ trắng cho các nút nhỏ */
+        }
+
+            .table-action-links a.edit {
+                background-color: #ffc107;
+                color: #333;
+            }
+
+                .table-action-links a.edit:hover {
+                    background-color: #e0a800;
+                    color: white;
+                }
+
+            .table-action-links a.details {
+                background-color: #007bff;
+            }
+
+                .table-action-links a.details:hover {
+                    background-color: #0056b3;
+                }
+
+            .table-action-links a.delete {
+                background-color: #dc3545;
+            }
+
+                .table-action-links a.delete:hover {
+                    background-color: #c82333;
+                }
+
+    .no-data-message {
+        text-align: center;
+        color: #888;
+        padding: 30px;
+        font-style: italic;
+        font-size: 18px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px dashed #dcdcdc;
+        margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .container {
+            max-width: 95%;
+            padding: 25px 30px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 10px;
+            font-size: 14px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .action-buttons-top {
+            flex-direction: column; /* Xếp chồng các nút */
+            gap: 10px;
+        }
+
+        .action-button-link {
+            width: 100%;
+            text-align: center;
+            justify-content: center; /* Căn giữa nội dung nút */
+            padding: 12px 20px;
+            font-size: 15px;
+        }
+        /* Make table rows act like cards on small screens */
+        .data-table thead {
+            display: none; /* Ẩn header bảng */
+        }
+
+        .data-table,
+        .data-table tbody,
+        .data-table tr,
+        .data-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .data-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+                background-color: #fff;
+            }
+
+            .data-table td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%; /* Tạo không gian cho label giả */
+                text-align: right;
+                white-space: normal; /* Cho phép nội dung xuống dòng */
+            }
+
+                .data-table td:last-child {
+                    border-bottom: none;
+                }
+
+                .data-table td:before {
+                    content: attr(data-label); /* Lấy nội dung từ thuộc tính data-label */
+                    position: absolute;
+                    left: 10px;
+                    width: 45%;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                    text-align: left;
+                    font-weight: 700;
+                    color: #555;
+                    padding-top: 14px; /* Căn chỉnh với padding của td */
+                }
+                /* Update data-label for new column and re-index others */
+                .data-table td:nth-of-type(1):before {
+                    content: "STT:";
+                }
+                /* New STT column */
+                .data-table td:nth-of-type(2):before {
+                    content: "Sức chứa tối đa:";
+                }
+
+                .data-table td:nth-of-type(3):before {
+                    content: "Tồn kho:";
+                }
+
+                .data-table td:nth-of-type(4):before {
+                    content: "Trạng thái:";
+                }
+
+                .data-table td:nth-of-type(5):before {
+                    content: "Ngày cập nhật:";
+                }
+
+                .data-table td:nth-of-type(6):before {
+                    content: "Mô tả:";
+                }
+
+                .data-table td:nth-of-type(7):before {
+                    content: "Loại Kho:";
+                }
+
+                .data-table td:nth-of-type(8):before {
+                    content: "Thao tác:";
+                }
+        /* For the last column */
+
+
+        .table-action-links {
+            justify-content: flex-end; /* Căn phải các nút thao tác trên mobile */
+            padding-top: 10px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .action-link {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+            max-width: 250px;
+        }
+
+        .data-table td {
+            padding-left: 55%; /* Tăng khoảng cách cho label trên màn hình nhỏ hơn */
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>DANH SÁCH CHI TIẾT KHO</h2>
+
+    <div class="action-buttons-top">
+        @Html.ActionLink("Quay lại Kho", "Index", "QuanTriVien_QLDH_Kho", null, new { @class = "action-button-link back-to-kho" })
+        @Html.ActionLink("Tạo mới Chi tiết Kho", "Create", "QuanTriVien_QLDH_chiTietKho", null, new { @class = "action-button-link create-chitietkho" })
+    </div>
+
+    <div class="data-table-container">
+        @if (Model != null && Model.Any())
+        {
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="stt-column">STT</th> @* Cột STT mới *@
+                        <th>Sức chứa tối đa</th>
+                        <th>Tồn kho</th>
+                        <th>Trạng thái Chi tiết Kho</th>
+                        <th>Ngày cập nhật cuối</th>
+                        <th>Mô tả</th>
+                        <th>Loại Kho</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int stt = 0; } @* Khởi tạo biến STT *@
+                    @foreach (var item in Model)
+                    {
+                        stt++;@* Tăng STT cho mỗi hàng *@
+                        <tr>
+                            <td class="stt-column" data-label="STT:">@stt</td> @* Hiển thị STT *@
+                            <td data-label="Sức chứa tối đa:">@item.sucChuaToiDa.ToString("N0")</td>
+                            <td data-label="Tồn kho:">@item.tonKho.ToString("N0")</td>
+                            <td data-label="Trạng thái:">@(item.trangThaiChiTietKho ?? "N/A")</td>
+                            <td data-label="Ngày cập nhật:">@Html.DisplayFor(modelItem => item.ngayCapNhatCuoi)</td>
+                            <td data-label="Mô tả:">@(item.moTa ?? "N/A")</td>
+                            <td data-label="Loại Kho:">@(item.kho.loaiKho.tenLoaiKho ?? "N/A")</td>
+                            <td data-label="Thao tác:">
+                                <div class="table-action-links">
+                                    @Html.ActionLink("Sửa", "Edit", "QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho }, new { @class = "edit" })
+                                    @Html.ActionLink("Chi tiết", "Details", "QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho }, new { @class = "details" })
+                                    @Html.ActionLink("Xóa", "Delete", "QuanTriVien_QLDH_chiTietKho", new { id = item.maChiTietKho }, new { @class = "delete" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="no-data-message">Không có chi tiết kho nào được tìm thấy.</p>
+        }
+    </div>
+</div>

@@ -172,8 +172,10 @@
     <Compile Include="Controllers\NhanVienNhapKhoController.cs" />
     <Compile Include="Controllers\NhanVienXuatKhoController.cs" />
     <Compile Include="Controllers\QuanTriVienController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_chiTietKhoController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLDH_ContainerController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLDH_DMContainerController.cs" />
+    <Compile Include="Controllers\QuanTriVien_QLDH_KhoController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLDH_PhieuNhapController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLTaiKhoanController.cs" />
     <Compile Include="Global.asax.cs">
@@ -469,7 +471,6 @@
     <Content Include="Views\QuanTriVien\Index_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyTaiKhoan_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyDonHang_QuanTriVien.cshtml" />
-    <Content Include="Views\QuanTriVien\ThongKeBaoCao_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\TrangCaNhan_QuanTriVien.cshtml" />
     <Content Include="Views\Shared\_LayoutNhanVienNhapKho.cshtml" />
     <Content Include="Views\NhanVienNhapKho\Index_NhanVienNhapKho.cshtml" />
@@ -506,6 +507,16 @@
     <Content Include="Views\QuanTriVien_QLDH_Container\QuanTriVien_QLDH_SuaContainer.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_ChiTietPhieuNhap.cshtml" />
     <Content Include="Views\QuanTriVien_QLDH_PhieuNhap\QTV_QLDH_XoaPhieuNhap.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Kho\Create.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Kho\Delete.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Kho\Details.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Kho\Edit.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_Kho\Index.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Create.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Delete.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Details.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Edit.cshtml" />
+    <Content Include="Views\QuanTriVien_QLDH_chiTietKho\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

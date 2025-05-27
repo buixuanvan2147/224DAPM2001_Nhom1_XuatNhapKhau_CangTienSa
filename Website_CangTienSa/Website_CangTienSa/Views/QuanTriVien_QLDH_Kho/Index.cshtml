@@ -1,0 +1,427 @@
+﻿@model IEnumerable<Website_CangTienSa.Models.kho>
+
+@{
+    ViewBag.Title = "Quản lý Kho";
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+    var stt = 0; // Khởi tạo biến STT
+}
+
+<style>
+    /* Global Styles */
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: #343a40;
+        background-color: #e9ecef;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1300px; /* Slightly wider container */
+        margin: 40px auto; /* More vertical margin, auto for horizontal centering */
+        background-color: #ffffff;
+        border-radius: 12px; /* Slightly more rounded corners */
+        padding: 30px 40px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+        box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 35px; /* More space below heading */
+        font-size: 34px; /* Slightly larger heading */
+        border-bottom: 4px solid #3498db;
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.5px; /* Slight letter spacing for title */
+    }
+
+    /* Buttons Section */
+    .button-group {
+        display: flex;
+        justify-content: flex-start; /* Align buttons to the start */
+        gap: 15px; /* Space between buttons */
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .add-new-button,
+    .create-new-button {
+        display: inline-flex; /* Use inline-flex for better alignment with icons */
+        align-items: center; /* Vertically align icon and text */
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 8px; /* More rounded buttons */
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        text-align: center;
+        white-space: nowrap; /* Prevent text wrapping */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+    }
+
+    .add-new-button {
+        background-color: #6c757d;
+        color: white;
+        border: 1px solid #6c757d;
+    }
+
+        .add-new-button:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            color: white;
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .create-new-button {
+        background-color: #28a745;
+        color: white;
+        border: 1px solid #28a745;
+    }
+
+        .create-new-button:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            color: white;
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Table Styles */
+    .table-container {
+        overflow-x: auto; /* Keep for horizontal scrolling */
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e0e0e0;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 15px; /* Slightly larger font for better readability */
+        min-width: 800px; /* Ensure minimum width for desktop view */
+    }
+
+        .table th,
+        .table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 18px; /* Increased padding for better spacing */
+            text-align: left;
+            white-space: nowrap; /* Prevent text wrapping */
+            vertical-align: middle; /* Center content vertically */
+        }
+
+        .table th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            font-size: 14px; /* Smaller font for headers */
+        }
+
+        /* Rounded corners for table header and body */
+        .table thead tr:first-child th:first-child {
+            border-top-left-radius: 9px;
+        }
+
+        .table thead tr:first-child th:last-child {
+            border-top-right-radius: 9px;
+        }
+
+        .table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 9px;
+        }
+
+        .table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 9px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #fcfcfc; /* Lighter even row background */
+        }
+
+        .table tbody tr:hover {
+            background-color: #e6f7ff; /* Lighter hover background */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* More prominent hover shadow */
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* STT column specific styling */
+        .table th.stt-column,
+        .table td.stt-column {
+            width: 50px; /* Increased width for STT */
+            min-width: 50px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 5px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+    /* Action Links */
+    .action-link {
+        display: inline-block;
+        padding: 7px 12px; /* Adjusted padding */
+        margin: 3px; /* Adjusted margin */
+        border-radius: 6px; /* Slightly more rounded */
+        text-decoration: none;
+        font-size: 14px; /* Consistent font size */
+        font-weight: 500;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .action-link.edit {
+            background-color: #ffc107;
+            color: #333;
+            border: 1px solid #ffc107;
+        }
+
+            .action-link.edit:hover {
+                background-color: #e0a800;
+                color: white;
+                transform: scale(1.08); /* More noticeable hover effect */
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .action-link.details {
+            background-color: #17a2b8;
+            color: white;
+            border: 1px solid #17a2b8;
+        }
+
+            .action-link.details:hover {
+                background-color: #138496;
+                color: white;
+                transform: scale(1.08);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .action-link.delete {
+            background-color: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+        }
+
+            .action-link.delete:hover {
+                background-color: #c82333;
+                color: white;
+                transform: scale(1.08);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-weight: 600;
+        padding: 25px; /* Increased padding */
+        background-color: #ffe0e0;
+        border-radius: 8px;
+        margin-top: 25px; /* More margin */
+        border: 1px solid #dc3545;
+        text-align: center;
+        font-size: 1.1em; /* Slightly larger font */
+    }
+
+    /* Icons for buttons (Font Awesome recommended) */
+    .add-new-button i,
+    .create-new-button i {
+        margin-right: 8px; /* Space between icon and text */
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 1200px) {
+        .container {
+            margin: 30px auto;
+            padding: 25px 30px;
+        }
+
+        .table {
+            min-width: 700px; /* Adjust min-width for larger tablets */
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .container {
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .button-group {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .add-new-button,
+        .create-new-button {
+            width: 100%;
+            margin: 0; /* Remove individual button margin when stacked */
+            padding: 10px 20px;
+            font-size: 15px;
+        }
+
+        .table {
+            font-size: 14px;
+            min-width: 600px; /* Further adjust min-width */
+        }
+
+            .table th,
+            .table td {
+                padding: 10px 15px;
+            }
+
+        .action-link {
+            padding: 6px 10px;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+        .table th.stt-column,
+        .table td.stt-column {
+            width: 45px;
+            min-width: 45px;
+            padding: 8px 4px;
+            font-size: 13px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .table {
+            font-size: 13px; /* Reduced font size for smaller screens */
+            min-width: unset; /* Allow table to shrink, rely on overflow-x */
+        }
+
+            .table th,
+            .table td {
+                padding: 8px 10px;
+            }
+
+        .action-link {
+            padding: 5px 8px;
+            font-size: 11px;
+            margin: 1px;
+        }
+
+        .table th.stt-column,
+        .table td.stt-column {
+            width: 35px;
+            min-width: 35px;
+            padding: 6px 3px;
+            font-size: 12px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        /* Hide less critical columns to optimize for small screens */
+        .table th:nth-child(4), .table td:nth-child(4), /* Trạng thái Kho */
+        .table th:nth-child(5), .table td:nth-child(5), /* Sức chứa tối đa */
+        .table th:nth-child(6), .table td:nth-child(6), /* Tồn kho */
+        .table th:nth-child(7), .table td:nth-child(7), /* Mô tả */
+        .table th:nth-child(8), .table td:nth-child(8) { /* Loại Kho */
+            display: none;
+        }
+        /* Ensure primary columns (Name, Address) have enough space */
+        .table th:nth-child(2), .table td:nth-child(2) { /* Tên kho */
+            min-width: 100px;
+        }
+
+        .table th:nth-child(3), .table td:nth-child(3) { /* Địa chỉ kho */
+            min-width: 120px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Quản lý Kho</h2>
+
+    <div class="button-group">
+        <a href="@Url.Action("QuanLyDonHang_QuanTriVien", "QuanTriVien")" class="add-new-button">
+            <i class="fas fa-arrow-alt-circle-left"></i> Quay Lại
+        </a>
+        <a href="@Url.Action("Index", "QuanTriVien_QLDH_chiTietKho")" class="add-new-button">
+            Quản Lý Khu Vực Trong Kho
+        </a>
+        @Html.ActionLink("Tạo mới Kho", "Create", null, new { @class = "create-new-button" })
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="stt-column">STT</th>
+                    <th>Tên Kho</th>
+                    <th>Địa chỉ Kho</th>
+                    <th>Trạng thái Kho</th>
+                    <th>Sức chứa tối đa</th>
+                    <th>Tồn kho</th>
+                    <th>Mô tả</th>
+                    <th>Loại Kho</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        stt++;
+                        <tr>
+                            <td class="stt-column">@stt</td>
+                            <td>@(item.tenKho ?? "N/A")</td>
+                            <td>@(item.diaChiKho ?? "N/A")</td>
+                            <td>@(item.trangThaiKho ?? "N/A")</td>
+                            <td>@item.sucChuaToiDa.ToString("N0")</td>
+                            <td>@item.tonKho.ToString("N0")</td>
+                            <td>@(item.moTa ?? "N/A")</td>
+                            <td>@(item.loaiKho.tenLoaiKho ?? "N/A")</td>
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit", "QuanTriVien_QLDH_Kho", new { id = item.maKho }, new { @class = "action-link edit" })
+                                @Html.ActionLink("Chi tiết", "Details", "QuanTriVien_QLDH_Kho", new { id = item.maKho }, new { @class = "action-link details" })
+                                @Html.ActionLink("Xóa", "Delete", "QuanTriVien_QLDH_Kho", new { id = item.maKho }, new { @class = "action-link delete" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center error-message">Không có dữ liệu kho để hiển thị.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

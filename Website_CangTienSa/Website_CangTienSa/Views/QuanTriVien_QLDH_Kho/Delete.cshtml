@@ -1,0 +1,225 @@
+﻿@model Website_CangTienSa.Models.kho
+
+@{
+    ViewBag.Title = "Xác nhận Xóa Kho"; // Đổi tiêu đề rõ ràng hơn
+    Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
+}
+
+<style>
+    /* Global styles (giữ lại từ các phần trước để đảm bảo tính nhất quán) */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f0f2f5;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 4px solid #dc3545; /* Màu đỏ nổi bật cho trang xóa */
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    /* Delete specific styles */
+    .delete-confirmation-message {
+        font-size: 20px;
+        color: #dc3545; /* Màu đỏ cho thông báo quan trọng */
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .details-card {
+        background-color: #fefafa; /* Nền nhẹ nhàng hơn cho thẻ xóa */
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .details-card h4 {
+            color: #34495e;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+    .dl-horizontal {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Mỗi cột chiếm 50% và căn trái */
+        gap: 15px 20px;
+        font-size: 16px;
+    }
+
+        .dl-horizontal dt {
+            font-weight: 600;
+            color: #555;
+            text-align: left; /* Căn trái các label */
+            padding-right: 0;
+        }
+
+        .dl-horizontal dd {
+            margin-left: 0;
+            color: #333;
+            text-align: left; /* Căn trái các giá trị */
+        }
+
+    /* Buttons at the bottom */
+    .form-actions {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .btn-delete {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #dc3545; /* Màu đỏ cho nút xóa */
+        color: white;
+        text-decoration: none;
+        border-radius: 7px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 0 10px; /* Khoảng cách giữa các nút */
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    .link-back-to-list { /* Đổi tên class để dễ phân biệt */
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 7px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 0 10px;
+    }
+
+        .link-back-to-list:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .delete-confirmation-message {
+            font-size: 18px;
+        }
+
+        .details-card {
+            padding: 20px;
+        }
+
+            .details-card h4 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+        .dl-horizontal {
+            grid-template-columns: 1fr; /* Stack dt và dd trên màn hình nhỏ */
+            gap: 10px;
+            font-size: 15px;
+        }
+
+            .dl-horizontal dt,
+            .dl-horizontal dd {
+                text-align: left;
+                padding-right: 0;
+            }
+
+        .btn-delete,
+        .link-back-to-list {
+            padding: 10px 20px;
+            font-size: 15px;
+            width: 80%; /* Các nút chiếm toàn bộ chiều rộng */
+            max-width: 250px; /* Giới hạn độ rộng tối đa */
+            margin: 10px auto; /* Căn giữa và có khoảng cách */
+            display: block; /* Chuyển thành block để xuống dòng */
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>XÁC NHẬN XÓA KHO</h2>
+
+    <h3 class="delete-confirmation-message">Bạn có chắc muốn xóa kho ** @Model.tenKho ?? "này" ** chứ?</h3>
+
+    <div class="details-card">
+        <h4>THÔNG TIN KHO CẦN XÓA</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Tên Kho:</dt>
+            <dd>@(Model.tenKho ?? "N/A")</dd>
+
+            <dt>Địa chỉ Kho:</dt>
+            <dd>@(Model.diaChiKho ?? "N/A")</dd>
+
+            <dt>Trạng thái Kho:</dt>
+            <dd>@(Model.trangThaiKho ?? "N/A")</dd>
+
+            <dt>Sức chứa tối đa:</dt>
+            <dd>@Model.sucChuaToiDa.ToString("N0")</dd>
+
+            <dt>Tồn kho:</dt>
+            <dd>@Model.tonKho.ToString("N0")</dd>
+
+            <dt>Mô tả:</dt>
+            <dd>@(Model.moTa ?? "N/A")</dd>
+
+            <dt>Loại Kho:</dt>
+            <dd>@(Model.loaiKho.tenLoaiKho ?? "N/A")</dd>
+
+        </dl>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn-delete" />
+            @Html.ActionLink("Quay lại danh sách", "Index", "QuanTriVien_QLDH_Kho", new { @class = "link-back-to-list" })
+        </div>
+    }
+</div>
