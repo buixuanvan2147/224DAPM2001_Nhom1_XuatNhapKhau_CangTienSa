@@ -441,7 +441,7 @@ BEGIN
 END;
 GO
 
-USE master;
+/*USE master;
 ALTER DATABASE XuatNhapHangTaiCangTienSa
 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 GO
@@ -468,3 +468,6 @@ VALUES
 ('CONT000014', 'DMC0000001', 'CTK0000004', 'JKLM3456', N'Rỗng', 'G2-014', '2024-02-01', 24000),
 ('CONT000015', 'DMC0000002', 'CTK0000005', 'NOPQ7890', N'Rỗng', 'H1-015', '2024-03-01', 30480);
 t muốn thêm một vài continer rỗng để mai đơn hàng ta chọn được continer bên t á
+
+select *from ChiTietDonHang
+

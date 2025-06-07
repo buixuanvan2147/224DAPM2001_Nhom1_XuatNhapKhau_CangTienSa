@@ -36,6 +36,13 @@ namespace Website_CangTienSa.Controllers
                     }).ToList();
                 ViewBag.DanhMucHangHoaList = danhMucHangHoaList;
 
+                // Lấy số lượng mã hàng hóa khác nhau từ bảng hangHoa
+                var soLuongHangHoa = db.hangHoas
+                    .Select(h => h.maHangHoa)
+                    .Distinct()
+                    .Count();
+                ViewBag.SoLuongHangHoa = soLuongHangHoa;
+
                 // Không gửi toàn bộ danh sách hàng hóa ngay từ đầu
                 // Dropdown maHangHoa sẽ được điền động qua AJAX
                 ViewBag.HangHoaList = new List<SelectListItem>(); // Gửi danh sách rỗng để tránh lỗi
@@ -73,13 +80,11 @@ namespace Website_CangTienSa.Controllers
             return Json(hangHoaList, JsonRequestBehavior.AllowGet);
         }
 
-        //tạo đơn hàng
+        // Tạo đơn hàng
         [HttpPost]
-        public ActionResult TaoDonHang(string maDanhMucHangHoa, string ThoiGianLuuKho, int? ThoiGianLuuKhoKhac,
-        string TenNguoiNhan, string SDTNguoiNhan, string CangDichDen, string LoaiHang,
-        string DonViTinhKhoiLuong, float? KhoiLuong, float? SoLuong,
-        string LoaiDonHang,string MoTa, string MaHangHoa)
-            {
+        public ActionResult TaoDonHang(string TenNguoiNhan, string SDTNguoiNhan, string CangDichDen,
+            string SoLuongDanhMucHang, List<HangHoaInput> DanhSachHangHoa, string LoaiDonHang, string MoTa)
+        {
             var khachHang = Session["KhachHang"] as khachHang;
             if (khachHang == null)
             {
@@ -87,11 +92,9 @@ namespace Website_CangTienSa.Controllers
             }
 
             // Validation
-            if (string.IsNullOrEmpty(maDanhMucHangHoa) || string.IsNullOrEmpty(CangDichDen) ||
-                string.IsNullOrEmpty(TenNguoiNhan) || string.IsNullOrEmpty(SDTNguoiNhan) ||
-                string.IsNullOrEmpty(ThoiGianLuuKho) || string.IsNullOrEmpty(LoaiHang) ||
-                string.IsNullOrEmpty(DonViTinhKhoiLuong) || string.IsNullOrEmpty(LoaiDonHang) ||
-                string.IsNullOrEmpty(MaHangHoa))
+            if (string.IsNullOrEmpty(CangDichDen) || string.IsNullOrEmpty(TenNguoiNhan) ||
+                string.IsNullOrEmpty(SDTNguoiNhan) || string.IsNullOrEmpty(SoLuongDanhMucHang) ||
+                string.IsNullOrEmpty(LoaiDonHang) || DanhSachHangHoa == null || !DanhSachHangHoa.Any())
             {
                 TempData["Error"] = "Vui lòng điền đầy đủ các trường bắt buộc.";
                 return RedirectToAction("Index_KhachHang");
@@ -103,44 +106,63 @@ namespace Website_CangTienSa.Controllers
                 return RedirectToAction("Index_KhachHang");
             }
 
-            int thoiGianLuuTru;
-            if (ThoiGianLuuKho == "other")
+            int soLuongDanhMuc;
+            if (!int.TryParse(SoLuongDanhMucHang, out soLuongDanhMuc) || soLuongDanhMuc <= 0)
             {
-                if (!ThoiGianLuuKhoKhac.HasValue || ThoiGianLuuKhoKhac <= 0)
+                TempData["Error"] = "Số lượng danh mục hàng không hợp lệ.";
+                return RedirectToAction("Index_KhachHang");
+            }
+
+            // Kiểm tra từng mục trong DanhSachHangHoa
+            foreach (var item in DanhSachHangHoa)
+            {
+                if (string.IsNullOrEmpty(item.maDanhMucHangHoa) || string.IsNullOrEmpty(item.maHangHoa) ||
+                    string.IsNullOrEmpty(item.LoaiHang) || string.IsNullOrEmpty(item.DonViTinhKhoiLuong) ||
+                    string.IsNullOrEmpty(item.ThoiGianLuuKho))
                 {
-                    TempData["Error"] = "Vui lòng nhập số ngày lưu kho hợp lệ.";
+                    TempData["Error"] = "Vui lòng điền đầy đủ thông tin cho tất cả các tập hợp hàng hóa.";
                     return RedirectToAction("Index_KhachHang");
                 }
-                thoiGianLuuTru = ThoiGianLuuKhoKhac.Value;
-            }
-            else
-            {
-                if (!int.TryParse(ThoiGianLuuKho, out thoiGianLuuTru) || thoiGianLuuTru <= 0)
+
+                int thoiGianLuuTru;
+                if (item.ThoiGianLuuKho == "other")
                 {
-                    TempData["Error"] = "Thời gian lưu kho không hợp lệ.";
+                    if (!item.ThoiGianLuuKhoKhac.HasValue || item.ThoiGianLuuKhoKhac <= 0)
+                    {
+                        TempData["Error"] = "Vui lòng nhập số ngày lưu kho hợp lệ.";
+                        return RedirectToAction("Index_KhachHang");
+                    }
+                    thoiGianLuuTru = item.ThoiGianLuuKhoKhac.Value;
+                }
+                else
+                {
+                    if (!int.TryParse(item.ThoiGianLuuKho, out thoiGianLuuTru) || thoiGianLuuTru <= 0)
+                    {
+                        TempData["Error"] = "Thời gian lưu kho không hợp lệ.";
+                        return RedirectToAction("Index_KhachHang");
+                    }
+                }
+
+                float soLuongThucTe = item.DonViTinhKhoiLuong == "Tấn" ? (item.KhoiLuong ?? 0) : (item.SoLuong ?? 0);
+                if (soLuongThucTe <= 0)
+                {
+                    TempData["Error"] = "Vui lòng nhập khối lượng hoặc số lượng hợp lệ.";
                     return RedirectToAction("Index_KhachHang");
                 }
-            }
 
-            float soLuongThucTe = DonViTinhKhoiLuong == "Tấn" ? (KhoiLuong ?? 0) : (SoLuong ?? 0); // Đổi từ 'ton' thành 'Tấn'
-            if (soLuongThucTe <= 0)
-            {
-                TempData["Error"] = "Vui lòng nhập khối lượng hoặc số lượng hợp lệ.";
-                return RedirectToAction("Index_KhachHang");
-            }
+                var danhMucHangHoa = db.danhMucHangHoas.FirstOrDefault(d => d.maDanhMucHangHoa == item.maDanhMucHangHoa);
+                if (danhMucHangHoa == null)
+                {
+                    TempData["Error"] = "Danh mục hàng hóa không hợp lệ.";
+                    return RedirectToAction("Index_KhachHang");
+                }
 
-            var danhMucHangHoa = db.danhMucHangHoas.FirstOrDefault(d => d.maDanhMucHangHoa == maDanhMucHangHoa);
-            if (danhMucHangHoa == null)
-            {
-                TempData["Error"] = "Danh mục hàng hóa không hợp lệ.";
-                return RedirectToAction("Index_KhachHang");
-            }
-
-            var hangHoa = db.hangHoas.FirstOrDefault(h => h.maHangHoa == MaHangHoa);
-            if (hangHoa == null)
-            {
-                TempData["Error"] = "Hàng hóa không hợp lệ.";
-                return RedirectToAction("Index_KhachHang");
+                var hangHoa = db.hangHoas.FirstOrDefault(h => h.maHangHoa == item.maHangHoa);
+                if (hangHoa == null)
+                {
+                    TempData["Error"] = "Hàng hóa không hợp lệ.";
+                    return RedirectToAction("Index_KhachHang");
+                }
             }
 
             // --- Tạo mã đơn hàng tự động tăng ---
@@ -168,7 +190,9 @@ namespace Website_CangTienSa.Controllers
                 tenNguoiNhan = TenNguoiNhan,
                 cangDichDen = CangDichDen,
                 ngayTaoDonHang = DateTime.Now,
-                thoiGianLuuTru = thoiGianLuuTru,
+                thoiGianLuuTru = DanhSachHangHoa.First().ThoiGianLuuKho == "other"
+                    ? DanhSachHangHoa.First().ThoiGianLuuKhoKhac.Value
+                    : int.Parse(DanhSachHangHoa.First().ThoiGianLuuKho),
                 trangThaiDonHang = "Đang yêu cầu",
                 trangThaiThanhToan = "Chưa thanh toán",
                 tongTien = 0,
@@ -180,13 +204,13 @@ namespace Website_CangTienSa.Controllers
                 db.donHangs.Add(donHang);
                 db.SaveChanges();
 
-                // Tạo mã chi tiết đơn hàng tự động tăng
+                // Tạo chi tiết đơn hàng cho từng tập hợp hàng hóa
+                int nextChiTietNumber = 1;
                 string lastMaChiTiet = db.chiTietDonHangs
                     .OrderByDescending(c => c.maChiTietDonHang)
                     .Select(c => c.maChiTietDonHang)
                     .FirstOrDefault();
 
-                int nextChiTietNumber = 1;
                 if (!string.IsNullOrEmpty(lastMaChiTiet) && lastMaChiTiet.Length > 4)
                 {
                     if (int.TryParse(lastMaChiTiet.Substring(4), out int lastNumber))
@@ -194,22 +218,34 @@ namespace Website_CangTienSa.Controllers
                         nextChiTietNumber = lastNumber + 1;
                     }
                 }
-                string newMaChiTietDonHang = "CTDH" + nextChiTietNumber.ToString("D6");
 
-                var chiTietDonHang = new chiTietDonHang
+                foreach (var item in DanhSachHangHoa)
                 {
-                    maChiTietDonHang = newMaChiTietDonHang,
-                    maDonHang = donHang.maDonHang,
-                    maHangHoa = MaHangHoa,
-                    soLuong = soLuongThucTe,
-                    donViTinh = DonViTinhKhoiLuong, // Lưu trực tiếp "Tấn" hoặc "Cái"
-                    chatLuong = LoaiHang,
-                    donGia = 0,
-                    tienLuuKho = 0,
-                    moTa = $"Danh mục: {danhMucHangHoa.tenDanhMucHangHoa}, Hàng hóa: {hangHoa.tenHangHoa}, Loại đơn hàng: {LoaiDonHang}{(string.IsNullOrEmpty(MoTa) ? "" : $", Mô tả: {MoTa}")}"
-                };
+                    var danhMucHangHoa = db.danhMucHangHoas.FirstOrDefault(d => d.maDanhMucHangHoa == item.maDanhMucHangHoa);
+                    var hangHoa = db.hangHoas.FirstOrDefault(h => h.maHangHoa == item.maHangHoa);
+                    int thoiGianLuuTru = item.ThoiGianLuuKho == "other"
+                        ? item.ThoiGianLuuKhoKhac.Value
+                        : int.Parse(item.ThoiGianLuuKho);
+                    float soLuongThucTe = item.DonViTinhKhoiLuong == "Tấn" ? (item.KhoiLuong ?? 0) : (item.SoLuong ?? 0);
 
-                db.chiTietDonHangs.Add(chiTietDonHang);
+                    string newMaChiTietDonHang = "CTDH" + nextChiTietNumber.ToString("D6");
+                    var chiTietDonHang = new chiTietDonHang
+                    {
+                        maChiTietDonHang = newMaChiTietDonHang,
+                        maDonHang = donHang.maDonHang,
+                        maHangHoa = item.maHangHoa,
+                        soLuong = soLuongThucTe,
+                        donViTinh = item.DonViTinhKhoiLuong,
+                        chatLuong = item.LoaiHang,
+                        donGia = 0,
+                        tienLuuKho = 0,
+                        moTa = $"Danh mục: {danhMucHangHoa.tenDanhMucHangHoa}, Hàng hóa: {hangHoa.tenHangHoa}, Loại đơn hàng: {LoaiDonHang}{(string.IsNullOrEmpty(MoTa) ? "" : $", Mô tả: {MoTa}")}"
+                    };
+
+                    db.chiTietDonHangs.Add(chiTietDonHang);
+                    nextChiTietNumber++;
+                }
+
                 db.SaveChanges();
 
                 TempData["Success"] = "Đơn hàng đã được tạo thành công!";

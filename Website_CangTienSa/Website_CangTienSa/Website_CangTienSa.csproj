@@ -200,6 +200,7 @@
     <Compile Include="Models\danhMucHangHoa.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HangHoaInput.cs" />
     <Compile Include="Models\KVL_DangKyViewModel.cs" />
     <Compile Include="Models\QTV_QLDH_ContainerViewModel.cs" />
     <Compile Include="Models\QTV_QLTK_NhanVienViewModel.cs" />
