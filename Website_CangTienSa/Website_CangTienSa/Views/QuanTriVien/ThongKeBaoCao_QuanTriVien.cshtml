@@ -1,164 +1,455 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ThongKeBaoCao_QuanTriVien";
     Layout = "~/Views/Shared/_LayoutQuanTriVien.cshtml";
 }
+
 <style>
-    /* Màu chủ đạo: #141d26 */
+    /* Tổng quan Font & Màu sắc */
+    :root {
+        --primary-color: #1a73e8; /* Blue for primary actions/highlights */
+        --dark-heading-color: #212529; /* Darker charcoal for headings */
+        --text-color: #495057; /* Slightly lighter gray for general text */
+        --background-light: #f8f9fa; /* Very light gray for background */
+        --card-background: #ffffff; /* White for card backgrounds */
+        --border-color: #dee2e6; /* Light gray for borders */
+        --shadow-light: rgba(0, 0, 0, 0.08); /* Lighter shadow */
+        --shadow-medium: rgba(0, 0, 0, 0.15); /* Medium shadow for hover */
+        --success-color: #28a745; /* Green for success/positive stats */
+        --info-color: #17a2b8; /* Cyan/blue for info stats */
+        --warning-color: #ffc107; /* Yellow for warning stats */
+        --danger-color: #dc3545; /* Red for danger/critical stats */
+        --icon-color: #6c757d; /* Màu mặc định cho icon */
+    }
+
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #333;
-        background-color: #f4f6f8; /* Màu nền trang nhạt */
-        /* Loại bỏ padding body vì nó được quản lý bởi layout */
+        font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
+        background-color: var(--background-light);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
     }
 
     .report-container {
-        background-color: #ffffff;
-        border-radius: 8px;
-        padding: 30px;
-        margin-bottom: 70px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm margin để tạo khoảng cách với các phần khác của layout */
+        margin: 20px 0 80px 0;
+        background-color: var(--card-background);
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 4px 12px var(--shadow-light);
     }
 
     .header-container {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 3px solid #141d26;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border-color);
     }
 
     h2 {
-        color: #141d26;
+        color: var(--dark-heading-color);
         margin: 0;
-        font-size: 28px;
+        font-size: 32px;
+        font-weight: 700;
     }
 
     #section-selector {
-        padding: 10px 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
+        padding: 12px 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 17px;
         cursor: pointer;
+        background-color: var(--card-background);
+        color: var(--text-color);
+        transition: border-color 0.3s ease;
     }
+
+        #section-selector:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
 
     .statistic-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 25px;
-        margin-bottom: 30px;
-    }
-
-    .statistic-card {
-        background-color: #e9ecef;
-        border-radius: 6px;
-        padding: 25px;
-        text-align: center;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease-in-out;
-    }
-
-        .statistic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        }
-
-    .statistic-value {
-        font-size: 28px;
-        font-weight: bold;
-        color: #141d26;
-        margin-bottom: 10px;
-    }
-
-    .statistic-label {
-        font-size: 18px;
-        color: #555;
-    }
-
-    .report-section {
+        /* Chỉnh sửa chính: 6 cột với kích thước đều nhau */
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px; /* Giảm gap để các card nhỏ hơn */
         margin-bottom: 40px;
     }
 
+    .statistic-card {
+        background-color: var(--card-background);
+        border-radius: 10px;
+        padding: 15px; /* Giảm padding để card nhỏ hơn */
+        text-align: center;
+        box-shadow: 0 2px 8px var(--shadow-light);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 120px; /* Giảm min-height */
+        position: relative; /* Để định vị icon */
+    }
+
+        .statistic-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 16px var(--shadow-medium);
+        }
+
+    .statistic-icon {
+        position: absolute;
+        top: 10px; /* Giảm top cho icon để phù hợp với padding nhỏ hơn */
+        left: 10px; /* Giảm left cho icon */
+        font-size: 24px; /* Giảm kích thước icon */
+        color: var(--icon-color); /* Màu mặc định cho icon */
+        opacity: 0.7;
+    }
+
+    /* Định màu icon riêng cho từng loại card */
+    .statistic-card.primary-icon .statistic-icon {
+        color: var(--primary-color);
+    }
+
+    .statistic-card.success-icon .statistic-icon {
+        color: var(--success-color);
+    }
+
+    .statistic-card.info-icon .statistic-icon {
+        color: var(--info-color);
+    }
+
+    .statistic-card.warning-icon .statistic-icon {
+        color: var(--warning-color);
+    }
+
+    .statistic-card.danger-icon .statistic-icon {
+        color: var(--danger-color);
+    }
+
+
+    .statistic-value {
+        font-size: 28px; /* Giảm kích thước font cho giá trị */
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 8px; /* Giảm margin-bottom */
+        margin-top: 10px; /* Để tạo khoảng trống cho icon ở trên */
+    }
+
+    .statistic-card.success .statistic-value {
+        color: var(--success-color);
+    }
+
+    .statistic-card.info .statistic-value {
+        color: var(--info-color);
+    }
+
+    .statistic-card.warning .statistic-value {
+        color: var(--warning-color);
+    }
+
+    .statistic-card.danger .statistic-value {
+        color: var(--danger-color);
+    }
+
+    .statistic-label {
+        font-size: 14px; /* Giảm kích thước font cho label */
+        color: var(--text-color);
+        line-height: 1.3; /* Giảm line-height */
+        font-weight: 500;
+    }
+
+        .statistic-label .break-line {
+            display: block;
+            margin-top: 3px; /* Giảm margin-top */
+        }
+
+    .report-section {
+        margin-bottom: 50px;
+    }
+
     .section-heading {
-        color: #141d26;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #ccc;
-        padding-bottom: 10px;
-        font-size: 22px;
+        color: var(--dark-heading-color);
+        margin-bottom: 25px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 15px;
+        font-size: 24px;
+        font-weight: 600;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
     }
 
-    .section-actions button {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-left: 10px;
+    .section-actions {
+        margin-top: 5px;
     }
 
-        .section-actions button:hover {
-            background-color: #0056b3;
+        .section-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-left: 15px;
+            font-weight: 500;
         }
+
+            .section-actions button:hover {
+                background-color: #145cb3;
+                transform: translateY(-2px);
+            }
 
     .report-table-container {
         overflow-x: auto;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ddd;
-        margin-top: 15px;
+        background-color: var(--card-background);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px var(--shadow-light);
+        border: 1px solid var(--border-color);
+        margin-top: 20px;
     }
 
     .report-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 15px;
+        font-size: 14px; /* Giảm cỡ chữ cho toàn bộ bảng */
     }
 
         .report-table th, .report-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            border: 1px solid var(--border-color);
+            padding: 10px; /* Giảm chiều cao row bằng cách giảm padding */
             text-align: left;
             white-space: nowrap;
         }
 
         .report-table th {
-            background-color: #141d26;
+            background-color: var(--dark-heading-color);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .report-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f6f6f6;
         }
 
         .report-table tbody tr:hover {
-            background-color: #e0f7fa;
+            background-color: #e6f7ff;
         }
 
     .view-details-button {
-        padding: 8px 12px;
-        border: 1px solid #007bff;
+        padding: 6px 12px; /* Điều chỉnh padding để nút nhỏ gọn hơn */
+        border: 1px solid var(--primary-color);
         border-radius: 5px;
         background-color: transparent;
-        color: #007bff;
+        color: var(--primary-color);
         cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        font-size: 13px; /* Giảm cỡ chữ của nút */
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     }
 
         .view-details-button:hover {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
+            transform: translateY(-2px);
         }
+
+    /* Responsive adjustments */
+    @@media (max-width: 1200px) { /* Thêm breakpoint cho màn hình lớn hơn 992px nhưng vẫn cần 6 cột */
+        .statistic-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Cho phép nhỏ hơn một chút nếu cần */
+            gap: 15px;
+        }
+
+        .statistic-card {
+            padding: 12px;
+            min-height: 100px;
+        }
+
+        .statistic-value {
+            font-size: 24px;
+        }
+
+        .statistic-label {
+            font-size: 13px;
+        }
+
+        .statistic-icon {
+            font-size: 20px;
+            top: 8px;
+            left: 8px;
+        }
+
+        .report-table {
+            font-size: 13px; /* Giảm cỡ chữ cho bảng trên màn hình trung bình */
+        }
+
+            .report-table th, .report-table td {
+                padding: 8px; /* Giảm padding cho bảng trên màn hình trung bình */
+            }
+
+        .view-details-button {
+            padding: 5px 10px; /* Điều chỉnh padding cho nút trên màn hình trung bình */
+            font-size: 12px; /* Giảm cỡ chữ của nút trên màn hình trung bình */
+        }
+    }
+
+
+    @@media (max-width: 992px) {
+        .report-container {
+            padding: 25px;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        #section-selector {
+            width: 100%;
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .statistic-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* 4 cột trên tablet */
+            gap: 20px;
+        }
+
+        .statistic-card {
+            padding: 20px;
+            min-height: 140px;
+        }
+
+        .statistic-value {
+            font-size: 32px;
+        }
+
+        .statistic-label {
+            font-size: 15px;
+        }
+
+        .section-heading {
+            font-size: 22px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .section-actions {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+            .section-actions button {
+                margin-left: 0;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+        .statistic-icon {
+            font-size: 24px;
+        }
+
+        .report-table th, .report-table td {
+            padding: 8px; /* Giảm padding cho bảng trên tablet */
+            font-size: 13px; /* Giảm cỡ chữ cho bảng trên tablet */
+        }
+
+        .view-details-button {
+            padding: 5px 10px; /* Điều chỉnh padding cho nút trên tablet */
+            font-size: 12px; /* Giảm cỡ chữ của nút trên tablet */
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .report-container {
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        #section-selector {
+            width: 100%;
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .statistic-grid {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* 3 cột trên mobile lớn */
+            gap: 15px;
+        }
+
+        .statistic-card {
+            min-height: 120px;
+            padding: 15px;
+        }
+
+        .statistic-value {
+            font-size: 28px;
+        }
+
+        .statistic-label {
+            font-size: 14px;
+        }
+
+        .report-table th, .report-table td {
+            padding: 6px; /* Giảm padding nhiều hơn cho bảng trên mobile lớn */
+            font-size: 12px; /* Giảm cỡ chữ nhiều hơn cho bảng trên mobile lớn */
+        }
+
+        .view-details-button {
+            padding: 4px 8px; /* Điều chỉnh padding cho nút trên mobile lớn */
+            font-size: 11px; /* Giảm cỡ chữ của nút trên mobile lớn */
+        }
+
+        .statistic-icon {
+            font-size: 20px;
+        }
+    }
+
+    @@media (max-width: 576px) { /* Mobile nhỏ */
+        .statistic-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 2 cột trên mobile nhỏ */
+        }
+
+        .statistic-card {
+            min-height: 100px;
+            padding: 10px;
+        }
+
+        .statistic-value {
+            font-size: 24px;
+        }
+
+        .statistic-label {
+            font-size: 12px;
+        }
+
+        .statistic-icon {
+            font-size: 18px;
+        }
+
+        .report-table th, .report-table td {
+            padding: 5px; /* Giảm padding tối đa cho bảng trên mobile nhỏ */
+            font-size: 11px; /* Giảm cỡ chữ tối đa cho bảng trên mobile nhỏ */
+        }
+
+        .view-details-button {
+            padding: 3px 6px; /* Điều chỉnh padding tối đa cho nút trên mobile nhỏ */
+            font-size: 10px; /* Giảm cỡ chữ tối đa của nút trên mobile nhỏ */
+        }
+    }
 </style>
 
 <div class="report-container">
@@ -177,53 +468,65 @@
             Thống Kê Nhanh
         </h3>
         <div class="statistic-grid">
-            <div class="statistic-card">
-                <div class="statistic-value">285</div>
+            <div class="statistic-card primary-icon">
+                <i class="fas fa-users statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongSoKhachHang</div>
                 <div class="statistic-label">Tổng Số Khách Hàng</div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">62</div>
-                <div class="statistic-label">Khách Hàng Mới (Tháng 5/2025)</div>
+            <div class="statistic-card info-icon">
+                <i class="fas fa-user-plus statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongSoKhachHangMoi</div>
+                <div class="statistic-label">Khách Hàng Mới<span class="break-line">6 Tháng Gần Nhất</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">38</div>
+            <div class="statistic-card primary-icon">
+                <i class="fas fa-user-tie statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongSoNhanVien</div>
                 <div class="statistic-label">Tổng Số Nhân Viên</div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">892</div>
+            <div class="statistic-card primary-icon">
+                <i class="fas fa-shopping-cart statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongSoDonHang</div>
                 <div class="statistic-label">Tổng Số Đơn Hàng</div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">2,150,000,000 VNĐ</div>
-                <div class="statistic-label">Tổng Doanh Thu (Ước Tính)</div>
+            <div class="statistic-card success-icon">
+                <i class="fas fa-money-bill-wave statistic-icon"></i>
+                <div class="statistic-value">@string.Format("{0:N0}", ViewBag.TongQuan.TongSoDoanhThu6ThangQua) VNĐ</div>
+                <div class="statistic-label">Tổng Doanh Thu<span class="break-line">6 Tháng Gần Nhất</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">1450</div>
-                <div class="statistic-label">Hàng Hóa Đang Lưu Kho</div>
+            <div class="statistic-card warning-icon">
+                <i class="fas fa-boxes statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongDonHangDangLuuKho</div>
+                <div class="statistic-label">Hàng Hóa<span class="break-line">Đang Lưu Kho</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">185</div>
+            <div class="statistic-card primary-icon">
+                <i class="fas fa-box statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.TongSoContainerHienCo</div>
                 <div class="statistic-label">Container Hiện Có</div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">75%</div>
-                <div class="statistic-label">Tỷ Lệ Đơn Hàng Hoàn Thành</div>
+            <div class="statistic-card info-icon">
+                <i class="fas fa-percent statistic-icon"></i>
+                <div class="statistic-value">@string.Format("{0:F2}", ViewBag.TongQuan.TyLeDonHangHoanThanh) %</div> @* Định dạng 2 chữ số thập phân *@
+                <div class="statistic-label">Tỷ Lệ Đơn Hàng<span class="break-line">Hoàn Thành</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">45</div>
-                <div class="statistic-label">Đơn Hàng Chờ Xác Nhận</div>
+            <div class="statistic-card danger-icon">
+                <i class="fas fa-clipboard-list statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.DonHangChoXacNhan</div>
+                <div class="statistic-label">Đơn Hàng<span class="break-line">Chờ Xác Nhận</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">12</div>
-                <div class="statistic-label">Phiếu Nhập Mới (Tháng 5/2025)</div>
+            <div class="statistic-card info-icon">
+                <i class="fas fa-file-import statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.SoPhieuNhapMoi6ThangQua</div>
+                <div class="statistic-label">Phiếu Nhập Mới<span class="break-line">6 Tháng Gần Nhất</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">28</div>
-                <div class="statistic-label">Phiếu Xuất Mới (Tháng 5/2025)</div>
+            <div class="statistic-card info-icon">
+                <i class="fas fa-file-export statistic-icon"></i>
+                <div class="statistic-value">@ViewBag.TongQuan.SoPhieuXuatMoi6ThangQua</div>
+                <div class="statistic-label">Phiếu Xuất Mới<span class="break-line">6 Tháng Gần Nhất</span></div>
             </div>
-            <div class="statistic-card">
-                <div class="statistic-value">90%</div>
-                <div class="statistic-label">Công Suất Sử Dụng Kho</div>
+            <div class="statistic-card success-icon">
+                <i class="fas fa-warehouse statistic-icon"></i>
+                <div class="statistic-value">@string.Format("{0:F2}", ViewBag.TongQuan.CongXuatSuDungKho) %</div> @* Định dạng 2 chữ số thập phân *@
+                <div class="statistic-label">Công Suất<span class="break-line">Sử Dụng Kho</span></div>
             </div>
         </div>
     </section>
@@ -497,7 +800,7 @@
                         <td>HH010</td>
                         <td>Linh kiện điện tử C</td>
                         <td>350</td>
-                        <td><button class="view-details-button">Xem</button>
+                        <td><button class="view-details-button">Xem</button></td>
                     </tr>
                     <tr>
                         <td>HH015</td>
@@ -534,33 +837,29 @@
         const sectionSelector = document.getElementById('section-selector');
         const reportSections = document.querySelectorAll('.report-section');
 
-        sectionSelector.addEventListener('change', function () {
-            const selectedSectionId = this.value;
-            const targetSection = document.getElementById(selectedSectionId);
+        // Hàm ẩn tất cả các section và chỉ hiển thị section được chọn
+        function showSelectedSection() {
+            const selectedSectionId = sectionSelector.value;
 
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-
-        // Ẩn tất cả các section trừ tổng quan ban đầu
-        reportSections.forEach(section => {
-            if (section.id !== 'overview') {
-                section.style.display = 'none';
-            }
-        });
-
-        sectionSelector.addEventListener('change', function () {
             reportSections.forEach(section => {
-                section.style.display = 'none';
+                if (section.id === selectedSectionId) {
+                    section.style.display = 'block'; // Hiển thị section được chọn
+                } else {
+                    section.style.display = 'none'; // Ẩn các section khác
+                }
             });
-            const selectedSectionId = this.value;
+
+            // Cuộn đến section được chọn (tùy chọn, có thể bỏ nếu không muốn tự động cuộn)
             const targetSection = document.getElementById(selectedSectionId);
             if (targetSection) {
-                targetSection.style.display = 'block';
                 targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-        });
+        }
+
+        // Ẩn tất cả các section trừ tổng quan khi tải trang lần đầu
+        showSelectedSection(); // Gọi hàm này để thiết lập trạng thái ban đầu
+
+        // Lắng nghe sự kiện thay đổi của dropdown
+        sectionSelector.addEventListener('change', showSelectedSection);
     });
 </script>
-

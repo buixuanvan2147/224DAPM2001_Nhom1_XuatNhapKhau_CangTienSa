@@ -239,6 +239,7 @@
     <Compile Include="Models\phieuXuat.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QTV_ThongKeBaoCao_TongQuanViewModel.cs" />
     <Compile Include="Models\QuanTriVienViewModel.cs" />
     <Compile Include="Models\vaiTroNhanVien.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
