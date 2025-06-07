@@ -2,7 +2,8 @@
 @{
     Layout = "~/Views/Shared/_LayoutNhanVienKeToan.cshtml";
 }
-<h2 style="margin-top: 40px; font-family: Arial;">Bảng Điều Khiển Nhân Viên Kế Toán</h2>
+
+<h2 style="margin-top: 60px; font-family: Arial;">Bảng Điều Khiển Nhân Viên Kế Toán</h2>
 
 <div class="tab-container">
     <button class="tab-button" onclick="showTab('tab1')">1. Cập Nhật Trạng Thái</button>
@@ -209,10 +210,13 @@
         color: white;
         cursor: pointer;
         border-radius: 4px;
+        background-color: #45a049;
+        transition: transform 0.2s ease;
     }
 
         .tab-button:hover {
             background-color: #0056b3;
+            transform: scale(1.1);+
         }
 
     table {

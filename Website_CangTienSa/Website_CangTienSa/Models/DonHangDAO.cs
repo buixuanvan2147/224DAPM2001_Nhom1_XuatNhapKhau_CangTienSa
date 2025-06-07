@@ -8,7 +8,7 @@ namespace Website_CangTienSa.DAO
 {
     public class DonHangDAO
     {
-        private readonly string connectionString = "Server=DINHTHI\\DINHTHIMSSQLSV;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=BUIXUANVANPC\\MSSQLSERVER2022;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
         public List<DonHangModel> GetDonHangDangVanChuyen()
         {
             var donHangList = new List<DonHangModel>();

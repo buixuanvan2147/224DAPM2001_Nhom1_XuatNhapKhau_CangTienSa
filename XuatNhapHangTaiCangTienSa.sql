@@ -458,3 +458,13 @@ WHERE maDonHang = 'DH00000011';
 
 DELETE FROM phieuXuat
 WHERE maPhieuXuat = 'PX00000011';
+
+-- Insert 5 additional empty containers into the container table
+INSERT INTO container (maContainer, maDanhMucContainer, maChiTietKho, soHieu, trangThaiContainer, viTriTrongKho, ngayMuaContainer, trongTai)
+VALUES 
+('CONT000011', 'DMC0000001', 'CTK0000001', 'XYZA1234', N'Rỗng', 'F1-011', '2023-11-01', 24000),
+('CONT000012', 'DMC0000002', 'CTK0000002', 'BCDE5678', N'Rỗng', 'F2-012', '2023-12-01', 30480),
+('CONT000013', 'DMC0000003', 'CTK0000003', 'FGHI9012', N'Rỗng', 'G1-013', '2024-01-01', 30480),
+('CONT000014', 'DMC0000001', 'CTK0000004', 'JKLM3456', N'Rỗng', 'G2-014', '2024-02-01', 24000),
+('CONT000015', 'DMC0000002', 'CTK0000005', 'NOPQ7890', N'Rỗng', 'H1-015', '2024-03-01', 30480);
+t muốn thêm một vài continer rỗng để mai đơn hàng ta chọn được continer bên t á
