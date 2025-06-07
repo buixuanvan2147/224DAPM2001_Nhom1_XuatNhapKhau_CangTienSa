@@ -548,36 +548,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Tháng 5/2025</td>
-                        <td>62</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Quý 2/2025</td>
-                        <td>158</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Năm 2024</td>
-                        <td>785</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Trước 2024</td>
-                        <td>250</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Tháng 4/2025</td>
-                        <td>55</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Quý 1/2025</td>
-                        <td>140</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.ThongKeKhachHangTheo6Thang != null)
+                    {
+                        foreach (var thongKe in ViewBag.ThongKeKhachHangTheo6Thang)
+                        {
+                            <tr>
+                                <td>@thongKe.ThoiGianDangKy</td>
+                                <td>@thongKe.SoLuongKhachHang</td>
+                                <td>                                   
+                                    <button class="view-details-button" data-mathoigian="@thongKe.MaThoiGian">Xem</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">Không có dữ liệu thống kê khách hàng theo thời gian đăng ký.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -598,26 +587,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Đã duyệt</td>
-                        <td>245</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Chờ duyệt</td>
-                        <td>30</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Đang khóa</td>
-                        <td>10</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Chưa kích hoạt</td>
-                        <td>5</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.ThongKeKhachHangTheoTrangThai != null)
+                    {
+                        foreach (var trangThai in ViewBag.ThongKeKhachHangTheoTrangThai)
+                        {
+                            <tr>
+                                <td>@trangThai.TrangThai</td>
+                                <td>@trangThai.SoLuong</td>
+                                <td><button class="view-details-button">Xem</button></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">Không có dữ liệu thống kê trạng thái tài khoản khách hàng.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -639,36 +625,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>KH001</td>
-                        <td>Nguyễn Văn An</td>
-                        <td>42</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>KH005</td>
-                        <td>Trần Thị Bình</td>
-                        <td>35</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>KH012</td>
-                        <td>Lê Hoàng Dũng</td>
-                        <td>31</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>KH003</td>
-                        <td>Phạm Thu Hà</td>
-                        <td>28</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>KH008</td>
-                        <td>Hoàng Minh Châu</td>
-                        <td>25</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.Top5KhachHangDonHangNhieuNhat != null)
+                    {
+                        foreach (var khachHang in ViewBag.Top5KhachHangDonHangNhieuNhat)
+                        {
+                            <tr>
+                                <td>@khachHang.MaKhachHang</td>
+                                <td>@khachHang.TenKhachHang</td>
+                                <td>@khachHang.SoLuongDonHang</td>
+                                <td><button class="view-details-button">Xem</button></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có dữ liệu Top 5 khách hàng.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

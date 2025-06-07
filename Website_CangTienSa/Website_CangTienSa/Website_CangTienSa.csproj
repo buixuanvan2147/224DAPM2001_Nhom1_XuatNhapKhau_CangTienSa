@@ -178,6 +178,7 @@
     <Compile Include="Controllers\QuanTriVien_QLDH_KhoController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLDH_PhieuNhapController.cs" />
     <Compile Include="Controllers\QuanTriVien_QLTaiKhoanController.cs" />
+    <Compile Include="Controllers\QuanTriVien_TKBCController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -240,6 +241,9 @@
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QTV_ThongKeBaoCao_TongQuanViewModel.cs" />
+    <Compile Include="Models\QTV_TKBC_DonHang_Top5KhMaxDh.cs" />
+    <Compile Include="Models\QTV_TKBC_KhachHang__TongKhachHangTheoTrangThai.cs" />
+    <Compile Include="Models\QTV_TKBC_KhachHang__TheoThoiGianDangKy.cs" />
     <Compile Include="Models\QuanTriVienViewModel.cs" />
     <Compile Include="Models\vaiTroNhanVien.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
@@ -523,6 +527,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\QuanTriVien_TKBC\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
