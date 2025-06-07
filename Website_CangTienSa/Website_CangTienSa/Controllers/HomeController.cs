@@ -227,7 +227,7 @@ namespace Website_CangTienSa.Controllers
                 {
                     maKhachHang = newMaKH,
                     tenDangNhap = model.tenDangNhap,
-                    matKhau = BCrypt.Net.BCrypt.HashPassword(model.matKhau), // Use BCrypt for password hashing
+                    matKhau = model.matKhau,
                     tenKhachHang = model.tenKhachHang,
                     cccd = model.cccd,
                     diaChiLienLac = model.diaChiLienLac,

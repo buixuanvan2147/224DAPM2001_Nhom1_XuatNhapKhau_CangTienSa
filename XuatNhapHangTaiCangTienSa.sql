@@ -441,7 +441,7 @@ BEGIN
 END;
 GO
 
-USE master;
+/*USE master;
 ALTER DATABASE XuatNhapHangTaiCangTienSa
 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 GO
@@ -450,11 +450,3 @@ DROP DATABASE XuatNhapHangTaiCangTienSa;
 GO
 select *from phieuXuat
 select *from donHang
-
-UPDATE donHang
-SET trangThaiDonHang = N'Hoàn thành',
-    trangThaiThanhToan = N'Đã thanh toán'
-WHERE maDonHang = 'DH00000011';
-
-DELETE FROM phieuXuat
-WHERE maPhieuXuat = 'PX00000011';

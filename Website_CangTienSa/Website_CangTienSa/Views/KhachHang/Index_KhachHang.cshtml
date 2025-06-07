@@ -14,74 +14,176 @@
     <script>
         $(document).ready(function () {
             // Ẩn dropdown hàng hóa xuất khẩu ban đầu
-            $('#maHangHoaDiv').hide();
+            $('.maHangHoaDiv').hide();
 
             // Điều chỉnh kích thước danh mục hàng hóa ban đầu
-            $('#maDanhMucHangHoaDiv').removeClass('col-md-4').addClass('col-md-4');
+            $('.maDanhMucHangHoaDiv').removeClass('col-md-4').addClass('col-md-4');
 
-            // Khi thay đổi danh mục hàng hóa
-            $('#maDanhMucHangHoa').change(function () {
-                var maDanhMuc = $(this).val();
-                if (maDanhMuc) {
-                    // Thu nhỏ danh mục hàng hóa và hiển thị hàng hóa xuất/nhập khẩu
-                    $('#maDanhMucHangHoaDiv').removeClass('col-md-4').addClass('col-md-2');
-                    $('#maHangHoaDiv').removeClass('col-md-4').addClass('col-md-2').show();
+            // Khi thay đổi số lượng danh mục hàng
+            $('#SoLuongDanhMucHang').change(function () {
+                var soLuong = parseInt($(this).val()) || 0;
+                var container = $('#hangHoaContainer');
+                container.empty(); // Xóa các tập hợp hiện có
 
-                    // Gọi AJAX để lấy danh sách hàng hóa theo danh mục
-                    $.ajax({
-                        url: '@Url.Action("GetHangHoaByDanhMuc", "KhachHang")',
-                        type: 'GET',
-                        data: { maDanhMucHangHoa: maDanhMuc },
-                        success: function (data) {
-                            // Xóa các option hiện tại trong dropdown hàng hóa
-                            $('#maHangHoa').empty();
-                            $('#maHangHoa').append('<option value="">-- Chọn hàng hóa --</option>');
-
-                            // Thêm các hàng hóa tương ứng
-                            $.each(data, function (index, item) {
-                                $('#maHangHoa').append('<option value="' + item.Value + '">' + item.Text + '</option>');
-                            });
-                        },
-                        error: function () {
-                            alert('Không thể tải danh sách hàng hóa. Vui lòng thử lại.');
-                            $('#maHangHoaDiv').hide();
-                            $('#maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
-                        }
-                    });
-                } else {
-                    // Ẩn dropdown hàng hóa và khôi phục kích thước danh mục
-                    $('#maHangHoaDiv').hide();
-                    $('#maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
-                    $('#maHangHoa').empty();
-                    $('#maHangHoa').append('<option value="">-- Chọn hàng hóa --</option>');
+                // Tạo các tập hợp trường dựa trên số lượng
+                for (var i = 0; i < soLuong; i++) {
+                    var hangHoaSet = `
+                        <div class="hangHoaSet" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                            <h5>Hàng hóa ${i + 1}</h5>
+                            <div class="form-row">
+                                <div class="form-group col-md-4 maDanhMucHangHoaDiv">
+                                    <label for="DanhSachHangHoa_${i}_maDanhMucHangHoa">Danh mục hàng hóa</label>
+                                    <select id="DanhSachHangHoa_${i}_maDanhMucHangHoa" name="DanhSachHangHoa[${i}].maDanhMucHangHoa" class="form-control maDanhMucHangHoa" required>
+                                        <option value="">-- Danh mục --</option>`;
+                    // Thêm các option từ ViewBag.DanhMucHangHoaList
+                    @foreach (var item in ViewBag.DanhMucHangHoaList as List<SelectListItem>)
+                    {
+                        <text>hangHoaSet += `<option value="@item.Value">@item.Text</option>`;</text>
+                    }
+                    hangHoaSet += `
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 maHangHoaDiv">
+                                    <label for="DanhSachHangHoa_${i}_maHangHoa">Hàng hóa xuất/nhập khẩu</label>
+                                    <select id="DanhSachHangHoa_${i}_maHangHoa" name="DanhSachHangHoa[${i}].maHangHoa" class="form-control" required>
+                                        <option value="">-- Chọn hàng hóa --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="DanhSachHangHoa_${i}_LoaiHang">Loại hàng</label>
+                                    <select id="DanhSachHangHoa_${i}_LoaiHang" name="DanhSachHangHoa[${i}].LoaiHang" class="form-control" required>
+                                        <option value="Cao Cấp">Cao cấp</option>
+                                        <option value="Tốt">Tốt</option>
+                                        <option value="Trung bình">Trung bình</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div style="flex: 1;">
+                                            <label for="DanhSachHangHoa_${i}_DonViTinhKhoiLuong">Đơn vị tính</label>
+                                            <select id="DanhSachHangHoa_${i}_DonViTinhKhoiLuong" name="DanhSachHangHoa[${i}].DonViTinhKhoiLuong" class="form-control donViTinh" required>
+                                                <option value="Tấn">Tấn</option>
+                                                <option value="Cái">Cái</option>
+                                            </select>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div id="DanhSachHangHoa_${i}_KhoiLuongDiv" style="display:none;">
+                                                <label id="DanhSachHangHoa_${i}_KhoiLuongLabel" for="DanhSachHangHoa_${i}_KhoiLuong">Khối lượng (Tấn)</label>
+                                                <input type="number" id="DanhSachHangHoa_${i}_KhoiLuong" name="DanhSachHangHoa[${i}].KhoiLuong" class="form-control" min="0" step="0.01" />
+                                            </div>
+                                            <div id="DanhSachHangHoa_${i}_SoLuongDiv" style="display:none;">
+                                                <label id="DanhSachHangHoa_${i}_SoLuongLabel" for="DanhSachHangHoa_${i}_SoLuong">Số lượng (Cái)</label>
+                                                <input type="number" id="DanhSachHangHoa_${i}_SoLuong" name="DanhSachHangHoa[${i}].SoLuong" class="form-control" min="0" step="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="DanhSachHangHoa_${i}_ThoiGianLuuKho">Thời gian lưu kho tối đa (ngày)</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <select id="DanhSachHangHoa_${i}_ThoiGianLuuKho" name="DanhSachHangHoa[${i}].ThoiGianLuuKho" class="form-control thoiGianLuuKho" style="flex: 1;" required>
+                                            <option value="5">5 ngày</option>
+                                            <option value="10">10 ngày</option>
+                                            <option value="15">15 ngày</option>
+                                            <option value="20">20 ngày</option>
+                                            <option value="25">25 ngày</option>
+                                            <option value="30">30 ngày</option>
+                                            <option value="other">Khác</option>
+                                        </select>
+                                        <div id="DanhSachHangHoa_${i}_ThoiGianLuuKhoKhacDiv" style="display: none; flex: 1;">
+                                            <input type="number" id="DanhSachHangHoa_${i}_ThoiGianLuuKhoKhac" name="DanhSachHangHoa[${i}].ThoiGianLuuKhoKhac" class="form-control" placeholder="Số ngày" min="1" step="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    container.append(hangHoaSet);
                 }
+
+                // Gắn sự kiện cho các trường mới tạo
+                attachEventHandlers();
             });
 
-            // Khi thay đổi đơn vị tính
-            $('#DonViTinhKhoiLuong').change(function () {
-                var selectedUnit = $(this).val();
-                $('#KhoiLuongDiv').hide();
-                $('#SoLuongDiv').hide();
+            // Hàm gắn sự kiện cho các trường động
+            function attachEventHandlers() {
+                // Khi thay đổi danh mục hàng hóa
+                $('.maDanhMucHangHoa').change(function () {
+                    var $this = $(this);
+                    var maDanhMuc = $this.val();
+                    var index = $this.attr('name').match(/\d+/)[0];
+                    var $maHangHoaDiv = $this.closest('.hangHoaSet').find('.maHangHoaDiv');
+                    var $maHangHoa = $this.closest('.hangHoaSet').find('select[name="DanhSachHangHoa[' + index + '].maHangHoa"]');
 
-                if (selectedUnit === 'Tấn') { // Đổi từ 'ton' thành 'Tấn'
-                    $('#KhoiLuongDiv').show();
-                    $('#KhoiLuongLabel').text('Khối lượng (Tấn)');
-                } else if (selectedUnit === 'Cái') { // Đổi từ 'cai' thành 'Cái'
-                    $('#SoLuongDiv').show();
-                    $('#SoLuongLabel').text('Số lượng (Cái)');
-                }
-            });
+                    if (maDanhMuc) {
+                        $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-4').addClass('col-md-2');
+                        $maHangHoaDiv.removeClass('col-md-4').addClass('col-md-2').show();
 
-            // Khi thay đổi thời gian lưu kho
-            $('#ThoiGianLuuKho').change(function () {
-                var selectedTime = $(this).val();
-                $('#ThoiGianLuuKhoKhacDiv').toggle(selectedTime === 'other');
-            });
+                        $.ajax({
+                            url: '@Url.Action("GetHangHoaByDanhMuc", "KhachHang")',
+                            type: 'GET',
+                            data: { maDanhMucHangHoa: maDanhMuc },
+                            success: function (data) {
+                                $maHangHoa.empty();
+                                $maHangHoa.append('<option value="">-- Chọn hàng hóa --</option>');
+                                $.each(data, function (index, item) {
+                                    $maHangHoa.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                                });
+                            },
+                            error: function () {
+                                alert('Không thể tải danh sách hàng hóa. Vui lòng thử lại.');
+                                $maHangHoaDiv.hide();
+                                $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
+                            }
+                        });
+                    } else {
+                        $maHangHoaDiv.hide();
+                        $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
+                        $maHangHoa.empty();
+                        $maHangHoa.append('<option value="">-- Chọn hàng hóa --</option>');
+                    }
+                });
+
+                // Khi thay đổi đơn vị tính
+                $('.donViTinh').change(function () {
+                    var $this = $(this);
+                    var selectedUnit = $this.val();
+                    var index = $this.attr('name').match(/\d+/)[0];
+                    var $khoiLuongDiv = $this.closest('.hangHoaSet').find('#DanhSachHangHoa_' + index + '_KhoiLuongDiv');
+                    var $soLuongDiv = $this.closest('.hangHoaSet').find('#DanhSachHangHoa_' + index + '_SoLuongDiv');
+                    var $khoiLuongLabel = $this.closest('.hangHoaSet').find('#DanhSachHangHoa_' + index + '_KhoiLuongLabel');
+                    var $soLuongLabel = $this.closest('.hangHoaSet').find('#DanhSachHangHoa_' + index + '_SoLuongLabel');
+
+                    $khoiLuongDiv.hide();
+                    $soLuongDiv.hide();
+
+                    if (selectedUnit === 'Tấn') {
+                        $khoiLuongDiv.show();
+                        $khoiLuongLabel.text('Khối lượng (Tấn)');
+                    } else if (selectedUnit === 'Cái') {
+                        $soLuongDiv.show();
+                        $soLuongLabel.text('Số lượng (Cái)');
+                    }
+                });
+
+                // Khi thay đổi thời gian lưu kho
+                $('.thoiGianLuuKho').change(function () {
+                    var $this = $(this);
+                    var selectedTime = $this.val();
+                    var index = $this.attr('name').match(/\d+/)[0];
+                    var $thoiGianLuuKhoKhacDiv = $this.closest('.hangHoaSet').find('#DanhSachHangHoa_' + index + '_ThoiGianLuuKhoKhacDiv');
+                    $thoiGianLuuKhoKhacDiv.toggle(selectedTime === 'other');
+                });
+
+                // Khởi tạo trạng thái ban đầu
+                $('.donViTinh').trigger('change');
+                $('.thoiGianLuuKho').trigger('change');
+                $('.maDanhMucHangHoa').trigger('change');
+            }
 
             // Khởi tạo trạng thái ban đầu
-            $('#DonViTinhKhoiLuong').trigger('change');
-            $('#ThoiGianLuuKho').trigger('change');
-            $('#maDanhMucHangHoa').trigger('change');
+            $('#SoLuongDanhMucHang').trigger('change');
         });
     </script>
 </head>
@@ -134,7 +236,7 @@
                     </div>
                 </div>
 
-                <!-- Cảng đích đến + Loại hàng + Đơn vị tính + Khối lượng/Số lượng -->
+                <!-- Cảng đích đến + Loại đơn hàng + Số lượng danh mục hàng -->
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="CangDichDen">Cảng đích đến</label>
@@ -157,67 +259,6 @@
                         </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="LoaiHang">Loại hàng</label>
-                        <select id="LoaiHang" name="LoaiHang" class="form-control" required>
-                            <option value="Cao Cấp">Cao cấp</option>
-                            <option value="Dễ vỡ">Dễ vỡ</option>
-                            <option value="Tốt">Tốt</option>
-                            <option value="Trung bình">Trung bình</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <div style="display: flex; gap: 10px;">
-                            <div style="flex: 1;">
-                                <label for="DonViTinhKhoiLuong">Đơn vị tính</label>
-                                <select id="DonViTinhKhoiLuong" name="DonViTinhKhoiLuong" class="form-control" required>
-                                    <option value="Tấn">Tấn</option>
-                                    <option value="Cái">Cái</option>
-                                </select>
-                            </div>
-                            <div style="flex: 1;">
-                                <div id="KhoiLuongDiv" style="display:none;">
-                                    <label id="KhoiLuongLabel" for="KhoiLuong">Khối lượng (Tấn)</label>
-                                    <input type="number" id="KhoiLuong" name="KhoiLuong" class="form-control" min="0" step="0.01" />
-                                </div>
-                                <div id="SoLuongDiv" style="display:none;">
-                                    <label id="SoLuongLabel" for="SoLuong">Số lượng (Cái)</label>
-                                    <input type="number" id="SoLuong" name="SoLuong" class="form-control" min="0" step="1" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Thời gian lưu kho + Danh mục hàng hóa + Hàng hóa xuất/nhập khẩu + Loại đơn hàng -->
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="ThoiGianLuuKho">Thời gian lưu kho tối đa (ngày)</label>
-                        <div style="display: flex; gap: 10px;">
-                            <select id="ThoiGianLuuKho" name="ThoiGianLuuKho" class="form-control" style="flex: 1;" required>
-                                <option value="5">5 ngày</option>
-                                <option value="10">10 ngày</option>
-                                <option value="15">15 ngày</option>
-                                <option value="20">20 ngày</option>
-                                <option value="25">25 ngày</option>
-                                <option value="30">30 ngày</option>
-                                <option value="other">Khác</option>
-                            </select>
-                            <div id="ThoiGianLuuKhoKhacDiv" style="display: none; flex: 1;">
-                                <input type="number" id="ThoiGianLuuKhoKhac" name="ThoiGianLuuKhoKhac" class="form-control" placeholder="Số ngày" min="1" step="1" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4" id="maDanhMucHangHoaDiv">
-                        <label for="maDanhMucHangHoa">Danh mục hàng hóa</label>
-                        @Html.DropDownList("maDanhMucHangHoa", ViewBag.DanhMucHangHoaList as List<SelectListItem>, "-- Danh mục --", new { @class = "form-control", @required = "required" })
-                    </div>
-                    <div class="form-group col-md-4" id="maHangHoaDiv">
-                        <label for="maHangHoa">Hàng hóa xuất/nhập khẩu</label>
-                        <select id="maHangHoa" name="maHangHoa" class="form-control" required>
-                            <option value="">-- Chọn hàng hóa --</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4">
                         <label for="LoaiDonHang">Loại đơn hàng</label>
                         <select id="LoaiDonHang" name="LoaiDonHang" class="form-control" required>
                             <option value="">-- Loại đơn hàng --</option>
@@ -227,7 +268,20 @@
                             }
                         </select>
                     </div>
+                    <div class="form-group col-md-4">
+                        <label for="SoLuongDanhMucHang">Số lượng danh mục hàng</label>
+                        <select id="SoLuongDanhMucHang" name="SoLuongDanhMucHang" class="form-control" required>
+                            <option value="">-- Chọn số lượng --</option>
+                            @for (int i = 1; i <= ViewBag.SoLuongHangHoa; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
                 </div>
+
+                <!-- Container cho các tập hợp hàng hóa -->
+                <div id="hangHoaContainer"></div>
 
                 <!-- Mô tả -->
                 <div class="form-row">
