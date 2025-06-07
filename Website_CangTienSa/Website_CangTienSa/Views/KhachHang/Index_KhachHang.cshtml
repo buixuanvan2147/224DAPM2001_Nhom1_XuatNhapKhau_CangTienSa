@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="form-group col-md-4 maHangHoaDiv">
                                     <label for="DanhSachHangHoa_${i}_maHangHoa">Hàng hóa xuất/nhập khẩu</label>
-                                    <select id="DanhSachHangHoa_${i}_maHangHoa" name="DanhSachHangHoa[${i}].maHangHoa" class="form-control" required>
+                                    <select id="DanhSachHangHoa_${i}_maHangHoa" name="DanhSachHangHoa[${i}].maHangHoa" class="form-control maHangHoa" required>
                                         <option value="">-- Chọn hàng hóa --</option>
                                     </select>
                                 </div>
@@ -117,33 +117,68 @@
                     var $maHangHoa = $this.closest('.hangHoaSet').find('select[name="DanhSachHangHoa[' + index + '].maHangHoa"]');
 
                     if (maDanhMuc) {
-                        $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-4').addClass('col-md-2');
-                        $maHangHoaDiv.removeClass('col-md-4').addClass('col-md-2').show();
+                        // Giữ cột Danh mục hàng hóa ở col-md-4
+                        $maHangHoaDiv.removeClass('col-md-6').addClass('col-md-4').show();
 
                         $.ajax({
                             url: '@Url.Action("GetHangHoaByDanhMuc", "KhachHang")',
                             type: 'GET',
                             data: { maDanhMucHangHoa: maDanhMuc },
                             success: function (data) {
-                                $maHangHoa.empty();
-                                $maHangHoa.append('<option value="">-- Chọn hàng hóa --</option>');
-                                $.each(data, function (index, item) {
-                                    $maHangHoa.append('<option value="' + item.Value + '">' + item.Text + '</option>');
-                                });
+                                // Lưu dữ liệu gốc vào data attribute để sử dụng sau này
+                                $maHangHoa.data('originalOptions', data);
+                                updateHangHoaDropdowns(); // Cập nhật tất cả dropdown hàng hóa
                             },
                             error: function () {
                                 alert('Không thể tải danh sách hàng hóa. Vui lòng thử lại.');
                                 $maHangHoaDiv.hide();
-                                $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
+                                $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-3').addClass('col-md-4');
                             }
                         });
                     } else {
                         $maHangHoaDiv.hide();
-                        $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-2').addClass('col-md-4');
-                        $maHangHoa.empty();
-                        $maHangHoa.append('<option value="">-- Chọn hàng hóa --</option>');
+                        $this.closest('.maDanhMucHangHoaDiv').removeClass('col-md-3').addClass('col-md-4');
+                        $maHangHoa.empty().append('<option value="">-- Chọn hàng hóa --</option>');
+                        updateHangHoaDropdowns(); // Cập nhật lại các dropdown khi xóa lựa chọn
                     }
                 });
+
+                // Khi thay đổi hàng hóa xuất/nhập khẩu
+                $('.maHangHoa').on('change', function () {
+                    updateHangHoaDropdowns(); // Cập nhật tất cả dropdown hàng hóa
+                });
+
+                // Hàm cập nhật tất cả dropdown hàng hóa để tránh trùng lặp
+                function updateHangHoaDropdowns() {
+                    // Lấy danh sách các hàng hóa đã được chọn
+                    var selectedHangHoa = [];
+                    $('.maHangHoa').each(function () {
+                        var val = $(this).val();
+                        if (val) {
+                            selectedHangHoa.push(val);
+                        }
+                    });
+
+                    // Cập nhật từng dropdown hàng hóa
+                    $('.maHangHoa').each(function () {
+                        var $this = $(this);
+                        var currentValue = $this.val(); // Giá trị hiện tại của dropdown
+                        var originalOptions = $this.data('originalOptions') || []; // Lấy danh sách hàng hóa gốc
+
+                        // Xóa các option hiện tại và thêm option mặc định
+                        $this.empty().append('<option value="">-- Chọn hàng hóa --</option>');
+
+                        // Thêm lại các option chưa được chọn ở các dropdown khác
+                        $.each(originalOptions, function (index, item) {
+                            if (!selectedHangHoa.includes(item.Value) || item.Value === currentValue) {
+                                $this.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                            }
+                        });
+
+                        // Giữ giá trị hiện tại nếu có
+                        $this.val(currentValue);
+                    });
+                }
 
                 // Khi thay đổi đơn vị tính
                 $('.donViTinh').change(function () {

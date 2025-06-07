@@ -450,3 +450,4 @@ DROP DATABASE XuatNhapHangTaiCangTienSa;
 GO
 select *from phieuXuat
 select *from donHang
+select *from ChiTietDonHang
