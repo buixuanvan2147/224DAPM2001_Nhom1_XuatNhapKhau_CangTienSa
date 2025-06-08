@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Website_CangTienSa.Models
 {
-    public class QTV_TKBC_KhachHang__TheoThoiGianDangKy
+    public class QTV_TKBC_KhachHang_TheoThoiGianDangKy
     {
         public string ThoiGianDangKy { get; set; } // Ví dụ: "Tháng 1-6/2024", "Tháng 7-12/2024"
         public int SoLuongKhachHang { get; set; }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Website_CangTienSa.Models
 {
-    public class QTV_ThongKeBaoCao_TongQuanViewModel
+    public class QTV_TKBC_TongQuan
     {
         public int TongSoKhachHang { get; set; }
         public int TongSoKhachHangMoi { get; set; } //khách Hàng mới đã được duyệt trong 6 tháng vừa qua

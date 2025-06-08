@@ -240,10 +240,13 @@
     <Compile Include="Models\phieuXuat.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QTV_ThongKeBaoCao_TongQuanViewModel.cs" />
+    <Compile Include="Models\QTV_TKBC_TongQuan.cs" />
+    <Compile Include="Models\QTV_TKBC_DonHang_HangHoaDangLuuKho.cs" />
     <Compile Include="Models\QTV_TKBC_DonHang_Top5KhMaxDh.cs" />
-    <Compile Include="Models\QTV_TKBC_KhachHang__TongKhachHangTheoTrangThai.cs" />
-    <Compile Include="Models\QTV_TKBC_KhachHang__TheoThoiGianDangKy.cs" />
+    <Compile Include="Models\QTV_TKBC_DonHang_TrangThaiHoanThanh.cs" />
+    <Compile Include="Models\QTV_TKBC_DonHang_TrangThaiThanhToan.cs" />
+    <Compile Include="Models\QTV_TKBC_KhachHang_TongKhachHangTheoTrangThai.cs" />
+    <Compile Include="Models\QTV_TKBC_KhachHang_TheoThoiGianDangKy.cs" />
     <Compile Include="Models\QuanTriVienViewModel.cs" />
     <Compile Include="Models\vaiTroNhanVien.cs">
       <DependentUpon>XuatNhapHangTaiCangTienSa.tt</DependentUpon>

@@ -140,41 +140,63 @@ namespace Website_CangTienSa.Controllers
 
             //Tổng quan
             {
+                // Số lượng đơn hàng đã hoàn thành và tổng số lượng đơn hàng
                 double donHangDaHoanThanh = db.donHangs.Count(d => d.trangThaiDonHang == "Hoàn thành");
                 double tongSoLuongDonHang = db.donHangs.Count();
 
+                // Số lượng tồn kho và sức chứa tối đa
                 double tongTonKho = db.khoes.Sum(k => k.tonKho);
                 double tongSucChuaToiDa = db.khoes.Sum(k => k.sucChuaToiDa);
 
                 // Tính mốc thời gian 6 tháng trước
                 // Sử dụng DateTime.Today để lấy ngày hiện tại (không tính giờ)
-                // Hoặc DateTime.Now nếu bạn muốn tính chính xác đến giây hiện tại
                 DateTime sixMonthsAgo = DateTime.Today.AddMonths(-6);
 
-                var qtv_tongQuan = new QTV_ThongKeBaoCao_TongQuanViewModel
+                var qtv_tongQuan = new QTV_TKBC_TongQuan
                 {
+                    //Tổng số khách hàng 
                     TongSoKhachHang = db.khachHangs.Count(),
+
+                    //Tổng số khách hàng mới 6 tháng gần nhất
                     TongSoKhachHangMoi = db.khachHangs.Count(kh =>
                                         // Sử dụng DbFunctions.AddMonths cho EF6 hoặc EF.Functions.DateAdd cho EF Core
                                         // Ở đây, tôi sẽ dùng cách tạo mốc thời gian trước để tránh vấn đề dịch trực tiếp trong LINQ
                                         kh.ngayDangKy >= sixMonthsAgo &&
                                         kh.trangThaiTaiKhoanKhachHang == "Đã duyệt"), // Khách Hàng mới trong 6 tháng vừa qua
+                    
+                    //Tổng số nhan viên
                     TongSoNhanVien = db.nhanViens.Count(),
+
+                    //Tổng số đơn hàng
                     TongSoDonHang = db.donHangs.Count(),
+
+                    //Doanh thu 6 tháng gần nhất
                     TongSoDoanhThu6ThangQua = db.donHangs
                                             .Where(d => d.trangThaiDonHang == "Đã hoàn thành" &&
                                                         d.trangThaiThanhToan == "Đã thanh toán" &&
                                                         d.ngayNhapCang.HasValue && // Đảm bảo ngayNhapCang không null
                                                         d.ngayNhapCang.Value >= sixMonthsAgo) // Lọc 6 tháng gần nhất
                                             .Sum(d => (float?)d.tongTien) ?? 0,
+
+                    // Tổng đơn hàng đang lưu kho
                     TongDonHangDangLuuKho = db.donHangs.Count(d =>
                                                 d.ngayNhapCang != null && // Đã nhập kho
                                                 d.ngayXuatCang == null && // Chưa xuất kho
                                                 (d.trangThaiDonHang == "Đang xử lý" || d.trangThaiDonHang == "Đang yêu cầu")),
+                    
+                    //Tổng số container hiện có
                     TongSoContainerHienCo = db.containers.Count(c => c.trangThaiContainer == "Hoạt động"),
+
+                    //Tỷ lệ % đơn hàng đã hoàn thành
                     TyLeDonHangHoanThanh = tongSoLuongDonHang == 0 ? 0 : (donHangDaHoanThanh / tongSoLuongDonHang) * 100,
+                    
+                    //Số phiếu nhập 6 tháng gần nhất
                     SoPhieuNhapMoi6ThangQua = db.donHangs.Count(p => p.ngayNhapCang.Value >= sixMonthsAgo),
+                    
+                    //Số phiếu xuất 6 tháng gần nhất
                     SoPhieuXuatMoi6ThangQua = db.phieuXuats.Count(p => p.ngayXuatKho >= sixMonthsAgo),
+                    
+                    //Công suất hoạt động của kho (= tồn kho / sức chứa * 100)
                     CongXuatSuDungKho = tongSucChuaToiDa == 0 ? 0 : (tongTonKho / tongSucChuaToiDa) * 100
                 };
 
@@ -184,7 +206,8 @@ namespace Website_CangTienSa.Controllers
             //Khách hàng
             {
                 // Lấy thống kê tổng số khách hàng theo thời gian đăng ký mỗi 6 tháng
-                var thongKeKhachHangTheo6Thang = db.khachHangs
+                {
+                    var thongKeKhachHangTheo6Thang = db.khachHangs
                     .Where(kh => kh.ngayDangKy != null) // Đảm bảo ngày đăng ký có dữ liệu
                     .ToList() // Đưa dữ liệu về bộ nhớ trước để xử lý các hàm không hỗ trợ trong LINQ to Entities
                     .GroupBy(kh => new
@@ -192,7 +215,7 @@ namespace Website_CangTienSa.Controllers
                         Nam = kh.ngayDangKy.Year,
                         Ky6Thang = (kh.ngayDangKy.Month - 1) / 6 + 1 // 1 cho tháng 1-6, 2 cho 7-12
                     })
-                    .Select(g => new QTV_TKBC_KhachHang__TheoThoiGianDangKy
+                    .Select(g => new QTV_TKBC_KhachHang_TheoThoiGianDangKy
                     {
                         // Tạo chuỗi hiển thị thời gian đăng ký
                         ThoiGianDangKy = $"Tháng {(g.Key.Ky6Thang == 1 ? "1–6" : "7–12")}/{g.Key.Nam}",
@@ -206,12 +229,13 @@ namespace Website_CangTienSa.Controllers
                     .OrderByDescending(s => s.MaThoiGian) // Sắp xếp theo thời gian mới nhất trước
                     .ToList(); // Đưa kết quả về danh sách để dùng tiếp
 
-
-                // Đưa danh sách vào ViewBag
-                ViewBag.ThongKeKhachHangTheo6Thang = thongKeKhachHangTheo6Thang;
+                    // Đưa danh sách vào ViewBag
+                    ViewBag.ThongKeKhachHangTheo6Thang = thongKeKhachHangTheo6Thang;
+                }
 
                 // Lấy thống kê tổng số khách hàng theo mỗi trạng thái
-                    // Định nghĩa tất cả các trạng thái tài khoản khách hàng mà bạn muốn hiển thị
+                { 
+                    // Định nghĩa tất cả các trạng thái tài khoản khách hàng
                     List<string> tatCaTrangThaiTaiKhoanHienThi = new List<string>
                                 {
                                     "Đã duyệt",
@@ -219,20 +243,20 @@ namespace Website_CangTienSa.Controllers
                                     "Đang bị khóa",
                                     "Đã từ chối"
                                 };
-                        var duLieuTrangThaiKhachHangDaCo = db.khachHangs
-                            .GroupBy(kh => kh.trangThaiTaiKhoanKhachHang) 
-                            .Select(g => new QTV_TKBC_KhachHang__TongKhachHangTheoTrangThai
-                            {
-                                    TrangThai = g.Key,
-                                    SoLuong = g.Count()
-                                })
-                                .ToList();
+                    var duLieuTrangThaiKhachHangDaCo = db.khachHangs
+                        .GroupBy(kh => kh.trangThaiTaiKhoanKhachHang)
+                        .Select(g => new QTV_TKBC_KhachHang_TongKhachHangTheoTrangThai
+                        {
+                            TrangThai = g.Key,
+                            SoLuong = g.Count()
+                        })
+                            .ToList();
                     // LEFT JOIN dữ liệu đã có với tất cả các trạng thái có thể có
                     var thongKeTrangThaiTaiKhoanKhachHangHoanChinh = tatCaTrangThaiTaiKhoanHienThi
                         .GroupJoin(duLieuTrangThaiKhachHangDaCo,
                                    tatCaTrangThai => tatCaTrangThai, // Key từ danh sách tất cả trạng thái
                                    duLieuDaCo => duLieuDaCo.TrangThai, // Key từ dữ liệu đã có
-                                   (tatCaTrangThai, groupKhachHang) => new QTV_TKBC_KhachHang__TongKhachHangTheoTrangThai // Sử dụng Model đã đổi tên
+                                   (tatCaTrangThai, groupKhachHang) => new QTV_TKBC_KhachHang_TongKhachHangTheoTrangThai // Sử dụng Model đã đổi tên
                                    {
                                        TrangThai = tatCaTrangThai,
                                        SoLuong = groupKhachHang.Sum(kh => kh.SoLuong) // Sẽ là 0 nếu không có dữ liệu cho trạng thái này
@@ -241,8 +265,10 @@ namespace Website_CangTienSa.Controllers
                             .ToList();
                     // Đưa danh sách vào ViewBag
                     ViewBag.ThongKeKhachHangTheoTrangThai = thongKeTrangThaiTaiKhoanKhachHangHoanChinh;
+                }
 
                 // Lấy Top 5 Khách Hàng Có Số Lượng Đơn Hàng Nhiều Nhất
+                {
                     var topKhachHang = db.khachHangs // Tên DbSet cho bảng KháchHangs
                             .Join(db.donHangs, // Tên DbSet cho bảng DonHangs
                                   kh => kh.maKhachHang,
@@ -258,8 +284,108 @@ namespace Website_CangTienSa.Controllers
                             .OrderByDescending(x => x.SoLuongDonHang)
                             .Take(5) // Lấy 5 dòng đầu tiên
                             .ToList();
-                            // Đưa danh sách vào ViewBag
-                            ViewBag.Top5KhachHangDonHangNhieuNhat = topKhachHang;
+                    // Đưa danh sách vào ViewBag
+                    ViewBag.Top5KhachHangDonHangNhieuNhat = topKhachHang;
+                }
+            }
+
+            //Đơn hàng
+            {
+                // Lấy thống kê tổng số đơn hàng theo mỗi trạng thái hoàn thành
+                {
+                    // Định nghĩa tất cả các đơn hàng theo trạng thái hoàn thành
+                    List<string> tatCaTrangThaiHoanThanhCuaDonHang = new List<string>
+                                {
+                                    "Hoàn thành",
+                                    "Đang xử lý",
+                                    "Đang vận chuyển xuất kho",
+                                    "Đang yêu cầu"
+                                };
+                    var duLieuTrangThaiDonHangDaCo = db.donHangs
+                        .GroupBy(kh => kh.trangThaiDonHang)
+                        .Select(g => new QTV_TKBC_DonHang_TrangThaiHoanThanh
+                        {
+                            TrangThai = g.Key,
+                            SoLuong = g.Count()
+                        })
+                            .ToList();
+                    // LEFT JOIN dữ liệu đã có với tất cả các trạng thái có thể có
+                    var thongKeTrangThaiHoanThanhCuaDonHang = tatCaTrangThaiHoanThanhCuaDonHang
+                        .GroupJoin(duLieuTrangThaiDonHangDaCo,
+                                   tatCaTrangThai => tatCaTrangThai, // Key từ danh sách tất cả trạng thái
+                                   duLieuDaCo => duLieuDaCo.TrangThai, // Key từ dữ liệu đã có
+                                   (tatCaTrangThai, groupDonHang) => new QTV_TKBC_DonHang_TrangThaiHoanThanh // Sử dụng Model đã đổi tên
+                                   {
+                                       TrangThai = tatCaTrangThai,
+                                       SoLuong = groupDonHang.Sum(kh => kh.SoLuong) // Sẽ là 0 nếu không có dữ liệu cho trạng thái này
+                                   })
+                            .OrderBy(s => s.TrangThai) // Sắp xếp để hiển thị theo thứ tự mong muốn
+                            .ToList();
+                    // Đưa danh sách vào ViewBag
+                    ViewBag.ThongKeDonHangTheoTrangThaiHoanThanh = thongKeTrangThaiHoanThanhCuaDonHang;
+                }
+
+                // Lấy thống kê tổng số đơn hàng theo mỗi trạng thái thanh toán
+                {
+                    // Định nghĩa tất cả các đơn hàng theo trạng thái thanh toán
+                    List<string> tatCaTrangThaiThanhToanCuaDonHang = new List<string>
+                                {
+                                    "Đã thanh toán",
+                                    "Chưa thanh toán"
+                                };
+                    var duLieuTrangThaiDonHangDaCo = db.donHangs
+                        .GroupBy(kh => kh.trangThaiThanhToan)
+                        .Select(g => new QTV_TKBC_DonHang_TrangThaiThanhToan
+                        {
+                            TrangThai = g.Key,
+                            SoLuong = g.Count(),
+                            TongGiaTri = g.Sum(x => x.tongTien)
+                        })
+                            .ToList();
+                    // LEFT JOIN để đảm bảo tất cả trạng thái đều xuất hiện
+                    var thongKeTrangThaiThanhToanCuaDonHang = tatCaTrangThaiThanhToanCuaDonHang
+                        .GroupJoin(duLieuTrangThaiDonHangDaCo,
+                                   tatCa => tatCa,
+                                   duLieu => duLieu.TrangThai,
+                                   (tatCa, groupDonHang) => new QTV_TKBC_DonHang_TrangThaiThanhToan
+                                   {
+                                       TrangThai = tatCa,
+                                       SoLuong = groupDonHang.Sum(x => x.SoLuong),
+                                       TongGiaTri = groupDonHang.Sum(x => x.TongGiaTri)
+                                   })
+                        .OrderBy(x => x.TrangThai)
+                        .ToList();
+
+                    // Truyền dữ liệu sang View
+                    ViewBag.ThongKeDonHangTheoTrangThaiThanhToan = thongKeTrangThaiThanhToanCuaDonHang;
+                }
+
+                // Thống kê hàng hóa đang lưu kho
+                {
+                    var hangHoaDangLuuKho = db.chiTietDonHangs
+                        .Where(ct => ct.donHang.trangThaiDonHang == "Đang xử lý" || ct.donHang.trangThaiDonHang == "Đang yêu cầu")
+                        .GroupBy(ct => new
+                        {
+                            ct.hangHoa.maHangHoa,
+                            ct.hangHoa.tenHangHoa,
+                            ct.hangHoa.donViTinh,
+                            ct.hangHoa.maDanhMucHangHoa,
+                            TenDanhMuc = ct.hangHoa.danhMucHangHoa.tenDanhMucHangHoa
+                        })
+                        .Select(g => new QTV_TKBC_DonHang_HangHoaDangLuuKho
+                        {
+                            MaHangHoa = g.Key.maHangHoa,
+                            TenHangHoa = g.Key.tenHangHoa,
+                            TenDanhMuc = g.Key.TenDanhMuc,
+                            DonViTinh = g.Key.donViTinh,
+                            SoLuong = g.Sum(x => x.soLuong)
+                        })
+                        .OrderBy(x => x.TenHangHoa)
+                        .ToList();
+
+                    // Truyền dữ liệu sang View
+                    ViewBag.HangHoaDangLuuKho = hangHoaDangLuuKho;
+                }
             }
 
             return View();

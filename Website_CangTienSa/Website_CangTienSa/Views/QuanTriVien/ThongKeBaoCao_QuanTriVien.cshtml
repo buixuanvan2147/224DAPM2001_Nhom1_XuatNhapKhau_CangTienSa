@@ -650,7 +650,7 @@
 
     <section id="orders" class="report-section">
         <h3 class="section-heading">
-            Thống Kê Đơn Hàng
+            Thống Kê Đơn Hàng Theo Trạng Thái Hoàn Thành
             <div class="section-actions">
                 <button>Xuất Báo Cáo</button>
             </div>
@@ -665,37 +665,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Đang xử lý</td>
-                        <td>210</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Đã hoàn thành</td>
-                        <td>580</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Đã hủy</td>
-                        <td>102</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Đang giao hàng</td>
-                        <td>50</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Hoàn trả</td>
-                        <td>15</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.ThongKeDonHangTheoTrangThaiHoanThanh != null)
+                    {
+                        foreach (var trangThai in ViewBag.ThongKeDonHangTheoTrangThaiHoanThanh)
+                        {
+                            <tr>
+                                <td>@trangThai.TrangThai</td>
+                                <td>@trangThai.SoLuong</td>
+                                <td><button class="view-details-button">Xem</button></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">Không có dữ liệu thống kê đơn hàng theo trạng thái hoàn thành.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
 
         <h3 class="section-heading" style="margin-top: 24px;">
-            Thống Kê Thanh Toán
+            Thống Kê Đơn Hàng Theo Trạng Thái Thanh Toán
             <div class="section-actions">
                 <button>Xuất Báo Cáo</button>
             </div>
@@ -711,30 +703,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Đã thanh toán</td>
-                        <td>650</td>
-                        <td>1,850,000,000 VNĐ</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Chưa thanh toán</td>
-                        <td>180</td>
-                        <td>280,000,000 VNĐ</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Hoàn tiền</td>
-                        <td>62</td>
-                        <td>-30,000,000 VNĐ</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>Thanh toán một phần</td>
-                        <td>20</td>
-                        <td>50,000,000 VNĐ</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.ThongKeDonHangTheoTrangThaiThanhToan != null)
+                    {
+                        foreach (var trangThai in ViewBag.ThongKeDonHangTheoTrangThaiThanhToan)
+                        {
+                            <tr>
+                                <td>@trangThai.TrangThai</td>
+                                <td>@trangThai.SoLuong</td>
+                                <td>@trangThai.TongGiaTri.ToString("N0") đ</td>
+                                <td><button class="view-details-button">Xem</button></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">Không có dữ liệu thống kê đơn hàng theo trạng thái thanh toán.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -742,7 +728,7 @@
 
     <section id="inventory" class="report-section">
         <h3 class="section-heading">
-            Thống Kê Hàng Hóa Lưu Kho
+            Thống Kê Hàng Hóa Đang Lưu Kho
             <div class="section-actions">
                 <button>Xuất Báo Cáo</button>
             </div>
@@ -753,53 +739,33 @@
                     <tr>
                         <th>Mã Hàng Hóa</th>
                         <th>Tên Hàng Hóa</th>
-                        <th>Số Lượng Tồn Kho</th>
+                        <th>Danh Mục</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Vị Tính</th>
                         <th>Xem Chi Tiết</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>HH001</td>
-                        <td>Điện thoại thông minh A</td>
-                        <td>215</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH005</td>
-                        <td>Máy tính xách tay B</td>
-                        <td>130</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH010</td>
-                        <td>Linh kiện điện tử C</td>
-                        <td>350</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH015</td>
-                        <td>Máy ảnh kỹ thuật số D</td>
-                        <td>95</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH022</td>
-                        <td>Phụ kiện điện thoại E</td>
-                        <td>480</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH028</td>
-                        <td>Loa Bluetooth F</td>
-                        <td>180</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
-                    <tr>
-                        <td>HH035</td>
-                        <td>Tai nghe không dây G</td>
-                        <td>255</td>
-                        <td><button class="view-details-button">Xem</button></td>
-                    </tr>
+                    @if (ViewBag.HangHoaDangLuuKho != null)
+                    {
+                        foreach (var hangHoa in ViewBag.HangHoaDangLuuKho)
+                        {
+                            <tr>
+                                <td>@hangHoa.MaHangHoa</td>
+                                <td>@hangHoa.TenHangHoa</td>
+                                <td>@hangHoa.TenDanhMuc</td>
+                                <td>@hangHoa.SoLuong.ToString("N0")</td>
+                                <td>@hangHoa.DonViTinh</td>
+                                <td><button class="view-details-button">Xem</button></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">Không có dữ liệu hàng hóa nào đang được lưu kho.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
