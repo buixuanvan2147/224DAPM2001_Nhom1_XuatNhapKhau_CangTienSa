@@ -1,68 +1,7 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-<style>
-    /* Điều chỉnh cho màn hình nhỏ hơn (ví dụ: điện thoại di động) */
-    @@media (max-width: 767.98px) {
-        .jumbotron {
-            padding-top: 3rem !important; /* Giảm padding trên cùng */
-            padding-bottom: 3rem !important; /* Giảm padding dưới cùng */
-        }
 
-        .jumbotron h1 {
-            font-size: 1.8rem; /* Giảm kích thước font cho tiêu đề chính */
-            margin-bottom: 1rem !important; /* Giảm khoảng cách dưới tiêu đề */
-        }
-
-        .jumbotron h1.display-3 {
-            font-size: 2.2rem; /* Giảm kích thước font cho tiêu đề lớn */
-            margin-bottom: 2rem !important; /* Giảm khoảng cách dưới tiêu đề lớn */
-        }
-
-        .input-group {
-            flex-direction: column; /* Đặt input và button trên hai hàng riêng biệt */
-        }
-
-        .input-group input[type="text"] {
-            width: 100%; /* Chiếm toàn bộ chiều rộng */
-            margin-bottom: 10px; /* Thêm khoảng cách dưới input */
-            padding: 15px !important; /* Giảm padding cho input */
-            text-align: center; /* Căn giữa text trong input */
-        }
-
-        .input-group-append {
-            width: 100%; /* Chiếm toàn bộ chiều rộng */
-        }
-
-        .input-group-append button {
-            width: 100%; /* Nút chiếm toàn bộ chiều rộng */
-            padding: 12px 15px; /* Giảm padding cho nút */
-        }
-
-        .mx-auto {
-            max-width: 90% !important; /* Giảm max-width của khối tìm kiếm */
-        }
-
-        .mt-3 small {
-            font-size: 0.8rem; /* Giảm kích thước font cho text nhỏ */
-        }
-    }
-
-    /* Điều chỉnh cho màn hình trung bình (ví dụ: máy tính bảng) */
-    @@media (min-width: 768px) and (max-width: 991.98px) {
-        .jumbotron h1.display-3 {
-            font-size: 3rem; /* Điều chỉnh kích thước font cho màn hình trung bình */
-        }
-
-        .input-group input[type="text"] {
-            padding: 25px !important; /* Điều chỉnh padding cho input */
-        }
-
-        .input-group-append button {
-            padding: 25px 20px; /* Điều chỉnh padding cho button */
-        }
-    }
-</style>
 <div class="jumbotron jumbotron-fluid mb-5">
     <div class="container text-center py-5">
         <h1 class="text-primary mb-4">An Toàn & Nhanh Chóng</h1>
@@ -86,10 +25,24 @@
         $(document).ready(function () {
             console.log("jQuery đã sẵn sàng. Kiểm tra sự kiện click cho #btnTraCuu.");
 
-            $("#btnTraCuu").click(function () {
+            // Kiểm tra xem nút có tồn tại không
+            var btnTraCuu = $("#btnTraCuu");
+            if (!btnTraCuu.length) {
+                console.error("Không tìm thấy nút với ID 'btnTraCuu'. Vui lòng kiểm tra HTML.");
+                return;
+            }
+
+            btnTraCuu.click(function () {
                 console.log("Nút Tra Cứu được nhấn.");
 
-                var maDonHang = $("#maDonHang").val();
+                var maDonHangInput = $("#maDonHang");
+                if (!maDonHangInput.length) {
+                    console.error("Không tìm thấy phần tử với ID 'maDonHang'. Vui lòng kiểm tra HTML.");
+                    alert("Lỗi: Không tìm thấy ô nhập mã đơn hàng.");
+                    return;
+                }
+
+                var maDonHang = maDonHangInput.val();
                 console.log("Mã đơn hàng nhập vào: " + maDonHang);
 
                 if (maDonHang.trim() === "") {
@@ -98,6 +51,7 @@
                     return;
                 }
 
+                // Kiểm tra định dạng mã đơn hàng
                 if (!/^[a-zA-Z0-9-]+$/.test(maDonHang)) {
                     alert("Mã đơn hàng chỉ chứa chữ cái, số và dấu gạch ngang.");
                     console.log("Mã đơn hàng không hợp lệ: " + maDonHang);
@@ -107,6 +61,7 @@
                 var urlTraCuu = '@Url.Action("TraCuuDonHang", "Home")';
                 console.log("URL TraCuuDonHang: " + urlTraCuu);
 
+                // Gọi AJAX để gửi yêu cầu tra cứu đến server
                 $.ajax({
                     url: urlTraCuu,
                     type: 'POST',
@@ -116,8 +71,7 @@
                         console.log("Phản hồi từ server:", data);
                         if (data.Success) {
                             if (data.MaDonHang) {
-                                // Chuyển hướng đến action ChiTietDonHang của khách hàng
-                                var redirectUrl = '@Url.Action("XemChiTietDonHang", "KhachHang")?maDonHang=' + encodeURIComponent(data.MaDonHang);
+                                var redirectUrl = '@Url.Action("KhachVangLai_TraCuuDonHang", "Home")?maDonHang=' + encodeURIComponent(data.MaDonHang);
                                 console.log("Chuyển hướng đến: " + redirectUrl);
                                 window.location.href = redirectUrl;
                             } else {
