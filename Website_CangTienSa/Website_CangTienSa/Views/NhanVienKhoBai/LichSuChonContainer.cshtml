@@ -1,0 +1,61 @@
+﻿@model List<Website_CangTienSa.Models.ContainerModel>
+
+@{
+    ViewBag.Title = "Lịch sử chọn container - Nhân viên kho bãi";
+}
+
+<h2 class="mt-4 mb-3">Lịch sử chọn container</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Mã container</th>
+            <th>Vị trí trong kho</th>
+            <th>Tên kho</th>
+            <th>Loại kho</th>
+            <th>Mã đơn hàng</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var container in Model)
+            {
+                <tr>
+                    <td>@container.MaContainer</td>
+                    <td>@container.ViTriTrongKho</td>
+                    <td>@container.TenKho</td>
+                    <td>@container.TenLoaiKho</td>
+                    <td>@(string.IsNullOrEmpty(container.MaDonHang) ? "Chưa có" : container.MaDonHang)</td>
+                    <td>@(string.IsNullOrEmpty(container.MoTa) ? "Chưa có" : container.MoTa)</td>
+                    <td>
+                        <form action="@Url.Action("KhoiPhucContainer", "NhanVienKhoBai")" method="post" style="display:inline;">
+                            <input type="hidden" name="maContainer" value="@container.MaContainer" />
+                            <button type="submit" class="btn btn-warning btn-sm"
+                                    onclick="return confirm('Bạn có chắc muốn khôi phục container @container.MaContainer về trạng thái rỗng? Điều này sẽ xóa các đơn hàng liên quan.')">
+                                Khôi phục
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="7" class="text-center">Không có lịch sử gán container.</td></tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index_NhanVienKhoBai", "NhanVienKhoBai")" class="btn btn-secondary mt-3">⬅ Quay lại</a>

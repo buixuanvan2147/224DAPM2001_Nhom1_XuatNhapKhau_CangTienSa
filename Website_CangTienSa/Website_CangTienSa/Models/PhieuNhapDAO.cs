@@ -7,7 +7,7 @@ namespace Website_CangTienSa.DAO
 {
     public class PhieuNhapDAO
     {
-        private readonly string connectionString = "Server=BUIXUANVANPC\\MSSQLSERVER2022;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=MINHTOAN\\SQLEXPRESS;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
 
         public List<PhieuNhapModel> GetAllPhieuNhap()
         {
