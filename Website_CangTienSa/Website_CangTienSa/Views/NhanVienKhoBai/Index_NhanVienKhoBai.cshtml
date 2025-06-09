@@ -3,7 +3,7 @@
     ViewBag.Title = "Quản lý đơn hàng - Nhân viên kho bãi";
 }
 
-<h2 class="mt-4 mb-3">Danh sách đơn hàng đang vận chuyển</h2>
+<h2 class="mt-4 mb-3">Danh sách đơn hàng đang nhập kho</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -20,7 +20,6 @@
             <th>Mã đơn hàng</th>
             <th>Người gửi</th>
             <th>Ngày nhập cảng</th>
-            <th>Số lượng</th>
             <th>Trạng thái</th>
             <th>Người xác nhận</th>
             <th>Mô tả</th>
@@ -36,7 +35,6 @@
                     <td>@donHang.MaDonHang</td>
                     <td>@donHang.TenNguoiGui</td>
                     <td>@(donHang.NgayNhapCang != null ? donHang.NgayNhapCang.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
-                    <td>@donHang.SoLuong</td>
                     <td>@donHang.TrangThai</td>
                     <td>@(string.IsNullOrEmpty(donHang.NguoiXacNhan) ? "Chưa có" : donHang.NguoiXacNhan)</td>
                     <td>@donHang.MoTa</td>
@@ -113,3 +111,4 @@
         }
     </tbody>
 </table>
+<a href="@Url.Action("LichSuChonContainer", "NhanVienKhoBai")" class="btn btn-primary mt-3">Xem lịch sử chọn container</a>

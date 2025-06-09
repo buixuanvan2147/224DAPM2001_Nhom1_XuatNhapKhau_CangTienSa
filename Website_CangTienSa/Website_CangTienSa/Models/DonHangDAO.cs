@@ -8,7 +8,7 @@ namespace Website_CangTienSa.DAO
 {
     public class DonHangDAO
     {
-        private readonly string connectionString = "Server=BUIXUANVANPC\\MSSQLSERVER2022;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=MINHTOAN\\SQLEXPRESS;Database=XuatNhapHangTaiCangTienSa;Trusted_Connection=True;";
         public List<DonHangModel> GetDonHangDangVanChuyen()
         {
             var donHangList = new List<DonHangModel>();
@@ -17,19 +17,17 @@ namespace Website_CangTienSa.DAO
             {
                 connection.Open();
                 string query = @"
-            SELECT 
-                dh.maDonHang,
-                dh.tenNguoiGui,
-                dh.ngayNhapCang,
-                ctdh.soLuong,
-                dh.trangThaiThanhToan AS trangThai,
-                nv.tenHienThi AS nguoiXacNhan,
-                dh.moTa
-            FROM donHang dh
-            JOIN chiTietDonHang ctdh ON dh.maDonHang = ctdh.maDonHang
-            JOIN nhanVien nv ON dh.maNhanVien = nv.maNhanVien
-            WHERE dh.moTa LIKE N'%Đơn hàng nhập khẩu%'
-            AND dh.trangThaiThanhToan = N'Đã thanh toán' AND dh.trangThaiDonHang = N'Đang vận chuyển nhập kho'";
+             SELECT 
+       dh.maDonHang,
+       dh.tenNguoiGui,
+       dh.ngayNhapCang,
+       dh.trangThaiThanhToan AS trangThai,
+       nv.tenHienThi AS nguoiXacNhan,
+       dh.moTa
+   FROM donHang dh
+   JOIN nhanVien nv ON dh.maNhanVien = nv.maNhanVien
+   WHERE dh.moTa LIKE N'%Đơn hàng nhập khẩu%'
+   AND dh.trangThaiThanhToan = N'Đã thanh toán' AND dh.trangThaiDonHang = N'Đang vận chuyển nhập kho'";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -41,7 +39,6 @@ namespace Website_CangTienSa.DAO
                             MaDonHang = reader["maDonHang"].ToString(),
                             TenNguoiGui = reader["tenNguoiGui"].ToString(),
                             NgayNhapCang = reader["ngayNhapCang"] != DBNull.Value ? Convert.ToDateTime(reader["ngayNhapCang"]) : (DateTime?)null,
-                            SoLuong = reader["soLuong"] != DBNull.Value ? Convert.ToSingle(reader["soLuong"]) : 0,
                             TrangThai = reader["trangThai"].ToString(), // Lấy trạng thái thanh toán
                             NguoiXacNhan = reader["nguoiXacNhan"].ToString(),
                             MoTa = reader["moTa"].ToString()
@@ -418,5 +415,135 @@ namespace Website_CangTienSa.DAO
             }
             return list;
         }
+    
+
+        public List<ContainerModel> GetLichSuChonContainer()
+        {
+            var list = new List<ContainerModel>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"
+                SELECT 
+                    c.maContainer,
+                    c.viTriTrongKho,
+                    k.tenKho,
+                    lk.tenLoaiKho,
+                    pn.maDonHang,
+                    ctpn.moTa
+                FROM container c
+                JOIN chiTietKho ctk ON c.maChiTietKho = ctk.maChiTietKho
+                JOIN kho k ON ctk.maKho = k.maKho
+                JOIN loaiKho lk ON k.maLoaiKho = lk.maLoaiKho
+                JOIN chiTietPhieuNhap ctpn ON c.maContainer = ctpn.maContainer
+                JOIN phieuNhap pn ON ctpn.maPhieuNhap = pn.maPhieuNhap
+                WHERE c.trangThaiContainer = N'Đang sử dụng'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new ContainerModel
+                        {
+                            MaContainer = reader["maContainer"].ToString(),
+                            ViTriTrongKho = reader["viTriTrongKho"].ToString(),
+                            TenKho = reader["tenKho"].ToString(),
+                            TenLoaiKho = reader["tenLoaiKho"].ToString(),
+                            MaDonHang = reader["maDonHang"].ToString(),
+                            MoTa = reader["moTa"]?.ToString()
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        public bool KhoiPhucContainer(string maContainer)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+
+                try
+                {
+                    // Kiểm tra container tồn tại và đang sử dụng
+                    string checkQuery = "SELECT trangThaiContainer FROM container WHERE maContainer = @maContainer";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, connection, transaction))
+                    {
+                        checkCmd.Parameters.AddWithValue("@maContainer", maContainer);
+                        var status = checkCmd.ExecuteScalar()?.ToString();
+                        if (string.IsNullOrEmpty(status) || status != "Đang sử dụng")
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Container {maContainer} không tồn tại hoặc không ở trạng thái 'Đang sử dụng'.");
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    // Xóa bản ghi trong chiTietPhieuNhap
+                    string deleteChiTietPhieuNhapQuery = @"
+                    DELETE FROM chiTietPhieuNhap 
+                    WHERE maPhieuNhap IN (
+                        SELECT maPhieuNhap FROM phieuNhap WHERE maDonHang IN (
+                            SELECT maDonHang FROM phieuNhap pn 
+                            JOIN chiTietPhieuNhap ctpn ON pn.maPhieuNhap = ctpn.maPhieuNhap 
+                            WHERE ctpn.maContainer = @maContainer
+                        )
+                    )";
+                    using (SqlCommand cmd = new SqlCommand(deleteChiTietPhieuNhapQuery, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@maContainer", maContainer);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Xóa bản ghi trong phieuNhap
+                    string deletePhieuNhapQuery = @"
+                    DELETE FROM phieuNhap 
+                    WHERE maDonHang IN (
+                        SELECT maDonHang FROM phieuNhap pn 
+                        JOIN chiTietPhieuNhap ctpn ON pn.maPhieuNhap = ctpn.maPhieuNhap 
+                        WHERE ctpn.maContainer = @maContainer
+                    )";
+                    using (SqlCommand cmd = new SqlCommand(deletePhieuNhapQuery, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@maContainer", maContainer);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Cập nhật trạng thái container về Rỗng
+                    string updateContainerQuery = "UPDATE container SET trangThaiContainer = N'Rỗng' WHERE maContainer = @maContainer";
+                    using (SqlCommand cmd = new SqlCommand(updateContainerQuery, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@maContainer", maContainer);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Không thể cập nhật trạng thái container {maContainer}.");
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    transaction.Commit();
+                    System.Diagnostics.Debug.WriteLine($"Khôi phục container {maContainer} thành công.");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine($"Lỗi khi khôi phục container {maContainer}: {ex.Message}");
+                    return false;
+                }
+            }
+        }
     }
+
+
 }
+
+
+
+
+

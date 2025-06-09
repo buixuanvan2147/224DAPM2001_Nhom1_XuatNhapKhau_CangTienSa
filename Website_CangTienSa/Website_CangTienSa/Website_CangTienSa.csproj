@@ -529,6 +529,7 @@
     <Content Include="Views\QuanTriVien\ThongKeBaoCao_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyPhieuNhap_PhieuXuat_QuanTriVien.cshtml" />
     <Content Include="Views\QuanTriVien\QuanLyContainer_QuanTriVien.cshtml" />
+    <Content Include="Views\NhanVienKhoBai\LichSuChonContainer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

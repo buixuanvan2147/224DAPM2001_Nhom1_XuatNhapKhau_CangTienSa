@@ -118,5 +118,47 @@ namespace Website_CangTienSa.Controllers
             var donHangList = _donHangDAO.GetDonHangXuatKhau();
             return View(donHangList);
         }
+        public ActionResult LichSuChonContainer()
+        {
+            var containers = _donHangDAO.GetLichSuChonContainer();
+            return View(containers);
+        }
+
+        [HttpPost]
+        public ActionResult KhoiPhucContainer(string maContainer)
+        {
+            try
+            {
+                maContainer = maContainer?.Trim() ?? "";
+                if (string.IsNullOrEmpty(maContainer))
+                {
+                    TempData["ErrorMessage"] = "Mã container không hợp lệ";
+                    return RedirectToAction("LichSuChonContainer");
+                }
+
+                if (maContainer.Length > 10)
+                {
+                    TempData["ErrorMessage"] = "Mã container không được vượt quá 10 ký tự";
+                    return RedirectToAction("LichSuChonContainer");
+                }
+
+                bool success = _donHangDAO.KhoiPhucContainer(maContainer);
+                if (success)
+                {
+                    TempData["SuccessMessage"] = "✅ Khôi phục container thành công";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "❌ Khôi phục container thất bại. Container có thể không tồn tại hoặc không ở trạng thái 'Đang sử dụng'";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"❌ Lỗi hệ thống: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi khôi phục container: {ex}");
+            }
+
+            return RedirectToAction("LichSuChonContainer");
+        }
     }
 }
